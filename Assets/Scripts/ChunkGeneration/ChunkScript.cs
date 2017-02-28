@@ -11,7 +11,8 @@ public class ChunkScript : MonoBehaviour {
     private void Start()
     {
         CalculateChunkLength();
-        Calibrate();
+        if (LevelGeneration.ins)
+            Calibrate();
     }
 
     public void CalculateChunkLength()
