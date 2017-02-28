@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Jumping : MonoBehaviour {
 
+
+
 	// Use this for initialization
 	void Start () {
 		
@@ -11,6 +13,10 @@ public class Jumping : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+        if(Physics.Raycast(transform.position, -Vector3.right, 2))
+        {
+            Debug.Log("hit");
+        }
+        
 	}
 }
