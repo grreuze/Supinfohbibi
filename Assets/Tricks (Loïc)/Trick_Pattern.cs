@@ -18,9 +18,11 @@ public class Trick_Pattern : MonoBehaviour
 
 	private Vector3 spawn;
 
+    Canvas canvas;
+
 	void Start ()
 	{
-		
+        canvas = FindObjectOfType<Canvas>();
 		previousPreviousQuarterIndexer = Random.Range (0, Quarters.Length);
 
 		do {
@@ -40,16 +42,19 @@ public class Trick_Pattern : MonoBehaviour
 		previousPreviousQuarterIndexer = previousQuarterIndexer;
 		previousQuarterIndexer = quarterIndexer;
 
+        print(Quarters[quarterIndexer].rect.width);
 
-		int spawnX = (int)Random.Range (
-			             Quarters [quarterIndexer].transform.position.x - (Quarters [quarterIndexer].rect.width / 2) + (TrickButton_Prefab.GetComponent<RectTransform> ().rect.width / 4), 
-			             Quarters [quarterIndexer].transform.position.x + (Quarters [quarterIndexer].rect.width / 2) - (TrickButton_Prefab.GetComponent<RectTransform> ().rect.width / 4));
+        float rectWidth = Quarters[quarterIndexer].rect.width * canvas.scaleFactor / 2;
+        float rectHeight = Quarters[quarterIndexer].rect.height * canvas.scaleFactor / 2;
+
+        int spawnX = (int)Random.Range (
+			             Quarters [quarterIndexer].transform.position.x - rectWidth + (TrickButton_Prefab.GetComponent<RectTransform> ().rect.width / 4), 
+			             Quarters [quarterIndexer].transform.position.x + rectWidth - (TrickButton_Prefab.GetComponent<RectTransform> ().rect.width / 4));
 
 		int spawnY = (int)Random.Range (
-			             Quarters [quarterIndexer].transform.position.y - (Quarters [quarterIndexer].rect.height / 2) + (TrickButton_Prefab.GetComponent<RectTransform> ().rect.height / 4), 
-			             Quarters [quarterIndexer].transform.position.y + (Quarters [quarterIndexer].rect.height / 2) - (TrickButton_Prefab.GetComponent<RectTransform> ().rect.height / 4));
-
-
+			             Quarters [quarterIndexer].transform.position.y - rectHeight + (TrickButton_Prefab.GetComponent<RectTransform> ().rect.height / 4), 
+			             Quarters [quarterIndexer].transform.position.y + rectHeight - (TrickButton_Prefab.GetComponent<RectTransform> ().rect.height / 4));
+        
 		spawn = new Vector3 (spawnX, spawnY, 0);
 	}
 
