@@ -6,12 +6,14 @@ public class SplineWalker : MonoBehaviour {
 
 	public float duration;
 
-	public bool lookForward;
+	public bool lookForward, enableGravity;
 
 	public SplineWalkerMode mode;
 
 	private float progress;
 	private bool goingForward = true;
+
+    private Vector3 position;
 
 	private void Update () {
 		if (goingForward) {
@@ -37,7 +39,10 @@ public class SplineWalker : MonoBehaviour {
 			}
 		}
 
-		Vector3 position = spline.GetPoint(progress);
+		position = spline.GetPoint(progress);
+        if (enableGravity)
+            position.y = transform.localPosition.y; // Let's not affect y
+
 		transform.localPosition = position;
 		if (lookForward) {
 			transform.LookAt(position + spline.GetDirection(progress));
