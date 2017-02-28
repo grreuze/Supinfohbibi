@@ -6,6 +6,9 @@ public class LevelGeneration : MonoBehaviour {
 
     public static LevelGeneration ins;
 
+    //chunks spéciaux
+    public GameObject FinalChunkPrefab;
+
     //l'array de chunks
     public GameObject[] Chunks;
 
@@ -22,6 +25,12 @@ public class LevelGeneration : MonoBehaviour {
     private int previousChunkIndex;
     //l'int random pour pick le chunk a instancier
     private int chunkIndexer;
+    //la longueur de la run
+    public int runLength;
+
+    //BOOLS
+    //détermine si on peut instancier ou pas de nouveaux chunks
+    private bool canGenerate = true;
 
     //Singleton
     private void Awake()
@@ -48,18 +57,26 @@ public class LevelGeneration : MonoBehaviour {
 
     public void Generate()
     {
-        //on interdit les doublons de chunks via un do/while
-        do
+        if(chunkScore == runLength && canGenerate)
         {
-            chunkIndexer = Random.Range(0, Chunks.Length);
-        } while (CheckChunkValidity(chunkIndexer));
+            GameObject finalChunk = Instantiate(FinalChunkPrefab, CurrentEndPoint.position, Quaternion.Euler(CurrentEndPoint.eulerAngles.x, CurrentEndPoint.eulerAngles.y, CurrentEndPoint.eulerAngles.z));
+            canGenerate = false;
+        }
+        else if (canGenerate)
+        {
+            //on interdit les doublons de chunks via un do/while
+            do
+            {
+                chunkIndexer = Random.Range(0, Chunks.Length);
+            } while (CheckChunkValidity(chunkIndexer));
 
-        previousChunkIndex = chunkIndexer;
+            previousChunkIndex = chunkIndexer;
 
-        //Instanciation du préfab
-        GameObject newChunk = Instantiate(Chunks[chunkIndexer], CurrentEndPoint.position, Quaternion.Euler(CurrentEndPoint.eulerAngles.x, CurrentEndPoint.eulerAngles.y, CurrentEndPoint.eulerAngles.z));       
+            //Instanciation du préfab
+            GameObject newChunk = Instantiate(Chunks[chunkIndexer], CurrentEndPoint.position, Quaternion.Euler(CurrentEndPoint.eulerAngles.x, CurrentEndPoint.eulerAngles.y, CurrentEndPoint.eulerAngles.z));
 
-        chunkScore++;
+            chunkScore++;
+        }   
     }
 
     //vérifie que le random est bien valide (avec exception au tout début)
