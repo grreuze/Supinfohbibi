@@ -1,17 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TriggerJump : MonoBehaviour {
 
-    private void OnTriggerEnter(Collider other)
-    {
-        FishJumping tmp = other.GetComponentInParent<FishJumping>();
-        if (tmp) {
-            tmp.CallJump();
-        }
-        else {
-            Debug.Log(tmp);
-        }
+    public float jumpStrength = 1;
+
+    private void OnTriggerEnter(Collider other) {
+        FishController tmp = other.GetComponentInParent<FishController>();
+        if (tmp) 
+            tmp.CallJump(jumpStrength);
     }
 }

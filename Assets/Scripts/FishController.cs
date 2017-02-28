@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(CharacterController))]
 public class FishController : MonoBehaviour {
 
@@ -10,62 +7,50 @@ public class FishController : MonoBehaviour {
 
     public float gravity;
     public float maxFallingSpeed;
-
-    public float _raycastMaxRange;
-
-    float yMargin = 1f;
-
-    Rigidbody _rigid;
+    
     CharacterController controller;
 
     Vector3 direction;
     float verticalVelocity;
     float reachedMaxSpeed;
 
-    float lastY;
+    bool jumping;
+    float jumpStrength;
 
-    bool goingUp, jumping;
-    private float distToGround;
-
-    private void Awake() {
-        _rigid = GetComponentInParent<Rigidbody>();
+    void Awake() {
         controller = GetComponent<CharacterController>();
-
-        lastY = transform.position.y;
-        distToGround = GetComponent<Collider>().bounds.extents.y;
-        print(distToGround);
     }
 
-    // Update is called once per frame
-    private void Update() {
-        float deltaTime = Time.deltaTime;
+    float deltaTime;
+    void Update() {
+        deltaTime = Time.deltaTime;
 
-        goingUp = lastY < transform.position.y - yMargin;
-        lastY = transform.position.y;
+        print(verticalVelocity);
 
         reachedMaxSpeed = verticalVelocity <= -maxFallingSpeed ? reachedMaxSpeed + deltaTime : 0;
-
-        Vector3 rayPos = transform.position;
-        //rayPos.y -= distToGround;
-        print(transform.position - rayPos);
-
-        Debug.DrawLine(rayPos, rayPos + Vector3.right * _raycastMaxRange, Color.red);
-
-        if (goingUp && !jumping && !Physics.Raycast(rayPos, Vector3.right, _raycastMaxRange)) {
-
-            print("FishJumping");
-            jumping = true;
-        }
-
-        if (controller.isGrounded) {
+        
+        if (jumping) {
+            verticalVelocity = jumpStrength * _movementSpeed * deltaTime;
+            print("jump -> " + verticalVelocity + "(" + jumpStrength + "*" + _movementSpeed + "*" + deltaTime + ")");
             jumping = false;
+
+        } else if (controller.isGrounded) {
             verticalVelocity = -gravity * deltaTime;
+
         } else if (reachedMaxSpeed == 0)
             verticalVelocity -= gravity * deltaTime;
 
-        direction.x = -_movementSpeed * deltaTime;
+        direction.x = 0;
         direction.y = verticalVelocity;
+        direction.z = _movementSpeed * deltaTime;
+
+        direction = transform.TransformDirection(direction);
 
         controller.Move(direction);
+    }
+
+    public void CallJump(float jumpStrength) {
+        jumping = true;
+        this.jumpStrength = jumpStrength;
     }
 }
