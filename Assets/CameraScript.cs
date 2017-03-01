@@ -56,6 +56,16 @@ public class CameraScript : MonoBehaviour {
         {
             CameraIdle();
         }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            CameraClimb();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            CameraAirTime();
+        }
     }   
 
     public void CameraAccelerateDescent()
@@ -84,6 +94,8 @@ public class CameraScript : MonoBehaviour {
         if(CState != CamState.Climbing)
         {
             CState = CamState.Climbing;
+            cameraOffset.y -= 0.2f;
+            follower.transform.DORotate(new Vector3(-8, 0, 0), 0.7f, RotateMode.LocalAxisAdd);
         }
     }
 
@@ -92,7 +104,8 @@ public class CameraScript : MonoBehaviour {
         if(CState != CamState.Airtime)
         {
             CState = CamState.Airtime;
-
+            cameraOffset.y += 0.4f;
+            follower.transform.DORotate(new Vector3(10, 0, 0), 0.5f, RotateMode.LocalAxisAdd);
         }
     }
 }
