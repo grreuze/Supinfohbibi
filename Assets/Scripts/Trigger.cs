@@ -21,10 +21,10 @@ public class Trigger : MonoBehaviour {
                 Jump(other);
                 break;
             case TriggerMode.TurnLeft:
-
+                Turn(-90, other);
                 break;
             case TriggerMode.TurnRight:
-
+                Turn(90, other);
                 break;
         }
     }
@@ -32,7 +32,18 @@ public class Trigger : MonoBehaviour {
     void Turn(float angle, Collider other) {
         FishController ctrl = other.GetComponentInParent<FishController>();
         if (ctrl) {
-            
+            if (ctrl.lastTrigger == this)
+                return;
+
+
+            Vector3 rot = ctrl.targetRotation.eulerAngles;
+            rot.y += angle;
+
+            Quaternion newRot = Quaternion.Euler(rot);
+            print(ctrl.transform.rotation.eulerAngles + " -> " + newRot.eulerAngles);
+            ctrl.Turn(newRot);
+
+            ctrl.lastTrigger = this;
         }
     }
 
@@ -44,7 +55,11 @@ public class Trigger : MonoBehaviour {
             tmp.CallJump(jumpStrength);
         if (op)
             op.CallJump(jumpStrength);
-        if (ctrl)
+        if (ctrl) {
+            if (ctrl.lastTrigger == this)
+                return;
             ctrl.CallJump(jumpStrength);
+            ctrl.lastTrigger = this;
+        }
     }
 }

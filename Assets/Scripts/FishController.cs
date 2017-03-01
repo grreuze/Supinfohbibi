@@ -3,7 +3,7 @@
 [RequireComponent(typeof(CharacterController))]
 public class FishController : MonoBehaviour {
 
-    public float _movementSpeed;
+    public float movementSpeed;
 
     public float gravity;
     public float maxFallingSpeed;
@@ -19,12 +19,17 @@ public class FishController : MonoBehaviour {
     public float turningSpeed = 2;
     public Quaternion targetRotation;
 
+    public Trigger lastTrigger;
+
     bool jumping;
     float jumpStrength;
+
+
 
     void Awake() {
         _rigid = GetComponent<Rigidbody>();
         controller = GetComponent<CharacterController>();
+        targetRotation = transform.rotation;
     }
 
     float deltaTime;
@@ -34,8 +39,8 @@ public class FishController : MonoBehaviour {
         reachedMaxSpeed = verticalVelocity <= -maxFallingSpeed ? reachedMaxSpeed + deltaTime : 0;
         
         if (jumping) {
-            verticalVelocity = jumpStrength * _movementSpeed * deltaTime;
-            print("jump -> " + verticalVelocity + "(" + jumpStrength + "*" + _movementSpeed + "*" + deltaTime + ")");
+            verticalVelocity = jumpStrength * movementSpeed * deltaTime;
+            print("jump -> " + verticalVelocity + "(" + jumpStrength + "*" + movementSpeed + "*" + deltaTime + ")");
             jumping = false;
 
         } else if (controller.isGrounded) {
@@ -43,25 +48,28 @@ public class FishController : MonoBehaviour {
 
         } else if (reachedMaxSpeed == 0)
             verticalVelocity -= gravity * deltaTime;
-
-
+        
         if (turning) {
-            RaycastHit hit;
-            if (Physics.Linecast(transform.position, transform.position + Vector3.forward * 5, out hit)) {
-                Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * turningSpeed);
-            } else {
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * turningSpeed * movementSpeed);
+            
+            if (Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y) < 0.5f) {
+                transform.rotation = targetRotation;
                 turning = false;
             }
         }
-
-
+        
         direction.x = 0;
         direction.y = verticalVelocity;
-        direction.z = _movementSpeed * deltaTime;
+        direction.z = movementSpeed * deltaTime;
 
         direction = transform.TransformDirection(direction);
 
         controller.Move(direction);
+    }
+
+    public void Turn(Quaternion targetRot) {
+        turning = true;
+        targetRotation = targetRot;
     }
 
     public void CallJump(float jumpStrength) {
