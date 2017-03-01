@@ -62,4 +62,9 @@ public class FishMoving : MonoBehaviour {
     {
         return _movementSpeed;
     }
+
+    public bool GetDescend()
+    {
+        return _descend;
+    }
 }
