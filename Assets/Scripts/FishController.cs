@@ -7,7 +7,8 @@ public class FishController : MonoBehaviour {
 
     public float gravity;
     public float maxFallingSpeed;
-    
+
+    Rigidbody _rigid;
     CharacterController controller;
 
     Vector3 direction;
@@ -18,15 +19,14 @@ public class FishController : MonoBehaviour {
     float jumpStrength;
 
     void Awake() {
+        _rigid = GetComponent<Rigidbody>();
         controller = GetComponent<CharacterController>();
     }
 
     float deltaTime;
     void Update() {
         deltaTime = Time.deltaTime;
-
-        print(verticalVelocity);
-
+        
         reachedMaxSpeed = verticalVelocity <= -maxFallingSpeed ? reachedMaxSpeed + deltaTime : 0;
         
         if (jumping) {
@@ -52,5 +52,6 @@ public class FishController : MonoBehaviour {
     public void CallJump(float jumpStrength) {
         jumping = true;
         this.jumpStrength = jumpStrength;
+        //_rigid.AddRelativeForce(new Vector3(0, _movementSpeed * jumpStrength, 0));
     }
 }

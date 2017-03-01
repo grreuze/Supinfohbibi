@@ -42,8 +42,6 @@ public class Trick_Pattern : MonoBehaviour
 		previousPreviousQuarterIndexer = previousQuarterIndexer;
 		previousQuarterIndexer = quarterIndexer;
 
-        print(Quarters[quarterIndexer].rect.width);
-
         float rectWidth = Quarters[quarterIndexer].rect.width * canvas.scaleFactor / 2;
         float rectHeight = Quarters[quarterIndexer].rect.height * canvas.scaleFactor / 2;
 
