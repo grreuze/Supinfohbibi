@@ -33,31 +33,28 @@ public class LevelGeneration : MonoBehaviour {
     private bool canGenerate = true;
 
     //Singleton
-    private void Awake()
-    {
-        if(LevelGeneration.ins == null)
-        {
+    private void Awake() {
+        if (LevelGeneration.ins == null) {
             LevelGeneration.ins = this;
-        }
-        else
-        {
+        } else {
             Destroy(gameObject);
         }
-        CurrentEndPoint = transform;
     }
 
-    public void Generate()
-    {
-        if(chunkScore == runLength && canGenerate)
-        {
+    // Use this for initialization
+    void Start() {
+
+        StartCoroutine(GenerationCoroutine());
+
+    }
+
+    public void Generate() {
+        if (chunkScore == runLength && canGenerate) {
             GameObject finalChunk = Instantiate(FinalChunkPrefab, CurrentEndPoint.position, Quaternion.Euler(CurrentEndPoint.eulerAngles.x, CurrentEndPoint.eulerAngles.y, CurrentEndPoint.eulerAngles.z));
             canGenerate = false;
-        }
-        else if (canGenerate)
-        {
+        } else if (canGenerate) {
             //on interdit les doublons de chunks via un do/while
-            do
-            {
+            do {
                 chunkIndexer = Random.Range(0, Chunks.Length);
             } while (CheckChunkValidity(chunkIndexer));
 
@@ -66,32 +63,26 @@ public class LevelGeneration : MonoBehaviour {
             //Instanciation du préfab
             GameObject newChunk = Instantiate(Chunks[chunkIndexer], CurrentEndPoint.position, Quaternion.Euler(CurrentEndPoint.eulerAngles.x, CurrentEndPoint.eulerAngles.y, CurrentEndPoint.eulerAngles.z));
 
-            DoSpline(newChunk.GetComponent<BezierSpline>());
-
             chunkScore++;
-        }   
-    }
-
-    #region Spline
-    BezierSpline spline;
-    void DoSpline(BezierSpline chunkSpline) {
-
-        if (!spline) {
-            spline = GetComponent<BezierSpline>();
-            spline.ResetNull();
         }
-        spline.Concatenate(chunkSpline);
     }
-    #endregion
 
     //vérifie que le random est bien valide (avec exception au tout début)
-    bool CheckChunkValidity(int ind)
-    {
+    bool CheckChunkValidity(int ind) {
         if (chunkScore == 0)
             return false;
 
         if (ind != previousChunkIndex)
             return false;
         else return true;
+    }
+
+    private IEnumerator GenerationCoroutine() {
+        for (int i = 0; i < runLength + 1; i++) {
+            Generate();
+            yield return new WaitForEndOfFrame();
+        }
+
+        yield return null;
     }
 }
