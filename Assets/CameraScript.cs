@@ -14,11 +14,12 @@ public class CameraScript : MonoBehaviour {
     }
 
     public CamState CState = new CamState();
-
-    public float smoothTime = 0.3f;
+    
     public Vector3 cameraOffset;
 
-    public GameObject follower;
+    public float speed = 20;
+
+    public Transform follower;
     public Rigidbody PlayerRigigBody;
 
     private Vector3 velocity;
@@ -36,10 +37,10 @@ public class CameraScript : MonoBehaviour {
     }
 
     //méthode pour que la caméra suive le follower
-    void FixedUpdate()
+    void LateUpdate()
     {
-        transform.position = Vector3.Slerp(transform.position, follower.transform.position + cameraOffset, 20*Time.deltaTime);
-        transform.rotation = Quaternion.Slerp(transform.rotation, follower.transform.rotation, 20*Time.deltaTime);
+        transform.position = Vector3.Slerp(transform.position, follower.position + cameraOffset, speed*Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, follower.rotation, speed*Time.deltaTime);
     }
 
     private void Update()
@@ -75,7 +76,7 @@ public class CameraScript : MonoBehaviour {
             CState = CamState.AcceleratingDescent;
             cameraOffset.y += 0.8f;
             //transform.DORotate(new Vector3(12, 0, 0), 0.7f, RotateMode.LocalAxisAdd);
-            follower.transform.DORotate(new Vector3(12, 0, 0), 0.7f, RotateMode.LocalAxisAdd);
+            follower.DORotate(new Vector3(12, 0, 0), 0.7f, RotateMode.LocalAxisAdd);
         }
     }
 
@@ -85,7 +86,7 @@ public class CameraScript : MonoBehaviour {
         {
             CState = CamState.Idle;
             cameraOffset = Vector3.zero;
-            follower.transform.DORotate(orignialRot, 0.7f);
+            follower.DORotate(orignialRot, 0.7f);
         }
     }
 
@@ -95,7 +96,7 @@ public class CameraScript : MonoBehaviour {
         {
             CState = CamState.Climbing;
             cameraOffset.y -= 0.2f;
-            follower.transform.DORotate(new Vector3(-8, 0, 0), 0.7f, RotateMode.LocalAxisAdd);
+            follower.DORotate(new Vector3(-8, 0, 0), 0.7f, RotateMode.LocalAxisAdd);
         }
     }
 
@@ -105,7 +106,7 @@ public class CameraScript : MonoBehaviour {
         {
             CState = CamState.Airtime;
             cameraOffset.y += 0.4f;
-            follower.transform.DORotate(new Vector3(10, 0, 0), 0.5f, RotateMode.LocalAxisAdd);
+            follower.DORotate(new Vector3(10, 0, 0), 0.5f, RotateMode.LocalAxisAdd);
         }
     }
 }

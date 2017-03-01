@@ -34,8 +34,7 @@ public class Trigger : MonoBehaviour {
         if (ctrl) {
             if (ctrl.lastTrigger == this)
                 return;
-
-
+            
             Vector3 rot = ctrl.targetRotation.eulerAngles;
             rot.y += angle;
 
