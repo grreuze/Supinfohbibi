@@ -14,11 +14,17 @@ public class SplineWalker : MonoBehaviour {
 	private float progress;
 	private bool goingForward = true;
 
+    public Vector3 offset;
     private Vector3 position;
+
+    public float speed;
 
 	private void Update () {
 		if (goingForward) {
-            progress += Time.deltaTime / duration;
+            //progress += Time.deltaTime / duration;
+
+
+            progress += speed * Time.deltaTime;
 
 			if (progress > 1f) {
 				if (mode == SplineWalkerMode.Once) {
@@ -35,14 +41,15 @@ public class SplineWalker : MonoBehaviour {
 			}
 		}
 		else {
-			progress -= Time.deltaTime / duration;
-			if (progress < 0f) {
+            progress -= speed * Time.deltaTime;
+			//progress -= Time.deltaTime / duration;
+            if (progress < 0f) {
 				progress = -progress;
 				goingForward = true;
 			}
 		}
 
-		position = spline.GetPoint(progress);
+        position = spline.GetPoint(progress) + offset ;
         if (enableGravity)
             position.y = transform.localPosition.y; // Let's not affect y
 

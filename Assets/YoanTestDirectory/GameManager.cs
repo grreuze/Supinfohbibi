@@ -23,4 +23,15 @@ public class GameManager : MonoBehaviour {
     public float _minMoveSpeed;
     public int _nbOpponent;
     public float _maxOpponentSpeed;
+    public GameObject _fish;
+    public GameObject _opponent;
+
+    private void Start()
+    {
+        for(int i = 0;i < _nbOpponent; i++) {
+            GameObject go = Instantiate(_opponent);
+            go.transform.position = _fish.transform.position;
+            go.GetComponentInParent<Opponent>().SetSpeed(_minMoveSpeed + ((_maxOpponentSpeed - _minMoveSpeed) / _nbOpponent) * i);
+        }
+    }
 }

@@ -15,6 +15,7 @@ public class FishJumping : MonoBehaviour {
     }
 
     public void CallJump(float jumpStrength) {
+        print("jump");
         _rigid.AddRelativeForce(new Vector3(0 , _fishMoving.GetMovementSpeed() * jumpStrength , 0));
     }
 }

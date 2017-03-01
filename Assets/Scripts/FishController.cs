@@ -15,6 +15,10 @@ public class FishController : MonoBehaviour {
     float verticalVelocity;
     float reachedMaxSpeed;
 
+    public bool turning;
+    public float turningSpeed = 2;
+    public Quaternion targetRotation;
+
     bool jumping;
     float jumpStrength;
 
@@ -39,6 +43,17 @@ public class FishController : MonoBehaviour {
 
         } else if (reachedMaxSpeed == 0)
             verticalVelocity -= gravity * deltaTime;
+
+
+        if (turning) {
+            RaycastHit hit;
+            if (Physics.Linecast(transform.position, transform.position + Vector3.forward * 5, out hit)) {
+                Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * turningSpeed);
+            } else {
+                turning = false;
+            }
+        }
+
 
         direction.x = 0;
         direction.y = verticalVelocity;

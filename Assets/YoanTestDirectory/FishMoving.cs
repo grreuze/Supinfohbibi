@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(CapsuleCollider))]
 public class FishMoving : MonoBehaviour {
 
     public float _movementSpeed;
@@ -12,20 +11,16 @@ public class FishMoving : MonoBehaviour {
     public float _gravityMultiplierWhenFallingWithTouch;
 
     private Rigidbody _rigid;
-    private CapsuleCollider _capsCol;
-    private bool _ascend;
     private bool _descend;
     private float _lastHeightValue;
 
     private void Awake() {
         _rigid = GetComponentInParent<Rigidbody>();
-        _capsCol = GetComponentInParent<CapsuleCollider>();
         _movementSpeed = GameManager.GetInstance()._playerStartMoveSpeed;
     }
 
     private void Start() {
         _lastHeightValue = transform.position.y;
-        _ascend = true;
     }
 
     // Update is called once per frame
@@ -54,10 +49,12 @@ public class FishMoving : MonoBehaviour {
     }
 
     private void AscendUpdate() {
-
-        _ascend = transform.position.y > _lastHeightValue;
-        _descend = transform.position.y < _lastHeightValue;
-        
+        if(transform.position.y < _lastHeightValue) {
+            _descend = true;
+        }
+        else {
+            _descend = false;
+        }
         _lastHeightValue = transform.position.y;
     }
 
