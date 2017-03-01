@@ -54,18 +54,10 @@ public class FishMoving : MonoBehaviour {
     }
 
     private void AscendUpdate() {
-        if (transform.position.y > _lastHeightValue) {
-            _ascend = true;
-            _descend = false;
-        }
-        else if(transform.position.y < _lastHeightValue) {
-            _ascend = false;
-            _descend = true;
-        }
-        else {
-            _ascend = false;
-            _descend = false;
-        }
+
+        _ascend = transform.position.y > _lastHeightValue;
+        _descend = transform.position.y < _lastHeightValue;
+        
         _lastHeightValue = transform.position.y;
     }
 

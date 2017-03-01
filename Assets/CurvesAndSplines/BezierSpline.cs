@@ -192,18 +192,19 @@ public class BezierSpline : MonoBehaviour {
 
         Array.Resize(ref points, points.Length + addedLength-1);
 
+        Array.Resize(ref modes, modes.Length + modes.Length + otherSpline.modes.Length);
         for (int i = 0; i < addedLength; i++) {
             points[formerLength - 1 + i] =  transform.InverseTransformPoint(otherSpline.transform.TransformPoint(otherSpline.points[i]));
+            //SetControlPointMode(formerLength - 1 + i, BezierControlPointMode.Aligned);
         }
 
-        Array.Resize(ref modes, modes.Length + modes.Length + otherSpline.modes.Length);
     }
 
     public void ResetNull() {
         points = new Vector3[] { new Vector3(0f, 0f, 0f) };
         modes = new BezierControlPointMode[] {
-            BezierControlPointMode.Free,
-            BezierControlPointMode.Free
+            BezierControlPointMode.Aligned,
+            BezierControlPointMode.Aligned
         };
     }
 

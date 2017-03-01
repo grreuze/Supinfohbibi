@@ -5,6 +5,7 @@ public class SplineWalker : MonoBehaviour {
 	public BezierSpline spline;
 
 	public float duration;
+    public float damping = 1;
 
 	public bool lookForward, enableGravity;
 
@@ -17,9 +18,11 @@ public class SplineWalker : MonoBehaviour {
 
 	private void Update () {
 		if (goingForward) {
-			progress += Time.deltaTime / duration;
+            progress += Time.deltaTime / duration;
+
 			if (progress > 1f) {
 				if (mode == SplineWalkerMode.Once) {
+                    print("done");
 					progress = 1f;
 				}
 				else if (mode == SplineWalkerMode.Loop) {
@@ -45,7 +48,16 @@ public class SplineWalker : MonoBehaviour {
 
 		transform.localPosition = position;
 		if (lookForward) {
-			transform.LookAt(position + spline.GetDirection(progress));
+
+            Vector3 lookPosition = (position + spline.GetDirection(progress)) - transform.position;
+
+            lookPosition.y = 0;
+
+            Quaternion rot = Quaternion.LookRotation(lookPosition);
+
+            transform.rotation = rot;
+
+			//transform.LookAt(position + spline.GetDirection(progress));
 		}
 	}
 }
