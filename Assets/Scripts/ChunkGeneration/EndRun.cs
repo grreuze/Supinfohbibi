@@ -16,9 +16,23 @@ public class EndRun : MonoBehaviour {
     float newAverageSkillLevel;
     
 
+	// Use this for initialization
+	void Start () {
+		
+	}
+
+    //méthode qui va calculer la difficulté de la run
+    public void OnRunStart()
+    {
+        LoadData();
+
+        //TODO déterminer une formule pour calculer le score à atteindre, la longueur de la run et le temps à battre
+    }
+	
+
     public void LaunchEndRunProtocol()
     {
-        //LoadData();
+        //TODO calculer le ratio de collectables ramassés
 
         //on attribue toutes les stats nécessaires à sauvegarder
         PlayerStats.totalRunsCount++;
@@ -37,7 +51,6 @@ public class EndRun : MonoBehaviour {
             Directory.CreateDirectory("Saves");
 
         BinaryFormatter formatter = new BinaryFormatter();
-
         FileStream Savefile = File.Create("Saves/statistics.jpp");
 
         formatter.Serialize(Savefile, PlayerStats);
