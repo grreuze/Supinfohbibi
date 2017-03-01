@@ -22,4 +22,5 @@ public class GameManager : MonoBehaviour {
     public float _maxMoveSpeed;
     public float _minMoveSpeed;
     public int _nbOpponent;
+    public float _maxOpponentSpeed;
 }
