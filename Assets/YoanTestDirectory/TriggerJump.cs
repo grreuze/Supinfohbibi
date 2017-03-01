@@ -5,8 +5,11 @@ public class TriggerJump : MonoBehaviour {
     public float jumpStrength = 1;
 
     private void OnTriggerEnter(Collider other) {
-        FishController tmp = other.GetComponentInParent<FishController>();
-        if (tmp) 
-            tmp.CallJump(jumpStrength);
+        FishJumping tmp = other.GetComponentInParent<FishJumping>();
+        FishController ctrl = other.GetComponentInParent<FishController>();
+        if (tmp)
+            tmp.CallJump();
+        else if (ctrl)
+            ctrl.CallJump(jumpStrength);
     }
 }

@@ -66,7 +66,7 @@ public class LevelGeneration : MonoBehaviour {
             //Instanciation du préfab
             GameObject newChunk = Instantiate(Chunks[chunkIndexer], CurrentEndPoint.position, Quaternion.Euler(CurrentEndPoint.eulerAngles.x, CurrentEndPoint.eulerAngles.y, CurrentEndPoint.eulerAngles.z));
 
-            DoSpline(newChunk.transform, newChunk.GetComponent<ChunkScript>().EndPoint);
+            DoSpline(newChunk.GetComponent<BezierSpline>());
 
             chunkScore++;
         }   
@@ -75,32 +75,13 @@ public class LevelGeneration : MonoBehaviour {
     #region Spline
 
     BezierSpline spline;
-    void DoSpline(Transform startPoint, Transform endPoint) {
+    void DoSpline(BezierSpline chunkSpline) {
 
         if (!spline) {
             spline = gameObject.AddComponent<BezierSpline>();
-            spline.Reset();
-
-        } else {
-            spline.AddCurve();
+            spline.ResetNull();
         }
-
-        int pointCount = spline.ControlPointCount;
-
-        // START POINT
-        spline.SetControlPoint(pointCount - 4, startPoint.position);
-        // Bezier
-        Vector3 startOffset = startPoint.right * 2;
-        if (pointCount > 4) {
-            spline.SetControlPoint(pointCount - 5, startPoint.position + startOffset);
-        }
-        spline.SetControlPoint(pointCount - 3, startPoint.position - startOffset);
-
-        // END POINT
-        spline.SetControlPoint(pointCount - 1, endPoint.position);
-        // Bezier
-        Vector3 endOffset = endPoint.right * 2;
-        spline.SetControlPoint(pointCount - 2, endPoint.position + endOffset);
+        spline.Concatenate(chunkSpline);
     }
     #endregion
 

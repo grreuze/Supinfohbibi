@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
 using System;
 
+[AddComponentMenu("Supinfohbibi/Spline")]
 public class BezierSpline : MonoBehaviour {
 
 	[SerializeField]
 	public Vector3[] points;
 
 	[SerializeField]
-	private BezierControlPointMode[] modes;
+	public BezierControlPointMode[] modes;
 
 	[SerializeField]
 	private bool loop;
@@ -184,6 +185,28 @@ public class BezierSpline : MonoBehaviour {
 		}
 	}
 	
+    public void Concatenate(BezierSpline otherSpline) {
+        int formerLength = points.Length;
+
+        int addedLength = otherSpline.points.Length;
+
+        Array.Resize(ref points, points.Length + addedLength-1);
+
+        for (int i = 0; i < addedLength; i++) {
+            points[formerLength - 1 + i] =  transform.InverseTransformPoint(otherSpline.transform.TransformPoint(otherSpline.points[i]));
+        }
+
+        Array.Resize(ref modes, modes.Length + modes.Length + otherSpline.modes.Length);
+    }
+
+    public void ResetNull() {
+        points = new Vector3[] { new Vector3(0f, 0f, 0f) };
+        modes = new BezierControlPointMode[] {
+            BezierControlPointMode.Free,
+            BezierControlPointMode.Free
+        };
+    }
+
 	public void Reset () {
 		points = new Vector3[] {
 			new Vector3(1f, 0f, 0f),

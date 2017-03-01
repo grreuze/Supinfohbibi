@@ -16,12 +16,6 @@ public class EndRun : MonoBehaviour {
     float newAverageSkillLevel;
     
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-
     public void LaunchEndRunProtocol()
     {
         //LoadData();
