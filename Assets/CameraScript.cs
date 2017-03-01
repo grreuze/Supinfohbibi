@@ -38,8 +38,8 @@ public class CameraScript : MonoBehaviour {
     //méthode pour que la caméra suive le follower
     void FixedUpdate()
     {
-        transform.position = Vector3.Slerp(transform.position, follower.transform.position + cameraOffset, 15*Time.deltaTime);
-        transform.rotation = Quaternion.Slerp(transform.rotation, follower.transform.rotation, 15*Time.deltaTime);
+        transform.position = Vector3.Slerp(transform.position, follower.transform.position + cameraOffset, 20*Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, follower.transform.rotation, 20*Time.deltaTime);
     }
 
     private void Update()

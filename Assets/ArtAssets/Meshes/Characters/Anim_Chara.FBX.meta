@@ -1,0 +1,410 @@
+fileFormatVersion: 2
+guid: e0495d1570694b94999dbefe7353807c
+timeCreated: 1488389129
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Corps
+    100004: L_Fin_Back
+    100006: L_Fin_Front_1
+    100008: L_Fin_Front_2
+    100010: L_Fin_Front_3
+    100012: L_LittleFin_1
+    100014: L_LittleFin_2
+    100016: Oeil_Droit
+    100018: Oeil_Gauche
+    100020: R_Fin_Back
+    100022: R_Fin_Front_1
+    100024: R_Fin_Front_2
+    100026: R_Fin_Front_3
+    100028: R_LittleFin_1
+    100030: R_LittleFin_2
+    100032: Spine_Back2
+    100034: Spine_Back_1
+    100036: Spine_Center
+    100038: Spine_Front1
+    100040: Spine_Front2
+    400000: //RootNode
+    400002: Corps
+    400004: L_Fin_Back
+    400006: L_Fin_Front_1
+    400008: L_Fin_Front_2
+    400010: L_Fin_Front_3
+    400012: L_LittleFin_1
+    400014: L_LittleFin_2
+    400016: Oeil_Droit
+    400018: Oeil_Gauche
+    400020: R_Fin_Back
+    400022: R_Fin_Front_1
+    400024: R_Fin_Front_2
+    400026: R_Fin_Front_3
+    400028: R_LittleFin_1
+    400030: R_LittleFin_2
+    400032: Spine_Back2
+    400034: Spine_Back_1
+    400036: Spine_Center
+    400038: Spine_Front1
+    400040: Spine_Front2
+    2300000: Oeil_Droit
+    2300002: Oeil_Gauche
+    3300000: Oeil_Droit
+    3300002: Oeil_Gauche
+    4300000: Oeil_Droit
+    4300002: Oeil_Gauche
+    4300004: Corps
+    7400000: Idle
+    7400002: Accelerating_grounded
+    7400004: Falling_idle
+    7400006: Accelerating_airtime
+    9500000: //RootNode
+    13700000: Corps
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Idle
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 24
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Corps
+        weight: 1
+      - path: Oeil_Droit
+        weight: 1
+      - path: Oeil_Gauche
+        weight: 1
+      - path: Spine_Center
+        weight: 1
+      - path: Spine_Center/L_LittleFin_1
+        weight: 1
+      - path: Spine_Center/L_LittleFin_1/L_LittleFin_2
+        weight: 1
+      - path: Spine_Center/R_LittleFin_1
+        weight: 1
+      - path: Spine_Center/R_LittleFin_1/R_LittleFin_2
+        weight: 1
+      - path: Spine_Center/Spine_Back_1
+        weight: 1
+      - path: Spine_Center/Spine_Back_1/Spine_Back2
+        weight: 1
+      - path: Spine_Center/Spine_Back_1/Spine_Back2/L_Fin_Back
+        weight: 1
+      - path: Spine_Center/Spine_Back_1/Spine_Back2/R_Fin_Back
+        weight: 1
+      - path: Spine_Center/Spine_Front1
+        weight: 1
+      - path: Spine_Center/Spine_Front1/Spine_Front2
+        weight: 1
+      - path: Spine_Center/Spine_Front1/Spine_Front2/L_Fin_Front_1
+        weight: 1
+      - path: Spine_Center/Spine_Front1/Spine_Front2/L_Fin_Front_1/L_Fin_Front_2
+        weight: 1
+      - path: Spine_Center/Spine_Front1/Spine_Front2/L_Fin_Front_1/L_Fin_Front_2/L_Fin_Front_3
+        weight: 1
+      - path: Spine_Center/Spine_Front1/Spine_Front2/R_Fin_Front_1
+        weight: 1
+      - path: Spine_Center/Spine_Front1/Spine_Front2/R_Fin_Front_1/R_Fin_Front_2
+        weight: 1
+      - path: Spine_Center/Spine_Front1/Spine_Front2/R_Fin_Front_1/R_Fin_Front_2/R_Fin_Front_3
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Accelerating_grounded
+      takeName: Take 001
+      firstFrame: 26
+      lastFrame: 36
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Corps
+        weight: 1
+      - path: Oeil_Droit
+        weight: 1
+      - path: Oeil_Gauche
+        weight: 1
+      - path: Spine_Center
+        weight: 1
+      - path: Spine_Center/L_LittleFin_1
+        weight: 1
+      - path: Spine_Center/L_LittleFin_1/L_LittleFin_2
+        weight: 1
+      - path: Spine_Center/R_LittleFin_1
+        weight: 1
+      - path: Spine_Center/R_LittleFin_1/R_LittleFin_2
+        weight: 1
+      - path: Spine_Center/Spine_Back_1
+        weight: 1
+      - path: Spine_Center/Spine_Back_1/Spine_Back2
+        weight: 1
+      - path: Spine_Center/Spine_Back_1/Spine_Back2/L_Fin_Back
+        weight: 1
+      - path: Spine_Center/Spine_Back_1/Spine_Back2/R_Fin_Back
+        weight: 1
+      - path: Spine_Center/Spine_Front1
+        weight: 1
+      - path: Spine_Center/Spine_Front1/Spine_Front2
+        weight: 1
+      - path: Spine_Center/Spine_Front1/Spine_Front2/L_Fin_Front_1
+        weight: 1
+      - path: Spine_Center/Spine_Front1/Spine_Front2/L_Fin_Front_1/L_Fin_Front_2
+        weight: 1
+      - path: Spine_Center/Spine_Front1/Spine_Front2/L_Fin_Front_1/L_Fin_Front_2/L_Fin_Front_3
+        weight: 1
+      - path: Spine_Center/Spine_Front1/Spine_Front2/R_Fin_Front_1
+        weight: 1
+      - path: Spine_Center/Spine_Front1/Spine_Front2/R_Fin_Front_1/R_Fin_Front_2
+        weight: 1
+      - path: Spine_Center/Spine_Front1/Spine_Front2/R_Fin_Front_1/R_Fin_Front_2/R_Fin_Front_3
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Falling_idle
+      takeName: Take 001
+      firstFrame: 38
+      lastFrame: 48
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Corps
+        weight: 1
+      - path: Oeil_Droit
+        weight: 1
+      - path: Oeil_Gauche
+        weight: 1
+      - path: Spine_Center
+        weight: 1
+      - path: Spine_Center/L_LittleFin_1
+        weight: 1
+      - path: Spine_Center/L_LittleFin_1/L_LittleFin_2
+        weight: 1
+      - path: Spine_Center/R_LittleFin_1
+        weight: 1
+      - path: Spine_Center/R_LittleFin_1/R_LittleFin_2
+        weight: 1
+      - path: Spine_Center/Spine_Back_1
+        weight: 1
+      - path: Spine_Center/Spine_Back_1/Spine_Back2
+        weight: 1
+      - path: Spine_Center/Spine_Back_1/Spine_Back2/L_Fin_Back
+        weight: 1
+      - path: Spine_Center/Spine_Back_1/Spine_Back2/R_Fin_Back
+        weight: 1
+      - path: Spine_Center/Spine_Front1
+        weight: 1
+      - path: Spine_Center/Spine_Front1/Spine_Front2
+        weight: 1
+      - path: Spine_Center/Spine_Front1/Spine_Front2/L_Fin_Front_1
+        weight: 1
+      - path: Spine_Center/Spine_Front1/Spine_Front2/L_Fin_Front_1/L_Fin_Front_2
+        weight: 1
+      - path: Spine_Center/Spine_Front1/Spine_Front2/L_Fin_Front_1/L_Fin_Front_2/L_Fin_Front_3
+        weight: 1
+      - path: Spine_Center/Spine_Front1/Spine_Front2/R_Fin_Front_1
+        weight: 1
+      - path: Spine_Center/Spine_Front1/Spine_Front2/R_Fin_Front_1/R_Fin_Front_2
+        weight: 1
+      - path: Spine_Center/Spine_Front1/Spine_Front2/R_Fin_Front_1/R_Fin_Front_2/R_Fin_Front_3
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Accelerating_airtime
+      takeName: Take 001
+      firstFrame: 50
+      lastFrame: 60
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Corps
+        weight: 1
+      - path: Oeil_Droit
+        weight: 1
+      - path: Oeil_Gauche
+        weight: 1
+      - path: Spine_Center
+        weight: 1
+      - path: Spine_Center/L_LittleFin_1
+        weight: 1
+      - path: Spine_Center/L_LittleFin_1/L_LittleFin_2
+        weight: 1
+      - path: Spine_Center/R_LittleFin_1
+        weight: 1
+      - path: Spine_Center/R_LittleFin_1/R_LittleFin_2
+        weight: 1
+      - path: Spine_Center/Spine_Back_1
+        weight: 1
+      - path: Spine_Center/Spine_Back_1/Spine_Back2
+        weight: 1
+      - path: Spine_Center/Spine_Back_1/Spine_Back2/L_Fin_Back
+        weight: 1
+      - path: Spine_Center/Spine_Back_1/Spine_Back2/R_Fin_Back
+        weight: 1
+      - path: Spine_Center/Spine_Front1
+        weight: 1
+      - path: Spine_Center/Spine_Front1/Spine_Front2
+        weight: 1
+      - path: Spine_Center/Spine_Front1/Spine_Front2/L_Fin_Front_1
+        weight: 1
+      - path: Spine_Center/Spine_Front1/Spine_Front2/L_Fin_Front_1/L_Fin_Front_2
+        weight: 1
+      - path: Spine_Center/Spine_Front1/Spine_Front2/L_Fin_Front_1/L_Fin_Front_2/L_Fin_Front_3
+        weight: 1
+      - path: Spine_Center/Spine_Front1/Spine_Front2/R_Fin_Front_1
+        weight: 1
+      - path: Spine_Center/Spine_Front1/Spine_Front2/R_Fin_Front_1/R_Fin_Front_2
+        weight: 1
+      - path: Spine_Center/Spine_Front1/Spine_Front2/R_Fin_Front_1/R_Fin_Front_2/R_Fin_Front_3
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
