@@ -47,11 +47,8 @@ public class LevelGeneration : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+
+        StartCoroutine(GenerationCoroutine());
 		
 	}
 
@@ -88,5 +85,16 @@ public class LevelGeneration : MonoBehaviour {
         if (ind != previousChunkIndex)
             return false;
         else return true;
+    }
+
+    private IEnumerator GenerationCoroutine()
+    {
+        for(int i = 0; i < runLength+1; i++)
+        {
+            Generate();
+            yield return new WaitForEndOfFrame();
+        }
+
+        yield return null;
     }
 }
