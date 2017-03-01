@@ -73,12 +73,11 @@ public class LevelGeneration : MonoBehaviour {
     }
 
     #region Spline
-
     BezierSpline spline;
     void DoSpline(BezierSpline chunkSpline) {
 
         if (!spline) {
-            spline = gameObject.AddComponent<BezierSpline>();
+            spline = GetComponent<BezierSpline>();
             spline.ResetNull();
         }
         spline.Concatenate(chunkSpline);
