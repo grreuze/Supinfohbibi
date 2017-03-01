@@ -14,7 +14,7 @@ public class FishJumping : MonoBehaviour {
         _fishMoving = GetComponentInParent<FishMoving>();
     }
 
-    public void CallJump() {
-        _rigid.AddRelativeForce(new Vector3(0 , _fishMoving.GetMovementSpeed() * _multiplyBonusForJump , 0));
+    public void CallJump(float jumpStrength) {
+        _rigid.AddRelativeForce(new Vector3(0 , _fishMoving.GetMovementSpeed() * jumpStrength , 0));
     }
 }
