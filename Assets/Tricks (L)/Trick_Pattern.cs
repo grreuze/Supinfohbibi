@@ -23,36 +23,48 @@ public class Trick_Pattern : MonoBehaviour
 	Canvas canvas;
 
 
+	bool test = false;
+
 	//Fonction à délcencher quand la phase de tricks commence
 	public void StartOfTrick ()
 	{
-		//Afficher le background
-		this.GetComponent<RawImage> ().enabled = true;
-		//faire Spawn les 2 premiers boutons
-		SpawnButton ();
-		Invoke ("SpawnButton", 0.5f);
+		if (test == false) {
+			
+		
+			test = true;
+			//Afficher le background
+			this.GetComponent<RawImage> ().enabled = true;
+			//faire Spawn les 2 premiers boutons
+			SpawnButton ();
+			Invoke ("SpawnButton", 0.5f);
+		}
 	}
 
 	//Fonction à appeler quand la phase de tricks se termine
 	public void EndOfTrick ()
 	{
-		//On remet différents paramètres à 0, on calcule et on affiche les points
-		buttonCount = 0;
+		if (test == true) {
+			
+		
+			test = false;
+			//On remet différents paramètres à 0, on calcule et on affiche les points
+			buttonCount = 0;
 
-		Points.GetComponent<Points> ().Calcul ();
-		Points.GetComponent<Points> ().ActualiseDisplay ();
+			Points.GetComponent<Points> ().Calcul ();
+			Points.GetComponent<Points> ().ActualiseDisplay ();
 
-		this.GetComponent<RawImage> ().enabled = false;
+			this.GetComponent<RawImage> ().enabled = false;
 
 
-		Swipe_Selector.GetComponent<Swipe_Selector> ().count = 0;
-        //Et on delete tout les trick Buttons restants
+			Swipe_Selector.GetComponent<Swipe_Selector> ().count = 0;
+			//Et on delete tout les trick Buttons restants
 
-        CancelInvoke();
+			CancelInvoke ();
 
-		Buttons = GameObject.FindGameObjectsWithTag ("TrickButton");
-		foreach (GameObject But in Buttons) {
-			Destroy (But);
+			Buttons = GameObject.FindGameObjectsWithTag ("TrickButton");
+			foreach (GameObject But in Buttons) {
+				Destroy (But);
+			}
 		}
 	}
 
