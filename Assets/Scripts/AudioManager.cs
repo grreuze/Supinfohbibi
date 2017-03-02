@@ -10,7 +10,6 @@ public class AudioManager : MonoBehaviour {
 
     //ATTENTION ces deux arrays doivent avoir la même longueur!!!!! (et dans l'ordre aussi)
     public AudioClip[] AllSounds;
-    public string[] AllKeywords;
 
     //Singleton
     void Awake()
@@ -27,21 +26,13 @@ public class AudioManager : MonoBehaviour {
     }
 
 	// Use this for initialization
-	void Start () {
-
-        if(AllSounds.Length == AllKeywords.Length)
-        {
+	void Start ()
+    {    
             //intégration des 2 listes dans le dictionnaire
             for (int i = 0; i < AllSounds.Length; i++)
             {
-                AllClips.Add(AllKeywords[i], AllSounds[i]);
-            }
-        }
-        else
-        {
-            Debug.Log("The AudioManager initial arrays don't match!!!");
-        }
-        
+                AllClips.Add(AllSounds[i].name, AllSounds[i]);               
+            }           
 	}
 
     //méthode à lancer depuis le GameObject émetteur de son. Doit être équipé d'un AudioSource!
