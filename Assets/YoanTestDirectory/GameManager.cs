@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
@@ -28,7 +26,12 @@ public class GameManager : MonoBehaviour {
 
     private void Start()
     {
-        for(int i = 0;i < _nbOpponent; i++) {
+        SpawnFishes();
+    }
+
+    public void SpawnFishes() {
+
+        for (int i = 0; i < _nbOpponent; i++) {
             GameObject go = Instantiate(_opponent);
             go.transform.position = _fish.transform.position;
             go.GetComponentInParent<Opponent>().SetSpeed(_minMoveSpeed + ((_maxOpponentSpeed - _minMoveSpeed) / _nbOpponent) * i);
