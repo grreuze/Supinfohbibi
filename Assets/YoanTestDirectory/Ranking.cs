@@ -39,7 +39,6 @@ public class Ranking : MonoBehaviour {
         {
             UpdateRank();
         }
-        Debug.Log(GetRank());
 	}
 
     private void UpdateRank() {
