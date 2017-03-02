@@ -12,19 +12,24 @@ public class Points : MonoBehaviour
 	//Valeur du premier trick button (si le joueur n'en touche qu'un par exemple)
 	public int baseValue = 10;
 
-    Swipe_Selector selector;
+	Swipe_Selector selector;
 
-	void Start() {
+	void Start ()
+	{
 		ActualiseDisplay ();
-        selector = Swipe_Position.GetComponent<Swipe_Selector>();
-    }
+		selector = Swipe_Position.GetComponent<Swipe_Selector> ();
+	}
 
 
 	//Calcul des points à ajouter
-	public void Calcul () {
+	public void Calcul ()
+	{
 		int count = selector.count;
 		//Formule de calcul des points en fonction de la valeur de base
-		points += (int)(baseValue * Mathf.Pow (1.50f, count));
+		if (count > 0) {
+			points += (int)(baseValue * Mathf.Pow (1.50f, count));
+		}
+
 	}
 
 	//Plutot explicite; pour juste l'appeler au bon moment
