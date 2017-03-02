@@ -26,16 +26,6 @@ public class GameManager : MonoBehaviour {
     public GameObject _opponent;
     public Canvas _endCanvas;
 
-    private void Start()
-    {
-<<<<<<< Updated upstream
-        //SpawnFishes();
-=======
-        SpawnFishes();
-        StartRun();
->>>>>>> Stashed changes
-    }
-
     public void SpawnFishes() {
         Instantiate(_fish, transform.position, transform.rotation);
         for (int i = 0; i < _nbOpponent; i++) {
@@ -44,6 +34,7 @@ public class GameManager : MonoBehaviour {
             go.GetComponentInParent<Opponent>().SetSpeed(_minMoveSpeed + ((_maxOpponentSpeed - _minMoveSpeed) / _nbOpponent) * i);
         }
         isPlaying = true;
+        StartRun();
     }
 
     public void EndRun()
