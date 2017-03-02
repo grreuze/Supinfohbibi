@@ -23,7 +23,7 @@ public class Swipe_Object : MonoBehaviour
 		//Si le joueur touche et slide OU reste appuyé sur le clic gauche et déplace la souris
 		if (((Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Moved)
 		    || Input.GetMouseButton (0))) {
-
+            
 			//Il a donc touché au moins une fois
 			touchedOnce = true;
 			//Debug.Log (Input.mousePosition);

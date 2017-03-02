@@ -44,6 +44,8 @@ public class FishController : MonoBehaviour {
         trickSystem = FindObjectOfType<Trick_Pattern>();
         renderer = GetComponent<Renderer>();
         targetRotation = transform.rotation;
+
+        Camera.main.GetComponent<CameraScript>().follower = transform.FindChild("Follow");
     }
 
     float deltaTime;

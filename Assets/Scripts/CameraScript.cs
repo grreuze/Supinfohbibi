@@ -39,14 +39,14 @@ public class CameraScript : MonoBehaviour {
     //méthode pour que la caméra suive le follower
     void LateUpdate()
     {
+        if (!follower) return;
         transform.position = Vector3.Slerp(transform.position, follower.position + cameraOffset, speed*Time.deltaTime);
         transform.rotation = Quaternion.Slerp(transform.rotation, follower.rotation, speed*Time.deltaTime);
     }
 
     private void Update()
     {
-        backwards = PlayerRigigBody.position - Vector3.up;
-        
+        //backwards = PlayerRigigBody.position - Vector3.up;
 
         if (Input.GetKeyDown(KeyCode.A))
         {
