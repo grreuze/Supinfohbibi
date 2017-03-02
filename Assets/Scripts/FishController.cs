@@ -8,6 +8,7 @@ public class FishController : MonoBehaviour {
     public MinMax speed = new MinMax(10, 30);
     public float accelerationFactor = 1, decelerationFactor = 1;
     public Material defaultMaterial, acceleratingMaterial;
+    public float stabilisationSpeed = 2;
 
     [Header("In the Air")]
     public float gravity;
@@ -83,11 +84,19 @@ public class FishController : MonoBehaviour {
                 Turn(angle);
                 lastTrigger = trigger;
             }
-
+        }
+        
+        if (!Physics.Raycast(transform.position + transform.right + transform.forward, Vector3.down, out hit)) {
+            print("hole on the right");
+            horizontalVelocity = -stabilisationSpeed *deltaTime;
+        }
+        if (!Physics.Raycast(transform.position - transform.right + transform.forward, Vector3.down, out hit)) {
+            print("hole on the left");
+            horizontalVelocity = stabilisationSpeed * deltaTime;
         }
 
         JumpAndGravity();
-        DoHorizontalVelocity();
+        //DoHorizontalVelocity();
 
         //DoOrientation();
 
@@ -112,18 +121,22 @@ public class FishController : MonoBehaviour {
 
     void DoHorizontalVelocity() {
         if (controller.isGrounded) {
-            bool floorOnTheRight = Physics.Linecast(transform.position, transform.position + transform.right - transform.up);
-            bool floorOnTheLeft = Physics.Linecast(transform.position, transform.position - transform.right - transform.up);
+
+            Debug.DrawLine(transform.position, transform.position + transform.right - transform.up*2, Color.red);
+            Debug.DrawLine(transform.position, transform.position - transform.right - transform.up*2, Color.red);
+
+            bool floorOnTheRight = Physics.Linecast(transform.position, transform.position + transform.right - transform.up*2);
+            bool floorOnTheLeft = Physics.Linecast(transform.position, transform.position - transform.right - transform.up*2);
 
             if (floorOnTheLeft && floorOnTheRight) {
                 horizontalVelocity = 0;
 
             } else {
                 if (!floorOnTheRight)
-                    horizontalVelocity = 2 * deltaTime;
+                    horizontalVelocity = -2 * deltaTime;
 
                 if (!floorOnTheLeft)
-                    horizontalVelocity = -2 * deltaTime;
+                    horizontalVelocity = 2 * deltaTime;
             }
         }
     }

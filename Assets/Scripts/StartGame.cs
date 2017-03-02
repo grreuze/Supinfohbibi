@@ -6,9 +6,13 @@ public class StartGame : MonoBehaviour {
 
     GameManager gm;
 
+    [SerializeField]
+    Canvas titleScreen, HUD;
+
 	// Use this for initialization
 	void Start () {
         gm = GameManager.instance;
+        HUD.enabled = false;
 	}
 	
 	void Update () {
@@ -18,6 +22,8 @@ public class StartGame : MonoBehaviour {
 
             print("touched");
             gm.SpawnFishes();
+            titleScreen.enabled = false;
+            HUD.enabled = true;
             Destroy(this);
 
         }
