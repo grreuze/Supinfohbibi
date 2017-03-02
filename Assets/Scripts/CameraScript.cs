@@ -20,6 +20,7 @@ public class CameraScript : MonoBehaviour {
     public float speed = 20;
 
     public Transform follower;
+    private FollowerScript followScript;
     public Rigidbody PlayerRigigBody;
 
     private Vector3 velocity;
@@ -33,7 +34,7 @@ public class CameraScript : MonoBehaviour {
     private void Start()
     {
         originalPos = transform.position;
-        orignialRot = transform.eulerAngles;    
+        orignialRot = transform.eulerAngles;
     }
 
     //méthode pour que la caméra suive le follower
@@ -47,25 +48,32 @@ public class CameraScript : MonoBehaviour {
     private void Update()
     {
         //backwards = PlayerRigigBody.position - Vector3.up;
-
-        if (Input.GetKeyDown(KeyCode.A))
+        if (!followScript)
         {
-            CameraAccelerateDescent();
+            if(follower)    
+                followScript = follower.GetComponent<FollowerScript>();
         }
-
-        if (Input.GetKeyDown(KeyCode.Z))
+        else
         {
-            CameraIdle();
-        }
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                CameraAccelerateDescent();
+            }
 
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            CameraClimb();
-        }
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                CameraIdle();
+            }
 
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            CameraAirTime();
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                CameraClimb();
+            }
+
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                CameraAirTime();
+            }
         }
     }   
 
@@ -74,9 +82,9 @@ public class CameraScript : MonoBehaviour {
         if (CState != CamState.AcceleratingDescent)
         {
             CState = CamState.AcceleratingDescent;
-            cameraOffset.y += 0.8f;
+            followScript.ChangeValue(0.8f);
             //transform.DORotate(new Vector3(12, 0, 0), 0.7f, RotateMode.LocalAxisAdd);
-            follower.DORotate(new Vector3(12, 0, 0), 0.7f, RotateMode.LocalAxisAdd);
+            //follower.DORotate(new Vector3(12, 0, 0), 0.7f, RotateMode.LocalAxisAdd);
         }
     }
 
@@ -85,8 +93,8 @@ public class CameraScript : MonoBehaviour {
         if(CState != CamState.Idle)
         {
             CState = CamState.Idle;
-            cameraOffset = Vector3.zero;
-            follower.DORotate(orignialRot, 0.7f);
+            followScript.ChangeValue(0f);
+            //follower.DORotate(orignialRot, 0.7f);
         }
     }
 
@@ -95,8 +103,8 @@ public class CameraScript : MonoBehaviour {
         if(CState != CamState.Climbing)
         {
             CState = CamState.Climbing;
-            cameraOffset.y -= 0.2f;
-            follower.DORotate(new Vector3(-8, 0, 0), 0.7f, RotateMode.LocalAxisAdd);
+            followScript.ChangeValue(-0.2f);
+            //follower.DORotate(new Vector3(-8, 0, 0), 0.7f, RotateMode.LocalAxisAdd);
         }
     }
 
@@ -105,8 +113,8 @@ public class CameraScript : MonoBehaviour {
         if(CState != CamState.Airtime)
         {
             CState = CamState.Airtime;
-            cameraOffset.y += 0.4f;
-            follower.DORotate(new Vector3(10, 0, 0), 0.5f, RotateMode.LocalAxisAdd);
+            followScript.ChangeValue(0.4f);
+            //follower.DORotate(new Vector3(10, 0, 0), 0.5f, RotateMode.LocalAxisAdd);
         }
     }
 }

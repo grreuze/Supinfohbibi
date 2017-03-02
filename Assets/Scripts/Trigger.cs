@@ -30,7 +30,7 @@ public class Trigger : MonoBehaviour {
     }
 
     void Turn(float angle, Collider other) {
-        FishController ctrl = other.GetComponentInParent<FishController>();
+        Fish ctrl = other.GetComponentInParent<Fish>();
         if (ctrl) {
             if (ctrl.lastTrigger == this)
                 return;
@@ -39,26 +39,18 @@ public class Trigger : MonoBehaviour {
             rot.y += angle;
 
             Quaternion newRot = Quaternion.Euler(rot);
-            print(ctrl.transform.rotation.eulerAngles + " -> " + newRot.eulerAngles);
             ctrl.Turn(newRot);
-
             ctrl.lastTrigger = this;
         }
     }
 
     void Jump(Collider other) {
-        FishJumping tmp = other.GetComponentInParent<FishJumping>();
-        FishController ctrl = other.GetComponentInParent<FishController>();
-        Opponent op = other.GetComponentInParent<Opponent>();
-        if (tmp)
-            tmp.CallJump(jumpStrength);
-        if (op)
-            op.CallJump(jumpStrength);
-        if (ctrl) {
-            if (ctrl.lastTrigger == this)
+        Fish fish = other.GetComponentInParent<Fish>();
+        if (fish) {
+            if (fish.lastTrigger == this)
                 return;
-            ctrl.CallJump(jumpStrength);
-            ctrl.lastTrigger = this;
+            fish.CallJump(jumpStrength);
+            fish.lastTrigger = this;
         }
     }
 }

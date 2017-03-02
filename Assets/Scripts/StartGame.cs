@@ -16,8 +16,6 @@ public class StartGame : MonoBehaviour {
 	}
 
     public void Go() {
-
-        print("touched");
         gm.SpawnFishes();
         titleScreen.enabled = false;
         HUD.enabled = true;

@@ -119,7 +119,6 @@ public class Fish : MonoBehaviour {
     public void CallJump(float jumpStrength) {
         jumping = true;
         this.jumpStrength = jumpStrength;
-        //_rigid.AddRelativeForce(new Vector3(0, _movementSpeed * jumpStrength, 0));
     }
 
     bool hasAlreadyDoneTricks;
@@ -129,11 +128,8 @@ public class Fish : MonoBehaviour {
         if (jumping) {
             verticalVelocity = jumpStrength * movementSpeed * deltaTime;
             startJumpY = transform.position.y;
-            //print("jump -> " + verticalVelocity + "(" + jumpStrength + "*" + movementSpeed + "*" + deltaTime + ")");
             jumping = false;
-
-            print("JUMP: " + jumpStrength * movementSpeed * deltaTime);
-
+            
         } else if (controller.isGrounded) {
             verticalVelocity = -gravity * deltaTime;
             hasAlreadyDoneTricks = false;
