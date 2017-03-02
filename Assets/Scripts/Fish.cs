@@ -157,7 +157,6 @@ public class Fish : MonoBehaviour {
         rot.y += angle;
 
         Quaternion newRot = Quaternion.Euler(rot);
-        print(transform.rotation.eulerAngles + " -> " + newRot.eulerAngles);
 
         turning = true;
         targetRotation = newRot;
