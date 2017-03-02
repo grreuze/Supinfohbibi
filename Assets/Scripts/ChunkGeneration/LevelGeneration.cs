@@ -43,9 +43,7 @@ public class LevelGeneration : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-
         StartCoroutine(GenerationCoroutine());
-
     }
 
     public void Generate() {

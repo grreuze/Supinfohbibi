@@ -3,15 +3,21 @@
 public class GameManager : MonoBehaviour {
 
     public static GameManager instance;
+    [SerializeField]
+    bool playAuto;
 
     private void Awake() {
         if (instance != null && instance != this) {
             Destroy(this.gameObject);
-            Debug.Log("instance deleted");
-            return;
+        } else {
+            instance = this;
+            DontDestroyOnLoad(this.gameObject);
         }
-        instance = this;
-        DontDestroyOnLoad(this.gameObject);
+    }
+
+    void Start() {
+        if (playAuto)
+            SpawnFishes();
     }
 
     public static GameManager GetInstance() {
@@ -31,7 +37,13 @@ public class GameManager : MonoBehaviour {
     public void SpawnFishes() {
         Instantiate(_fish, transform.position, transform.rotation);
         for (int i = 0; i < _nbOpponent; i++) {
-            GameObject go = Instantiate(aiFish, transform.position, transform.rotation);
+            Vector3 spawnPosition = transform.position;
+            spawnPosition.x += Random.Range(-2, 2);
+            spawnPosition.z += Random.Range(-2, 2);
+
+            GameObject go = Instantiate(aiFish, spawnPosition, transform.rotation);
+            go.GetComponentInParent<AIFish>().movementSpeed = Random.Range(_minMoveSpeed, _maxMoveSpeed);
+
             //go.GetComponentInParent<AIFish>().SetSpeed(_minMoveSpeed + ((_maxOpponentSpeed - _minMoveSpeed) / _nbOpponent) * i);
         }
         isPlaying = true;

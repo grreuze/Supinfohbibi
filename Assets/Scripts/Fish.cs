@@ -114,14 +114,16 @@ public class Fish : MonoBehaviour {
 
     bool jumping;
     float jumpStrength;
-    float startJumpY;
+    [HideInInspector]
+    public float startJumpY;
 
     public void CallJump(float jumpStrength) {
-        jumping = true;
-        this.jumpStrength = jumpStrength;
+        if (controller.isGrounded) {
+            jumping = true;
+            this.jumpStrength = jumpStrength;
+        }
     }
 
-    bool hasAlreadyDoneTricks;
     void JumpAndGravity() {
         reachedMaxSpeed = verticalVelocity <= -maxFallingSpeed ? reachedMaxSpeed + deltaTime : 0;
 
@@ -132,20 +134,18 @@ public class Fish : MonoBehaviour {
             
         } else if (controller.isGrounded) {
             verticalVelocity = -gravity * deltaTime;
-            hasAlreadyDoneTricks = false;
-            if (trickSystem.isPlaying) {
-                trickSystem.EndOfTrick();
-            }
+            EndTrick();
 
         } else if (reachedMaxSpeed == 0) {
             verticalVelocity -= gravity * deltaTime;
-
-            if (transform.position.y - startJumpY > heightLimitForTricks && !trickSystem.isPlaying && !hasAlreadyDoneTricks) {
-                trickSystem.StartOfTrick();
-                hasAlreadyDoneTricks = true;
-            }
+            StartTrick();
         }
     }
+    
+    public virtual void StartTrick() { }
+
+    public virtual void EndTrick() { }
+
     #endregion
 
     #region Turning

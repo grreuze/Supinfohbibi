@@ -26,8 +26,7 @@ public class ChunkScript : MonoBehaviour {
     }
 
     //calibration du LevelGeneration (mise à jour des variables)
-    public void Calibrate()
-    {
+    public void Calibrate() {
         LevelGeneration.ins.CurrentEndPoint = EndPoint;
         LevelGeneration.ins.currentLength = chunkLength;
     }

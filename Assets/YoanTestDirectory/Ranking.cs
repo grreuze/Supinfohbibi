@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class Ranking : MonoBehaviour {
 
@@ -9,10 +10,12 @@ public class Ranking : MonoBehaviour {
     private float _nextRankSpeed;
     private float _previousRankSpeed;
     private int _rank;
+    Text display;
 
     private void Awake()
     {
         fish = GetComponent<FishController>();
+        display = GameObject.Find("Rank").GetComponent<Text>();
     }
 
     private void Start()
@@ -60,7 +63,7 @@ public class Ranking : MonoBehaviour {
                 }
             }
         }
-
+        display.text = _rank.ToString(); ;
     }
 
     private void InitiateRank()

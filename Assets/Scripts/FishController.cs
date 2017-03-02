@@ -30,5 +30,18 @@ public class FishController : Fish {
         }
         renderer.material = accelerating ? acceleratingMaterial : defaultMaterial;
     }
-    
+
+    bool hasAlreadyDoneTricks;
+    public override void StartTrick() {
+        if (transform.position.y - startJumpY > heightLimitForTricks && !trickSystem.isPlaying && !hasAlreadyDoneTricks) {
+            trickSystem.StartOfTrick();
+            hasAlreadyDoneTricks = true;
+        }
+    }
+
+    public override void EndTrick() {
+        if (trickSystem.isPlaying)
+            trickSystem.EndOfTrick();
+        hasAlreadyDoneTricks = false;
+    }
 }
