@@ -49,7 +49,7 @@ public class FishController : MonoBehaviour {
     float deltaTime;
     void Update() {
         deltaTime = Time.deltaTime;
-
+        
         descending = transform.position.y < lastY;
         lastY = transform.position.y;
 
@@ -149,6 +149,8 @@ public class FishController : MonoBehaviour {
             //print("jump -> " + verticalVelocity + "(" + jumpStrength + "*" + movementSpeed + "*" + deltaTime + ")");
             jumping = false;
 
+            print("JUMP: " + jumpStrength * movementSpeed * deltaTime);
+
         } else if (controller.isGrounded) {
             verticalVelocity = -gravity * deltaTime;
             if (isInTrick) {
@@ -156,7 +158,6 @@ public class FishController : MonoBehaviour {
                 isInTrick = false;
                 print("tricks canceled by landing");
             }
-
 
         } else if (reachedMaxSpeed == 0) {
             verticalVelocity -= gravity * deltaTime;
