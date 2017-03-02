@@ -66,16 +66,16 @@ public class Trick_Pattern : MonoBehaviour
 		} while(previousQuarterIndexer == previousPreviousQuarterIndexer);
 
 		//Lancer une phase de tricks
-		StartOfTrick ();
+		//StartOfTrick();
 	}
 
-	void Update ()
+	/*void Update ()
 	{
 		//Full Débug (lancer une phase avec "a")
 		if (Input.GetKeyDown ("a")) {
 			StartOfTrick ();
 		}
-	}
+	}*/
 
 	//Calcul du spawn des Trick Buttons
 	void Spawn ()

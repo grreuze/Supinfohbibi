@@ -22,11 +22,14 @@ public class FishController : MonoBehaviour {
 
     public Trigger lastTrigger;
 
+    Trick_Pattern trickSystem;
+
     #region Monobehaviour
 
     void Awake() {
         _rigid = GetComponent<Rigidbody>();
         controller = GetComponent<CharacterController>();
+        trickSystem = FindObjectOfType<Trick_Pattern>();
         targetRotation = transform.rotation;
     }
 
@@ -83,6 +86,13 @@ public class FishController : MonoBehaviour {
     bool jumping;
     float jumpStrength;
     float startJumpY;
+    bool isInTrick;
+
+    public void CallJump(float jumpStrength) {
+        jumping = true;
+        this.jumpStrength = jumpStrength;
+        //_rigid.AddRelativeForce(new Vector3(0, _movementSpeed * jumpStrength, 0));
+    }
 
     void JumpAndGravity() {
         if (jumping) {
@@ -93,11 +103,19 @@ public class FishController : MonoBehaviour {
 
         } else if (controller.isGrounded) {
             verticalVelocity = -gravity * deltaTime;
+            if (isInTrick) {
+                trickSystem.EndOfTrick();
+                isInTrick = false;
+                print("tricks canceled by landing");
+            }
+
 
         } else if (reachedMaxSpeed == 0) {
             verticalVelocity -= gravity * deltaTime;
 
-            if (transform.position.y - startJumpY > heightLimitForTricks) {
+            if (transform.position.y - startJumpY > heightLimitForTricks && !isInTrick) {
+                trickSystem.StartOfTrick();
+                isInTrick = true;
                 print("tricks");
             }
 
@@ -126,11 +144,6 @@ public class FishController : MonoBehaviour {
         targetRotation = targetRot;
     }
 
-    public void CallJump(float jumpStrength) {
-        jumping = true;
-        this.jumpStrength = jumpStrength;
-        //_rigid.AddRelativeForce(new Vector3(0, _movementSpeed * jumpStrength, 0));
-    }
 
 
     // Test for automatic turns, fix later

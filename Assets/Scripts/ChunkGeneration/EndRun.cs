@@ -16,11 +16,6 @@ public class EndRun : MonoBehaviour {
     float newAverageSkillLevel;
     
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-
     //méthode qui va calculer la difficulté de la run
     public void OnRunStart()
     {
