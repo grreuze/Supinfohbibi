@@ -23,7 +23,7 @@ public class Swipe_Selector : MonoBehaviour
 	{
 		rect.SetAsLastSibling ();
 		//calcul de coordonnées
-		transform.position = Camera.main.WorldToScreenPoint (SwipeObject.transform.position);
+		transform.position = SwipeObject.GetComponent<Swipe_Object> ().swipeCoord;
 	}
 
 	void OnTriggerEnter2D (Collider2D other)
