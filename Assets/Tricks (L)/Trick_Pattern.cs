@@ -8,7 +8,7 @@ public class Trick_Pattern : MonoBehaviour
 	public GameObject Points;
 	public GameObject Swipe_Selector;
 
-	public RectTransform[] Quarters;
+	public RectTransform[] quarters;
 
 	public GameObject TrickButton_Prefab;
 
@@ -19,21 +19,18 @@ public class Trick_Pattern : MonoBehaviour
 	private int previousPreviousQuarterIndexer;
 	private GameObject[] Buttons;
 	private Vector3 spawn;
-
+    
 	Canvas canvas;
-
-
-	bool test = false;
+	public bool isPlaying = false;
 
 	//Fonction à délcencher quand la phase de tricks commence
 	public void StartOfTrick ()
 	{
-		if (test == false) {
+		if (isPlaying == false) {
 			
-		
-			test = true;
+			isPlaying = true;
 			//Afficher le background
-			this.GetComponent<RawImage> ().enabled = true;
+			GetComponent<RawImage>().enabled = true;
 			//faire Spawn les 2 premiers boutons
 			SpawnButton ();
 			Invoke ("SpawnButton", 0.5f);
@@ -43,10 +40,10 @@ public class Trick_Pattern : MonoBehaviour
 	//Fonction à appeler quand la phase de tricks se termine
 	public void EndOfTrick ()
 	{
-		if (test == true) {
+		if (isPlaying == true) {
 			
 		
-			test = false;
+			isPlaying = false;
 			//On remet différents paramètres à 0, on calcule et on affiche les points
 			buttonCount = 0;
 
@@ -67,57 +64,55 @@ public class Trick_Pattern : MonoBehaviour
 			}
 		}
 	}
-
-
-
+    
 	void Start ()
 	{
 		//Choper le canvas (rescale) + Générer 2 chiffres bullshit pour les previous quarters
-		canvas = FindObjectOfType<Canvas> ();
-		previousPreviousQuarterIndexer = Random.Range (0, Quarters.Length);
+		canvas = GetComponentInParent<Canvas> ();
+		previousPreviousQuarterIndexer = Random.Range (0, quarters.Length);
 
 		do {
-			previousQuarterIndexer = Random.Range (0, Quarters.Length);
+			previousQuarterIndexer = Random.Range (0, quarters.Length);
 		} while(previousQuarterIndexer == previousPreviousQuarterIndexer);
 
 		//Lancer une phase de tricks
 		//StartOfTrick();
 	}
-
-	/*void Update ()
-	{
-		//Full Débug (lancer une phase avec "a")
-		if (Input.GetKeyDown ("a")) {
-			StartOfTrick ();
-		}
-	}*/
-
+    
 	//Calcul du spawn des Trick Buttons
 	void Spawn ()
 	{
 		//On choisit dans quel quarters le button va spawn (!= des précédants) 
 		do {
-			quarterIndexer = Random.Range (0, Quarters.Length);
+			quarterIndexer = Random.Range (0, quarters.Length);
 		} while ((quarterIndexer == previousQuarterIndexer) || (quarterIndexer == previousPreviousQuarterIndexer));
         
 		previousPreviousQuarterIndexer = previousQuarterIndexer;
 		previousQuarterIndexer = quarterIndexer;
 
 		//Random des coord du spawn des buttons
-		float rectWidth = Quarters [quarterIndexer].rect.width * canvas.scaleFactor / 2;
-		float rectHeight = Quarters [quarterIndexer].rect.height * canvas.scaleFactor / 2;
 
-		int spawnX = (int)Random.Range (
-			             Quarters [quarterIndexer].transform.position.x - rectWidth + (TrickButton_Prefab.GetComponent<RectTransform> ().rect.width / 4), 
-			             Quarters [quarterIndexer].transform.position.x + rectWidth - (TrickButton_Prefab.GetComponent<RectTransform> ().rect.width / 4));
+        Rect myQuarter = quarters[quarterIndexer].rect;
 
-		int spawnY = (int)Random.Range (
-			             Quarters [quarterIndexer].transform.position.y - rectHeight + (TrickButton_Prefab.GetComponent<RectTransform> ().rect.height / 4), 
-			             Quarters [quarterIndexer].transform.position.y + rectHeight - (TrickButton_Prefab.GetComponent<RectTransform> ().rect.height / 4));
+		float rectWidth  = (myQuarter.width  * canvas.scaleFactor) /2;
+		float rectHeight = (myQuarter.height * canvas.scaleFactor) /2;
+
+        Rect button = TrickButton_Prefab.GetComponent<RectTransform>().rect;
+
+        float btnWidth = (button.width * canvas.scaleFactor) / 2;
+        float btnHeight = (button.height * canvas.scaleFactor) / 2;
         
-		//Vecteur créé
-		spawn = new Vector3 (spawnX, spawnY, 0);
-	}
+        Vector3 quarterPosition = quarters[quarterIndexer].transform.position;
+
+        int spawnX = (int)Random.Range(quarterPosition.x - rectWidth + btnWidth,
+                                       quarterPosition.x + rectWidth - btnWidth);
+
+        int spawnY = (int)Random.Range(quarterPosition.y - rectHeight + btnHeight,
+                                       quarterPosition.y + rectHeight - btnHeight);
+
+        //Vecteur créé
+        spawn = new Vector3 (spawnX, spawnY, 0);
+    }
 
 	//Ici on fait vraiment spawn les buttons
 	public void SpawnButton ()
@@ -129,7 +124,6 @@ public class Trick_Pattern : MonoBehaviour
 		//Et on instancie
 		GameObject TrickButton_Instance;
 		TrickButton_Instance = Instantiate (TrickButton_Prefab, spawn, Quaternion.identity, this.gameObject.transform)as GameObject;
-		
 	}
 }
 

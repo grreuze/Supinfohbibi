@@ -1,21 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-[RequireComponent(typeof(FishMoving))]
 public class Ranking : MonoBehaviour {
 
     private float _totalTime;
     private float _middleSpeed;
-    private FishMoving _fishMove;
-    private Opponent[] _opponentList;
+    private FishController fish;
+    private AIFish[] _opponentList;
     private float _nextRankSpeed;
     private float _previousRankSpeed;
     private int _rank;
 
     private void Awake()
     {
-        _fishMove = GetComponentInParent<FishMoving>();
+        fish = GetComponent<FishController>();
     }
 
     private void Start()
@@ -30,7 +27,7 @@ public class Ranking : MonoBehaviour {
     // Update is called once per frame
     void Update () {
         float time = Time.deltaTime;
-        _middleSpeed = ((_middleSpeed * _totalTime) + (_fishMove.GetMovementSpeed() * time)) / (_totalTime + time);
+        _middleSpeed = ((_middleSpeed * _totalTime) + (fish.movementSpeed * time)) / (_totalTime + time);
         _totalTime += time;
         if(_rank == 0){
             InitiateRank();
@@ -47,19 +44,19 @@ public class Ranking : MonoBehaviour {
         _previousRankSpeed = GameManager.GetInstance()._minMoveSpeed;
         for (int i = 0; i < GameManager.GetInstance()._nbOpponent; i++)
         {
-            if (_opponentList[i].GetSpeed() > _middleSpeed)
+            if (_opponentList[i].movementSpeed > _middleSpeed)
             {
-                if (_opponentList[i].GetSpeed() < _nextRankSpeed)
+                if (_opponentList[i].movementSpeed < _nextRankSpeed)
                 {
-                    _nextRankSpeed = _opponentList[i].GetSpeed();
+                    _nextRankSpeed = _opponentList[i].movementSpeed;
                 }
                 _rank++;
             }
             else
             {
-                if (_opponentList[i].GetSpeed() > _previousRankSpeed)
+                if (_opponentList[i].movementSpeed > _previousRankSpeed)
                 {
-                    _previousRankSpeed = _opponentList[i].GetSpeed();
+                    _previousRankSpeed = _opponentList[i].movementSpeed;
                 }
             }
         }
@@ -68,7 +65,7 @@ public class Ranking : MonoBehaviour {
 
     private void InitiateRank()
     {
-        _opponentList = FindObjectsOfType<Opponent>();
+        _opponentList = FindObjectsOfType<AIFish>();
         if (_opponentList.Length != 0)
         {
             UpdateRank();

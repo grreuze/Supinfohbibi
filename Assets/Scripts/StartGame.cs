@@ -14,18 +14,13 @@ public class StartGame : MonoBehaviour {
         gm = GameManager.instance;
         HUD.enabled = false;
 	}
-	
-	void Update () {
-        
-        if (((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
-            || Input.GetMouseButton(0))) {
 
-            print("touched");
-            gm.SpawnFishes();
-            titleScreen.enabled = false;
-            HUD.enabled = true;
-            Destroy(this);
+    public void Go() {
 
-        }
+        print("touched");
+        gm.SpawnFishes();
+        titleScreen.enabled = false;
+        HUD.enabled = true;
+        Destroy(this);
     }
 }
