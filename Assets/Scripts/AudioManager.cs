@@ -59,4 +59,28 @@ public class AudioManager : MonoBehaviour {
             Debug.Log(go.name + " has no AudioSource!!! Please add one.");
         }
     }
+
+    //méthode pour jouer le son des collectible avec changement de pitch en fonction du niveau de combo
+    public void PlayCollectibleSound(int combo, GameObject go)
+    {
+        if(go.GetComponent<AudioSource>() != null)
+        {
+            AudioSource AS = go.GetComponent<AudioSource>();
+            AudioClip AC = null;
+
+            string key = "Collectible_Sound";
+
+            if (AllClips.TryGetValue(key, out AC))
+            {
+                AS.pitch = 1 + (0.2f * combo);
+                AS.clip = AC;
+                AS.loop = false;
+                AS.Play();
+            }
+        }
+        else
+        {
+            Debug.Log(go.name + " has no AudioSource!!! Please add one.");
+        }
+    }
 }
