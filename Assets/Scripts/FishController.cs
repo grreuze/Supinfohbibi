@@ -68,6 +68,22 @@ public class FishController : MonoBehaviour {
         
         renderer.material = accelerating ? acceleratingMaterial : defaultMaterial;
 
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit)) {
+            // There's floor under us
+            print("floor");
+            Trigger trigger = hit.collider.GetComponent<Trigger>();
+            if (trigger) {
+                if (trigger.mode == Trigger.TriggerMode.Jump)
+                    return;
+                print(trigger.mode);
+                float angle = trigger.mode == Trigger.TriggerMode.TurnLeft ? -90 : 90;
+                Turn(angle);
+                lastTrigger = trigger;
+            }
+
+        }
+
         JumpAndGravity();
         DoHorizontalVelocity();
 
