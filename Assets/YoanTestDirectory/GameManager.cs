@@ -24,10 +24,16 @@ public class GameManager : MonoBehaviour {
     public float _maxOpponentSpeed;
     public GameObject _fish;
     public GameObject _opponent;
+    public Canvas _endCanvas;
 
     private void Start()
     {
+<<<<<<< Updated upstream
         //SpawnFishes();
+=======
+        SpawnFishes();
+        StartRun();
+>>>>>>> Stashed changes
     }
 
     public void SpawnFishes() {
@@ -38,5 +44,15 @@ public class GameManager : MonoBehaviour {
             go.GetComponentInParent<Opponent>().SetSpeed(_minMoveSpeed + ((_maxOpponentSpeed - _minMoveSpeed) / _nbOpponent) * i);
         }
         isPlaying = true;
+    }
+
+    public void EndRun()
+    {
+        _endCanvas.enabled = true;
+    }
+
+    public void StartRun()
+    {
+        _endCanvas.enabled = false;
     }
 }
