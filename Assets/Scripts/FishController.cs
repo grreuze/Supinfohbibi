@@ -3,11 +3,27 @@
 [RequireComponent(typeof(CharacterController))]
 public class FishController : MonoBehaviour {
 
-    public float movementSpeed;
+    [Header("Speed")]
+    public float movementSpeed = 12;
+    public MinMax speed = new MinMax(10, 30);
+    public float accelerationFactor = 1, decelerationFactor = 1;
+    public Material defaultMaterial, acceleratingMaterial;
 
+    [Header("In the Air")]
     public float gravity;
     public float maxFallingSpeed;
     public float heightLimitForTricks = 2;
+
+    [Header("Turning")]
+    public bool turning;
+    public float turningSpeed = 2;
+    public Quaternion targetRotation;
+
+    public Trigger lastTrigger;
+
+
+    new Renderer renderer;
+    Trick_Pattern trickSystem;
 
     Rigidbody _rigid;
     CharacterController controller;
@@ -16,13 +32,9 @@ public class FishController : MonoBehaviour {
     float verticalVelocity, horizontalVelocity;
     float reachedMaxSpeed;
 
-    public bool turning;
-    public float turningSpeed = 2;
-    public Quaternion targetRotation;
-
-    public Trigger lastTrigger;
-
-    Trick_Pattern trickSystem;
+    float lastY;
+    bool descending;
+    bool accelerating;
 
     #region Monobehaviour
 
@@ -30,15 +42,32 @@ public class FishController : MonoBehaviour {
         _rigid = GetComponent<Rigidbody>();
         controller = GetComponent<CharacterController>();
         trickSystem = FindObjectOfType<Trick_Pattern>();
+        renderer = GetComponent<Renderer>();
         targetRotation = transform.rotation;
     }
 
     float deltaTime;
     void Update() {
         deltaTime = Time.deltaTime;
+
+        descending = transform.position.y < lastY;
+        lastY = transform.position.y;
+
+        if (descending && Input.GetKey("e") && !controller.isGrounded) {
+
+            if (movementSpeed < speed.max)
+                movementSpeed += accelerationFactor;
+
+            accelerating = true;
+        } else {
+
+            if (movementSpeed > speed.min)
+                movementSpeed -= decelerationFactor;
+            accelerating = false;
+        }
         
-        reachedMaxSpeed = verticalVelocity <= -maxFallingSpeed ? reachedMaxSpeed + deltaTime : 0;
-        
+        renderer.material = accelerating ? acceleratingMaterial : defaultMaterial;
+
         JumpAndGravity();
         DoHorizontalVelocity();
 
@@ -95,6 +124,9 @@ public class FishController : MonoBehaviour {
     }
 
     void JumpAndGravity() {
+
+        reachedMaxSpeed = verticalVelocity <= -maxFallingSpeed ? reachedMaxSpeed + deltaTime : 0;
+
         if (jumping) {
             verticalVelocity = jumpStrength * movementSpeed * deltaTime;
             startJumpY = transform.position.y;

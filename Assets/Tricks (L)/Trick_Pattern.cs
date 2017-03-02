@@ -46,7 +46,10 @@ public class Trick_Pattern : MonoBehaviour
 
 
 		Swipe_Selector.GetComponent<Swipe_Selector> ().count = 0;
-		//Et on delete tout les trick Buttons restants
+        //Et on delete tout les trick Buttons restants
+
+        CancelInvoke();
+
 		Buttons = GameObject.FindGameObjectsWithTag ("TrickButton");
 		foreach (GameObject But in Buttons) {
 			Destroy (But);
