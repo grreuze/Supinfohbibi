@@ -21,7 +21,7 @@ public class StartGame : MonoBehaviour {
             || Input.GetMouseButton(0))) {
 
             print("touched");
-            gm.SpawnFishes();
+            GameManager.instance.SpawnFishes();
             titleScreen.enabled = false;
             HUD.enabled = true;
             Destroy(this);
