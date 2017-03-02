@@ -12,16 +12,16 @@ public class EndRun : MonoBehaviour {
     public float ratioOfCollectiblesFound;
 
     //niveau de skill moyen des parties
-    float oldAverageSkillLevel;
     float newAverageSkillLevel;
     
-
     //méthode qui va calculer la difficulté de la run
     public void OnRunStart()
     {
         LoadData();
 
-        //TODO déterminer une formule pour calculer le score à atteindre, la longueur de la run et le temps à battre
+        //Formules à implémenter et à tester
+        //runLength = Random.Range(20, 30);
+        //timeToBeat = (RunLength*10)+((1-Playerstats.averageSkillLevel) * 12);
     }
 	
 
@@ -76,7 +76,7 @@ public class EndRun : MonoBehaviour {
     //calcule le taux de skill de la game (à lancer juste avant la save)
     private float CalculateSkillForThisGame()
     {
-        float skill = remainingTimeInSeconds * ratioOfCollectiblesFound;
+        float skill = (0.18f * remainingTimeInSeconds) * ratioOfCollectiblesFound;
 
         return skill;
     }

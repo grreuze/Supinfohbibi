@@ -26,8 +26,10 @@ public class CollectibleScript : MonoBehaviour {
                 //collision.gameObject.GetComponent<Truc>().score += scoreToAdd;
                 CollectibleScript.combo++;
                 Invoke("ResetCombo", 0.5f);
+
+                AudioManager.ins.PlayCollectibleSound(combo, gameObject);
             }
-            else
+            else //si le combo est complété
             {
                 //collision.gameObject.GetComponent<Truc>().score += (scoreToAdd + bigComboBonus);
                 ResetCombo();
