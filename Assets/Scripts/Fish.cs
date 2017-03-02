@@ -8,6 +8,7 @@ public class Fish : MonoBehaviour {
     public float movementSpeed = 12;
     public MinMax speed = new MinMax(10, 30);
     public float accelerationFactor = 1, decelerationFactor = 1;
+    public float distanceToFloorToAccelerate = 1.2f;
     public Material defaultMaterial, acceleratingMaterial;
     public float stabilisationCheckDistance = 2;
     public float stabilisationSpeed = 2;

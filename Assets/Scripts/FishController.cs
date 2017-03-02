@@ -16,7 +16,7 @@ public class FishController : Fish {
         lastY = transform.position.y;
         
         if (descending && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
-            || Input.GetMouseButton(0)) && !trickSystem.isPlaying && distanceToFloor > 1.2f) {
+            || Input.GetMouseButton(0)) && !trickSystem.isPlaying && distanceToFloor > distanceToFloorToAccelerate) {
 
             if (movementSpeed < speed.max)
                 movementSpeed += accelerationFactor;

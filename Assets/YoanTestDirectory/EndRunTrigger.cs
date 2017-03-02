@@ -3,15 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EndRunTrigger : MonoBehaviour {
-
-	// Use this for initialization
-
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
+    
     private void OnTriggerEnter(Collider other)
     {
         FishController fish = other.GetComponent<FishController>();
@@ -20,6 +12,7 @@ public class EndRunTrigger : MonoBehaviour {
         if (fish)
         {
             fish.movementSpeed = 0;
+            fish.StopMovement();
             tmp = fish.GetComponent<Rigidbody>();
             tmp.useGravity = false;
             tmp.velocity = Vector3.zero;
