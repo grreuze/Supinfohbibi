@@ -27,4 +27,9 @@ public class Opponent : MonoBehaviour {
     {
         _speed = speed;
     }
+
+    public float GetSpeed()
+    {
+        return _speed;
+    }
 }
