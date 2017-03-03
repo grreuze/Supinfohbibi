@@ -6,11 +6,14 @@ public class FishAnimator : MonoBehaviour {
 
     private Animator anim;
     private bool faceCam;
+    private int lastTrickValue;
+
 
 	// Use this for initialization
 	void Start () {
         anim = GetComponentInParent<Animator>();
         faceCam = false;
+        lastTrickValue = 0;
 	}
 	
 	public void SetGrounded(bool newValue)
@@ -30,7 +33,13 @@ public class FishAnimator : MonoBehaviour {
             faceCam = true;
             transform.Rotate(new Vector3(0, 180, 0));
         }
-        anim.SetInteger("Trick_Indexer", Random.Range(1, 10));
+        int newTrickValue;
+        do
+        {
+            newTrickValue = Random.Range(1, 10);
+        } while (newTrickValue == lastTrickValue);
+        lastTrickValue = newTrickValue;
+        anim.SetInteger("Trick_Indexer", newTrickValue);
         anim.SetTrigger("Trick_Trigger");
     }
 
