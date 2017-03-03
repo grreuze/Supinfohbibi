@@ -8,6 +8,7 @@ public class Metrics : MonoBehaviour {
 
     //Classes
     EndRun ER;
+    public Points Pts;
 
     //Ints
     private int numberOfRuns = 0;
@@ -42,6 +43,7 @@ public class Metrics : MonoBehaviour {
         //setup des trucs techniques
         AmplitudeHelper.AppId = "46acae4acfda355a0ed8a9c46d81007a";
         Amplitude.Instance.startSession();
+        AmplitudeHelper.Instance.FillCustomProperties += FillTrackingProperties;
 
         //détection de l'heure de lancement de session et du modèle de téléphone
         var customProperties = new Dictionary<string, object>
@@ -59,6 +61,13 @@ public class Metrics : MonoBehaviour {
     private void Update()
     {
         timer += Time.deltaTime;
+    }
+
+    //stocke de manière continue des données au cours de la session
+    void FillTrackingProperties(Dictionary<string, object> properties)
+    {
+        //track le score du joueur
+        properties["score"] = Pts.points;
     }
 
 
