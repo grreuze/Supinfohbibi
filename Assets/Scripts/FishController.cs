@@ -66,9 +66,11 @@ public class FishController : Fish {
 
         if (!turning && camera.currentState != camera.idle)
             camera.SetNewState(camera.idle); // Camera Idle
-        else if (turning && (camera.currentState != camera.turningLeft || camera.currentState != camera.turningRight)) {
+        else if (turning && 
+            ((camera.currentState != camera.turningLeft && lastAngle == -90) || 
+             (camera.currentState != camera.turningRight && lastAngle == 90))) {
+
             TurnCamera(lastAngle);
-            print("here");
         }
         hasAlreadyDoneTricks = false;
     }

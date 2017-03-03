@@ -16,7 +16,6 @@ public class GameManager : MonoBehaviour {
     }
 
     void Start() {
-        
         Metrics.ins.Setup();
 
         trickSystem = FindObjectOfType<Trick_Pattern>();
@@ -49,8 +48,6 @@ public class GameManager : MonoBehaviour {
 
             GameObject go = Instantiate(aiFish, spawnPosition, transform.rotation);
             go.GetComponentInParent<AIFish>().movementSpeed = Random.Range(_minMoveSpeed, _maxMoveSpeed);
-
-            //go.GetComponentInParent<AIFish>().SetSpeed(_minMoveSpeed + ((_maxOpponentSpeed - _minMoveSpeed) / _nbOpponent) * i);
         }
         isPlaying = true;
         StartRun();
@@ -61,6 +58,9 @@ public class GameManager : MonoBehaviour {
         if (trickSystem.isPlaying)
             trickSystem.EndOfTrick();
 
+        CameraScript camera = Camera.main.GetComponent<CameraScript>();
+        camera.SetNewState(camera.end);
+        
         _endCanvas.enabled = true;
         _endCanvas.GetComponentInChildren<Score>().ScoreFinal();
     }
