@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Team_Credits : MonoBehaviour
 {
@@ -12,8 +10,9 @@ public class Team_Credits : MonoBehaviour
 
 	public void Clicked ()
 	{
+        Metrics.ins.OpenedCredits();
 
-		AudioManager.ins.PlaySoundAtPosition ("SmallPok", gameObject, false);
+        AudioManager.ins.PlaySoundAtPosition ("SmallPok", gameObject, false);
 
 		if (dispCredits == false) {
 			dispCredits = true;

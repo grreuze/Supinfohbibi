@@ -16,6 +16,9 @@ public class GameManager : MonoBehaviour {
     }
 
     void Start() {
+        
+        Metrics.ins.Setup();
+
         trickSystem = FindObjectOfType<Trick_Pattern>();
         if (playAuto)
             SpawnFishes();
@@ -51,6 +54,7 @@ public class GameManager : MonoBehaviour {
         }
         isPlaying = true;
         StartRun();
+        Metrics.ins.StartRun();
     }
 
     public void EndRun() {

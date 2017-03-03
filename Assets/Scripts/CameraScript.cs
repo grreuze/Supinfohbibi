@@ -27,7 +27,7 @@ public class CameraScript : MonoBehaviour {
 
     public Transform follower;
 
-    public CameraState idle, descending, turningLeft, turningRight;
+    public CameraState idle, descending, turningLeft, turningRight, end;
     [HideInInspector]
     public CameraState currentState;
 

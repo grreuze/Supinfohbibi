@@ -45,10 +45,11 @@ public class Trick_Pattern : MonoBehaviour
 	}
 
 	//Fonction à appeler quand la phase de tricks se termine
-	public void EndOfTrick ()
-	{
-
+	public void EndOfTrick () {
         if (isPlaying == true) {
+            
+            Metrics.ins.LogEndTrick(buttonCount - 2); //Le nombre de boutons spawnés moins 2 -> le nombre de tricks effectués
+
             if (fishAnim == null)
                 fishAnim = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<FishAnimator>();
 
