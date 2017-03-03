@@ -10,7 +10,7 @@ public class Points : MonoBehaviour
 	public GameObject Swipe_Position;
 	public int points;
 	//Valeur du premier trick button (si le joueur n'en touche qu'un par exemple)
-	public int baseValue = 10;
+	public int baseValue = 8;
 
 	Swipe_Selector selector;
 
@@ -27,7 +27,7 @@ public class Points : MonoBehaviour
 		int count = selector.count;
 		//Formule de calcul des points en fonction de la valeur de base
 		if (count > 0) {
-			points += (int)(baseValue * Mathf.Pow (1.50f, count));
+			points += (int)(baseValue * Mathf.Pow (1.35f, count));
 		}
 
 	}
