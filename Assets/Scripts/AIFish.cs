@@ -6,7 +6,7 @@ public class AIFish : Fish {
     public float chanceToAccelerate = 0.1f;
 
     new Renderer renderer;
-    bool descending, accelerating;
+    bool descending;
     bool accelerateForThisJump;
     float lastY, lastCheckForAcceleration;
 

@@ -3,7 +3,7 @@
 public class FishController : Fish {
 
     new Renderer renderer;
-    bool descending, accelerating;
+    bool descending;
     float lastY;
 
     void Start() {
@@ -23,7 +23,6 @@ public class FishController : Fish {
 
             accelerating = true;
         } else {
-
             if (movementSpeed > speed.min)
                 movementSpeed -= decelerationFactor;
             accelerating = false;

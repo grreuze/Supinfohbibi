@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-public class Fish : MonoBehaviour {
+public abstract class Fish : MonoBehaviour {
 
     #region public properties
     [Header("Speed")]
@@ -15,7 +15,8 @@ public class Fish : MonoBehaviour {
 
     [Header("In the Air")]
     public float gravity;
-    public float maxFallingSpeed;
+    public float maxFallingSpeed = 0.4f;
+    public float fallingSpeedWhenAccelerating = 0.7f;
     public float heightLimitForTricks = 2;
 
     [Header("Turning")]
@@ -40,6 +41,9 @@ public class Fish : MonoBehaviour {
     [HideInInspector]
     public float distanceToFloor;
 
+    [HideInInspector]
+    public bool accelerating;
+
     #endregion
 
     #region Monobehaviour
@@ -59,7 +63,6 @@ public class Fish : MonoBehaviour {
             return;
 
         MovementSpeed();
-        Stabilisation();
         JumpAndGravity();
 
         if (turning) {
@@ -70,6 +73,8 @@ public class Fish : MonoBehaviour {
                 turning = false;
             }
         }
+
+        Stabilisation();
 
         direction.x = horizontalVelocity;
         direction.y = verticalVelocity;
@@ -86,7 +91,7 @@ public class Fish : MonoBehaviour {
         stopped = true;
     }
 
-    public virtual void MovementSpeed() { }
+    public abstract void MovementSpeed();
 
     void Stabilisation() {
         RaycastHit hit;
@@ -101,6 +106,14 @@ public class Fish : MonoBehaviour {
                 Turn(angle);
                 lastTrigger = trigger;
             }
+            
+            if (hit.collider.GetComponent<EndRunTrigger>()) {
+                Vector3 endPosition = hit.transform.position;
+                endPosition.y = transform.position.y;
+
+                transform.position = Vector3.Lerp(transform.position, endPosition, 0.5f * movementSpeed * Time.deltaTime);
+            }
+
         }
 
         if (!Physics.Raycast(transform.position + transform.right * stabilisationCheckDistance + transform.forward * 1.5f, Vector3.down, out hit)) {
@@ -141,8 +154,11 @@ public class Fish : MonoBehaviour {
             verticalVelocity -= gravity * deltaTime;
             StartTrick();
         }
+
+        if (accelerating)
+            verticalVelocity = -fallingSpeedWhenAccelerating;
     }
-    
+
     public virtual void StartTrick() { }
 
     public virtual void EndTrick() { }
