@@ -3,28 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class RestartScript : MonoBehaviour {
+public class RestartScript : MonoBehaviour
+{
 
-    // Use this for initialization
-    void Start()
-    {
-        Canvas[] tmp = FindObjectsOfType<Canvas>();
-        foreach (Canvas canvas in tmp)
-        {
-            if (canvas.GetComponentInChildren<RestartScript>())
-            {
-                GameManager.instance._endCanvas = canvas;
-            }
-        }
-    }
+	// Use this for initialization
+	void Start ()
+	{
+		Canvas[] tmp = FindObjectsOfType<Canvas> ();
+		foreach (Canvas canvas in tmp) {
+			if (canvas.GetComponentInChildren<RestartScript> ()) {
+				GameManager.instance._endCanvas = canvas;
+			}
+		}
+	}
 
-    // Update is called once per frame
-    void Update () {
+	// Update is called once per frame
+	void Update ()
+	{
 		
 	}
 
-    public void ReloadScene()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
+	public void ReloadScene ()
+	{
+		AudioManager.ins.PlaySoundAtPosition ("SmallPok", gameObject, false);
+		SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
+	}
 }

@@ -12,6 +12,9 @@ public class Team_Credits : MonoBehaviour
 
 	public void Clicked ()
 	{
+
+		AudioManager.ins.PlaySoundAtPosition ("SmallPok", gameObject, false);
+
 		if (dispCredits == false) {
 			dispCredits = true;
 			Fade.GetComponent<Animation> ().Play ("Fade_In_Credits_Anim");
