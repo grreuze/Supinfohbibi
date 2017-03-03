@@ -57,8 +57,6 @@ public class CameraScript : MonoBehaviour {
         cameraOffset = currentState.cameraOffset;
         if (followScript)
             followScript.offset = currentState.followOffset;
-
-        print(cameraOffset);
     }
 
     public void SetFollower(FollowerScript target) {
