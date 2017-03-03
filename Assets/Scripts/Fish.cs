@@ -56,6 +56,7 @@ public abstract class Fish : MonoBehaviour {
         controller = GetComponent<CharacterController>();
         trickSystem = FindObjectOfType<Trick_Pattern>();
         targetRotation = transform.rotation;
+        slideParticle = GetComponentInChildren<ParticleSystem>();
     }
 
     float deltaTime;
@@ -157,10 +158,13 @@ public abstract class Fish : MonoBehaviour {
             verticalVelocity = jumpStrength * movementSpeed * deltaTime;
             startJumpY = transform.position.y;
             jumping = false;
+            slideParticle.Stop();
             
         } else if (controller.isGrounded) {
             verticalVelocity = -gravity * deltaTime;
             EndTrick();
+            if (slideParticle.isStopped)
+                slideParticle.Play();
 
         } else if (reachedMaxSpeed == 0) {
             verticalVelocity -= gravity * deltaTime;

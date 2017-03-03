@@ -17,7 +17,7 @@ public class FollowerScript : MonoBehaviour {
     }
 
     private void Update() {
-        targetPosition = target.position + offset;
+        targetPosition = target.position + transform.TransformVector(offset);
         transform.LookAt(targetPosition);
     }
 
