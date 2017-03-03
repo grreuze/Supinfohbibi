@@ -24,7 +24,7 @@ public class CollectibleScript : MonoBehaviour {
         CollectibleScript.combo = 0;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collision)
     {
         //si le joueur est un player
         if(collision.gameObject.tag == "Player")
