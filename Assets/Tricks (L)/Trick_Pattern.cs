@@ -19,8 +19,9 @@ public class Trick_Pattern : MonoBehaviour
 	private int previousPreviousQuarterIndexer;
 	private GameObject[] Buttons;
 	private Vector3 spawn;
-    
-	Canvas canvas;
+    private FishAnimator fishAnim;
+
+    Canvas canvas;
 	public bool isPlaying = false;
 
 	//Fonction à délcencher quand la phase de tricks commence
@@ -40,10 +41,14 @@ public class Trick_Pattern : MonoBehaviour
 	//Fonction à appeler quand la phase de tricks se termine
 	public void EndOfTrick ()
 	{
-		if (isPlaying == true) {
-			
-		
-			isPlaying = false;
+
+        if (isPlaying == true) {
+            if (fishAnim == null)
+                fishAnim = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<FishAnimator>();
+
+            fishAnim.SetEndOfTrick();
+
+            isPlaying = false;
 			//On remet différents paramètres à 0, on calcule et on affiche les points
 			buttonCount = 0;
 
@@ -67,6 +72,7 @@ public class Trick_Pattern : MonoBehaviour
     
 	void Start ()
 	{
+        fishAnim = null;
 		//Choper le canvas (rescale) + Générer 2 chiffres bullshit pour les previous quarters
 		canvas = GetComponentInParent<Canvas> ();
 		previousPreviousQuarterIndexer = Random.Range (0, quarters.Length);

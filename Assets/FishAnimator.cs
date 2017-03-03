@@ -26,4 +26,9 @@ public class FishAnimator : MonoBehaviour {
         anim.SetInteger("Trick_Indexer", Random.Range(1, 10));
         anim.SetTrigger("Trick_Trigger");
     }
+
+    public void SetEndOfTrick()
+    {
+        anim.SetTrigger("Trick_End");
+    }
 }
