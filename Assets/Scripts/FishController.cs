@@ -4,6 +4,10 @@ using UnityEngine.SceneManagement;
 
 public class FishController : Fish {
 
+    FishAnimator fishAnim;
+    public float distanceTofloorForPlayAirAnim;
+
+
     new Renderer renderer;
     bool descending;
     float lastY;
@@ -11,12 +15,17 @@ public class FishController : Fish {
     new CameraScript camera;
 
     void Start() {
+        fishAnim = GetComponentInChildren<FishAnimator>();
         renderer = GetComponent<Renderer>();
         camera = Camera.main.GetComponent<CameraScript>();
         camera.SetFollower(FindObjectOfType<FollowerScript>());
     }
 
     public override void MovementSpeed() {
+        fishAnim.SetGrounded(distanceTofloorForPlayAirAnim > distanceToFloor);
+        fishAnim.SetAccelerate(descending && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
+            || Input.GetMouseButton(0)) && !trickSystem.isPlaying && distanceToFloor > distanceToFloorToAccelerate);
+
         descending = transform.position.y < lastY;
         lastY = transform.position.y;
         
