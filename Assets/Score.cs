@@ -19,10 +19,8 @@ public class Score : MonoBehaviour
 	public Text scoreDisplay;
 
 	int scoreFinal;
-
-
-	void Update ()
-	{
+    
+	void Update () {
 		if (Input.GetKeyDown ("l")) {
 			ScoreFinal ();
 		}
@@ -46,7 +44,5 @@ public class Score : MonoBehaviour
 		pointsDisplay.text = "POINTS: " + pointsFinal;
 		rankDisplay.text = "RANK: " + rankFinal;
 		scoreDisplay.text = "SCORE: " + scoreFinal;
-
-
 	}
 }

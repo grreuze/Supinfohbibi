@@ -1,13 +1,11 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class FishController : Fish {
 
     FishAnimator fishAnim;
     public float distanceTofloorForPlayAirAnim;
-
-
+    
     new Renderer renderer;
     bool descending;
     float lastY;
