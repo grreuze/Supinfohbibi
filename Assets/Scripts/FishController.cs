@@ -11,12 +11,14 @@ public class FishController : Fish {
     float lastY;
 
     new CameraScript camera;
+    ParticleSystem speedParticle;
 
     void Start() {
         fishAnim = GetComponentInChildren<FishAnimator>();
         renderer = GetComponent<Renderer>();
         camera = Camera.main.GetComponent<CameraScript>();
         camera.SetFollower(FindObjectOfType<FollowerScript>());
+        speedParticle = Camera.main.GetComponentInChildren<ParticleSystem>();
     }
 
     public override void MovementSpeed() {
@@ -34,10 +36,15 @@ public class FishController : Fish {
                 movementSpeed += accelerationFactor;
 
             accelerating = true;
+            if(speedParticle.isStopped)
+                speedParticle.Play();
+
         } else {
             if (movementSpeed > speed.min)
                 movementSpeed -= decelerationFactor;
             accelerating = false;
+            if (speedParticle.isPlaying)
+                speedParticle.Stop();
         }
         renderer.material = accelerating ? acceleratingMaterial : defaultMaterial;
     }
@@ -59,18 +66,19 @@ public class FishController : Fish {
 
         if (!turning && camera.currentState != camera.idle)
             camera.SetNewState(camera.idle); // Camera Idle
+        else if (turning)
+            TurnCamera(lastAngle);
         hasAlreadyDoneTricks = false;
     }
 
+    float lastAngle;
     public override void TurnCamera(float angle) {
-        print("trun camera, angle: " + angle);
+        lastAngle = angle;
         if (angle == 90 && camera.currentState != camera.turningRight) {
             camera.SetNewState(camera.turningRight); 
-            print("trun right");
 
         } else if (angle == -90 && camera.currentState != camera.turningLeft) {
             camera.SetNewState(camera.turningLeft);
-            print("trun left");
         }
     }
 

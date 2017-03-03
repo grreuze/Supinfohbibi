@@ -48,7 +48,7 @@ public class CameraScript : MonoBehaviour {
     void LateUpdate()
     {
         if (!follower) return;
-        transform.localPosition = Vector3.Slerp(transform.position, follower.position + cameraOffset, speed*Time.deltaTime);
+        transform.localPosition = Vector3.Slerp(transform.position, follower.position + transform.TransformDirection(cameraOffset), speed*Time.deltaTime);
         transform.localRotation = Quaternion.Slerp(transform.rotation, follower.rotation, speed*Time.deltaTime);
     }
 

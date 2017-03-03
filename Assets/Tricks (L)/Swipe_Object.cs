@@ -1,52 +1,45 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Swipe_Object : MonoBehaviour
-{
+public class Swipe_Object : MonoBehaviour {
 
 	//Bool pour savoir si le mec à touché l'écran avant de le lacher
 	bool touchedOnce = false;
+    bool cancelPress;
 
-	GameObject TrickPanel;
+	Trick_Pattern trickPanel;
 
 	public Vector3 swipeCoord;
 
-	void Start ()
-	{
+	void Start () {
 		//On a besoin de TrickPanel pour déclencher l'arret de la phase de tricks
-		TrickPanel = GameObject.Find ("TrickPanel");
+		trickPanel = GameObject.Find("TrickPanel").GetComponent<Trick_Pattern>();
 	}
 
-	void Update ()
-	{
+	void Update () {
 		//Si le joueur touche et slide OU reste appuyé sur le clic gauche et déplace la souris
 		if (((Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Moved)
 		    || Input.GetMouseButton (0))) {
-            
-			//Il a donc touché au moins une fois
+
+            if (trickPanel.alreadyPressing && cancelPress)
+                trickPanel.alreadyPressing = false;
+
 			touchedOnce = true;
-			//Debug.Log (Input.mousePosition);
 			swipeCoord = Input.mousePosition;
             
 			transform.position = Camera.main.ScreenToWorldPoint (swipeCoord);
             
-			//Plane objPlane = new Plane (Camera.main.transform.forward * -1, this.transform.position);
+		} else if(trickPanel.alreadyPressing &&
+          ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
+          || Input.GetMouseButtonUp(0))) {
+            cancelPress = true;
 
-
-			/*Ray mRay = Camera.main.ScreenPointToRay (Input.mousePosition);
-			float rayDistance;
-			if (objPlane.Raycast (mRay, out rayDistance)) {
-				print ("Touched");
-				transform.position = mRay.GetPoint (rayDistance);
-			}*/
-		} else {
+        } else {
 			//Si il le touche pas
 			//Mais qu'il a au moins touché une fois (il lache l'appui)
-			if (touchedOnce == true) {
+			if (touchedOnce == true && !trickPanel.alreadyPressing) {
 				touchedOnce = false;
 				//On arrête la phase
-				TrickPanel.GetComponent<Trick_Pattern> ().EndOfTrick ();
+				trickPanel.EndOfTrick ();
 			}
 		}
 

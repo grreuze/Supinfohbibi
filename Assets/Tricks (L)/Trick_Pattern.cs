@@ -23,12 +23,18 @@ public class Trick_Pattern : MonoBehaviour
 
     Canvas canvas;
 	public bool isPlaying = false;
+    public bool alreadyPressing;
 
 	//Fonction à délcencher quand la phase de tricks commence
 	public void StartOfTrick ()
 	{
 		if (isPlaying == false) {
 			
+            if (((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
+            || Input.GetMouseButton(0))) {
+                alreadyPressing = true;
+            }
+
 			isPlaying = true;
 			//Afficher le background
 			GetComponent<RawImage>().enabled = true;
