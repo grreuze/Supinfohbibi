@@ -12,7 +12,7 @@ public class EndRun : MonoBehaviour {
     public float ratioOfCollectiblesFound;
 
     //niveau de skill moyen des parties
-    float newAverageSkillLevel;
+    public float newAverageSkillLevel;
     
     //méthode qui va calculer la difficulté de la run
     public void OnRunStart()
@@ -74,7 +74,7 @@ public class EndRun : MonoBehaviour {
     }
 
     //calcule le taux de skill de la game (à lancer juste avant la save)
-    private float CalculateSkillForThisGame()
+    public float CalculateSkillForThisGame()
     {
         float skill = (0.18f * remainingTimeInSeconds) * ratioOfCollectiblesFound;
 
