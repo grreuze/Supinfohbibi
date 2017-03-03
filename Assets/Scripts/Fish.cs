@@ -95,7 +95,7 @@ public abstract class Fish : MonoBehaviour {
 
     void Stabilisation() {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit)) {
+        if (Physics.Raycast(transform.position, Vector3.down, out hit) && hit.collider.gameObject.layer != 8) {
             // There's floor under us
             distanceToFloor = hit.distance;
             Trigger trigger = hit.collider.GetComponent<Trigger>();

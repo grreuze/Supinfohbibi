@@ -46,7 +46,7 @@ public class FishController : Fish {
     public override void StartTrick() {
         if (transform.position.y - startJumpY > heightLimitForTricks && !trickSystem.isPlaying && !hasAlreadyDoneTricks) {
             trickSystem.StartOfTrick();
-            camera.SetNewState(camera.descending);
+            camera.SetNewState(camera.descending); // Camera Descending
 
             hasAlreadyDoneTricks = true;
         }
@@ -58,14 +58,14 @@ public class FishController : Fish {
         }
 
         if (!turning && camera.currentState != camera.idle)
-            camera.SetNewState(camera.idle);
+            camera.SetNewState(camera.idle); // Camera Idle
         hasAlreadyDoneTricks = false;
     }
 
     public override void TurnCamera(float angle) {
         print("trun camera, angle: " + angle);
         if (angle == 90 && camera.currentState != camera.turningRight) {
-            camera.SetNewState(camera.turningRight);
+            camera.SetNewState(camera.turningRight); 
             print("trun right");
 
         } else if (angle == -90 && camera.currentState != camera.turningLeft) {
