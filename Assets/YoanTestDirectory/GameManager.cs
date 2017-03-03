@@ -38,6 +38,8 @@ public class GameManager : MonoBehaviour
 	public GameObject aiFish;
 	public Canvas _endCanvas;
 
+	public bool soundPause = false;
+
 	public void SpawnFishes ()
 	{
 		Instantiate (_fish, transform.position, transform.rotation);
