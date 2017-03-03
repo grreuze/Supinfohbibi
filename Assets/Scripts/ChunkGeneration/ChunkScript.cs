@@ -5,14 +5,30 @@ public class ChunkScript : MonoBehaviour {
     //la fin du chunk, qui détermine l'endroit et la rotation du prochain chunk instancié
     public Transform EndPoint;
 
+    //Le parent de tous les collectibles du chunk, doit être disabled par défaut
+    public GameObject Collectibles;
+
     [HideInInspector]
     public float chunkLength;
+
+    int randomIndexer;
 
     private void Start()
     {
         CalculateChunkLength();
         if (LevelGeneration.ins)
             Calibrate();
+
+        if(Collectibles != null)
+        {
+            randomIndexer = Random.Range(0, 100);
+
+            if (randomIndexer <= 33)
+            {
+                Collectibles.SetActive(true);
+            }
+        }
+        
     }
 
     public void CalculateChunkLength()
