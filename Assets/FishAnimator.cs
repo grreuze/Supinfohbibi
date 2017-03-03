@@ -15,4 +15,9 @@ public class FishAnimator : MonoBehaviour {
     {
         anim.SetBool("IsGrounded", newValue);
     }
+
+    public void SetAccelerate(bool newValue)
+    {
+        anim.SetBool("IsAccelerate", newValue);
+    }
 }

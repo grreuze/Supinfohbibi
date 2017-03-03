@@ -18,6 +18,8 @@ public class FishController : Fish {
 
     public override void MovementSpeed() {
         fishAnim.SetGrounded(distanceTofloorForPlayAirAnim > distanceToFloor);
+        fishAnim.SetAccelerate(descending && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
+            || Input.GetMouseButton(0)) && !trickSystem.isPlaying && distanceToFloor > distanceToFloorToAccelerate);
 
         descending = transform.position.y < lastY;
         lastY = transform.position.y;
