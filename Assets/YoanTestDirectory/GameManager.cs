@@ -57,6 +57,7 @@ public class GameManager : MonoBehaviour {
             trickSystem.EndOfTrick();
 
         _endCanvas.enabled = true;
+        _endCanvas.GetComponentInChildren<Score>().ScoreFinal();
     }
 
     public void StartRun()

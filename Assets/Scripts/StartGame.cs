@@ -2,23 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StartGame : MonoBehaviour {
+public class StartGame : MonoBehaviour
+{
 
-    GameManager gm;
+	GameManager gm;
 
-    [SerializeField]
-    Canvas titleScreen, HUD;
+	[SerializeField]
+	Canvas titleScreen, HUD;
 
 	// Use this for initialization
-	void Start () {
-        gm = GameManager.instance;
-        HUD.enabled = false;
+	void Start ()
+	{
+		gm = GameManager.instance;
+		HUD.enabled = false;
 	}
 
-    public void Go() {
-        gm.SpawnFishes();
-        titleScreen.enabled = false;
-        HUD.enabled = true;
-        Destroy(this);
-    }
+	public void Go ()
+	{
+		gm.SpawnFishes ();
+		titleScreen.enabled = false;
+		HUD.enabled = true;
+		HUD.GetComponentInChildren<Chronometer> ().LaunchTimer ();        
+		Destroy (this);
+	}
 }
