@@ -20,6 +20,7 @@ public abstract class Fish : MonoBehaviour {
     public float maxFallingSpeed = 0.4f;
     public float fallingSpeedWhenAccelerating = 0.7f;
     public float heightLimitForTricks = 2;
+    public float maxDistanceToEndTrigger = 50;
 
     [Header("Turning")]
     public bool turning;
@@ -46,6 +47,7 @@ public abstract class Fish : MonoBehaviour {
     [HideInInspector]
     public bool accelerating;
 
+    ParticleSystem slideParticle;
     #endregion
 
     #region Monobehaviour
@@ -117,7 +119,7 @@ public abstract class Fish : MonoBehaviour {
                 lastTrigger = trigger;
             }
 
-            if (hit.collider.GetComponent<EndRunTrigger>()) {
+            if (hit.collider.GetComponent<EndRunTrigger>() && hit.distance < maxDistanceToEndTrigger) {
                 Vector3 endPosition = hit.transform.position;
                 endPosition.y = transform.position.y;
 
@@ -181,6 +183,7 @@ public abstract class Fish : MonoBehaviour {
 
     #region Turning
     float lastTimeTurned;
+
     void Turn(float angle) {
         if (Time.time - lastTimeTurned < 1) return;
 
