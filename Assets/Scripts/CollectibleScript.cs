@@ -7,7 +7,19 @@ public class CollectibleScript : MonoBehaviour {
     public int scoreToAdd;
     public int bigComboBonus;
 
-    static int combo;
+    static int combo = 0;
+
+    ParticleSystem CollectedEffect;
+
+    private void Start()
+    {
+        CollectedEffect = GetComponentInChildren<ParticleSystem>();
+    }
+
+    private void FixedUpdate()
+    {
+        transform.eulerAngles += new Vector3(0, 5, 0);
+    }
 
     private void ResetCombo()
     {
@@ -19,6 +31,9 @@ public class CollectibleScript : MonoBehaviour {
         //si le joueur est un player
         if(collision.gameObject.tag == "Player")
         {
+            //Lecture du son de pickup
+            AudioManager.ins.PlayCollectibleSound(combo, gameObject);
+
             //Si le combo est en cours
             if(CollectibleScript.combo < 5)
             {
@@ -35,6 +50,7 @@ public class CollectibleScript : MonoBehaviour {
                 ResetCombo();
             }
 
+            CollectedEffect.Emit(1);
             Destroy(gameObject);
         }
     }
