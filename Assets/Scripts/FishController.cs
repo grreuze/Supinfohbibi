@@ -2,16 +2,23 @@
 
 public class FishController : Fish {
 
+    FishAnimator fishAnim;
+    public float distanceTofloorForPlayAirAnim;
+
+
     new Renderer renderer;
     bool descending;
     float lastY;
 
     void Start() {
+        fishAnim = GetComponentInChildren<FishAnimator>();
         renderer = GetComponent<Renderer>();
         Camera.main.GetComponent<CameraScript>().follower = transform.FindChild("Follow");
     }
 
     public override void MovementSpeed() {
+        fishAnim.SetGrounded(distanceTofloorForPlayAirAnim > distanceToFloor);
+
         descending = transform.position.y < lastY;
         lastY = transform.position.y;
         
