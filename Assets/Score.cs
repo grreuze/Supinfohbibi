@@ -20,7 +20,6 @@ public class Score : MonoBehaviour
 
 	int scoreFinal;
 
-
 	void Update ()
 	{
 		if (Input.GetKeyDown ("l")) {
@@ -47,6 +46,19 @@ public class Score : MonoBehaviour
 		rankDisplay.text = "RANK: " + rankFinal;
 		scoreDisplay.text = "SCORE: " + scoreFinal;
 
+		//StartCoroutine ("RollingScore");
 
 	}
+
+	/*	IEnumerator  RollingScore ()
+	{
+		int i = 0;
+		Debug.Log (0.01f * (1 / Mathf.Floor (Mathf.Log10 (scoreFinal) + 1)));
+		while (i < scoreFinal) {
+			i++;
+			yield return new WaitForSeconds (0.0001f * (1 / Mathf.Floor (Mathf.Log10 (scoreFinal) + 1)));
+			scoreDisplay.text = "SCORE: " + i;
+		}
+	
+	}*/
 }
