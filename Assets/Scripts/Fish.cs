@@ -6,6 +6,8 @@ public abstract class Fish : MonoBehaviour {
     #region public properties
     [Header("Speed")]
     public float movementSpeed = 12;
+    private float averageSpeed = 0;
+    private float totalTimeForAvergaeSpeed = 0;
     public MinMax speed = new MinMax(10, 30);
     public float accelerationFactor = 1, decelerationFactor = 1;
     public float distanceToFloorToAccelerate = 1.2f;
@@ -61,6 +63,9 @@ public abstract class Fish : MonoBehaviour {
         if (stopped)
             return;
 
+        averageSpeed = ((averageSpeed * totalTimeForAvergaeSpeed) + (movementSpeed * deltaTime)) / (totalTimeForAvergaeSpeed + deltaTime);
+        totalTimeForAvergaeSpeed += deltaTime;
+
         MovementSpeed();
         JumpAndGravity();
 
@@ -92,6 +97,11 @@ public abstract class Fish : MonoBehaviour {
     }
 
     public abstract void MovementSpeed();
+
+    public float GetAverageSpeed()
+    {
+        return averageSpeed;
+    }
 
     void Stabilisation() {
         RaycastHit hit;
