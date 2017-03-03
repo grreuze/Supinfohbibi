@@ -13,8 +13,9 @@ public class EndRunTrigger : MonoBehaviour {
             tmp.useGravity = false;
             tmp.velocity = Vector3.zero;
 
-            if (fish.GetComponent<FishController>())
+            if (fish.GetComponent<FishController>()) {
                 GameManager.GetInstance().EndRun();
+            }
         }
     }
 }

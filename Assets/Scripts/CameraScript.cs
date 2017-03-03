@@ -1,120 +1,68 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using DG.Tweening;
+﻿using UnityEngine;
 
 public class CameraScript : MonoBehaviour {
 
-    public enum CamState
-    {
-        Idle, 
-        AcceleratingDescent,
-        Climbing,
-        Airtime
-    }
+    [System.Serializable]
+    public struct CameraState {
+        public Vector3 cameraOffset;
+        public Vector3 followOffset;
 
-    public CamState CState = new CamState();
+        public CameraState(Vector3 cameraOffset, Vector3 followOffset) {
+            this.cameraOffset = cameraOffset;
+            this.followOffset = followOffset;
+        }
+
+        public static bool operator ==(CameraState a, CameraState b) {
+            return a.cameraOffset == b.cameraOffset && a.followOffset == b.followOffset;
+        }
+
+        public static bool operator != (CameraState a, CameraState b) {
+            return !(a == b);
+        }
+    }
     
-    public Vector3 cameraOffset;
+    public Vector3 cameraOffset = new Vector3(0, 4, 0);
 
     public float speed = 20;
 
     public Transform follower;
-    private FollowerScript followScript;
-    public Rigidbody PlayerRigigBody;
 
-    private Vector3 velocity;
-    private Vector3 backwards;
+    public CameraState idle, descending, turningLeft, turningRight;
+    [HideInInspector]
+    public CameraState currentState;
+
+    private FollowerScript followScript;
 
     private Vector3 originalPos;
     private Vector3 orignialRot;
-
-        
+    
     //stockage des positions relatives initiales pour l'idle
-    private void Start()
-    {
+    private void Start() {
         originalPos = transform.position;
         orignialRot = transform.eulerAngles;
+
+        SetNewState(idle);
     }
 
     //méthode pour que la caméra suive le follower
     void LateUpdate()
     {
         if (!follower) return;
-        transform.position = Vector3.Slerp(transform.position, follower.position + cameraOffset, speed*Time.deltaTime);
-        transform.rotation = Quaternion.Slerp(transform.rotation, follower.rotation, speed*Time.deltaTime);
+        transform.localPosition = Vector3.Slerp(transform.position, follower.position + cameraOffset, speed*Time.deltaTime);
+        transform.localRotation = Quaternion.Slerp(transform.rotation, follower.rotation, speed*Time.deltaTime);
     }
 
-    private void Update()
-    {
-        //backwards = PlayerRigigBody.position - Vector3.up;
-        if (!followScript)
-        {
-            if(follower)    
-                followScript = follower.GetComponent<FollowerScript>();
-        }
-        else
-        {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                CameraAccelerateDescent();
-            }
+    public void SetNewState(CameraState newState) {
+        currentState = newState;
+        cameraOffset = currentState.cameraOffset;
+        if (followScript)
+            followScript.offset = currentState.followOffset;
 
-            if (Input.GetKeyDown(KeyCode.Z))
-            {
-                CameraIdle();
-            }
-
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                CameraClimb();
-            }
-
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                CameraAirTime();
-            }
-        }
-    }   
-
-    public void CameraAccelerateDescent()
-    {
-        if (CState != CamState.AcceleratingDescent)
-        {
-            CState = CamState.AcceleratingDescent;
-            followScript.ChangeValue(0.8f);
-            //transform.DORotate(new Vector3(12, 0, 0), 0.7f, RotateMode.LocalAxisAdd);
-            //follower.DORotate(new Vector3(12, 0, 0), 0.7f, RotateMode.LocalAxisAdd);
-        }
+        print(cameraOffset);
     }
 
-    public void CameraIdle()
-    {
-        if(CState != CamState.Idle)
-        {
-            CState = CamState.Idle;
-            followScript.ChangeValue(0f);
-            //follower.DORotate(orignialRot, 0.7f);
-        }
-    }
-
-    public void CameraClimb()
-    {
-        if(CState != CamState.Climbing)
-        {
-            CState = CamState.Climbing;
-            followScript.ChangeValue(-0.2f);
-            //follower.DORotate(new Vector3(-8, 0, 0), 0.7f, RotateMode.LocalAxisAdd);
-        }
-    }
-
-    public void CameraAirTime()
-    {
-        if(CState != CamState.Airtime)
-        {
-            CState = CamState.Airtime;
-            followScript.ChangeValue(0.4f);
-            //follower.DORotate(new Vector3(10, 0, 0), 0.5f, RotateMode.LocalAxisAdd);
-        }
+    public void SetFollower(FollowerScript target) {
+        followScript = target;
+        follower = target.transform;
     }
 }

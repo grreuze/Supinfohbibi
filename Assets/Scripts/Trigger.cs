@@ -30,17 +30,20 @@ public class Trigger : MonoBehaviour {
     }
 
     void Turn(float angle, Collider other) {
-        Fish ctrl = other.GetComponentInParent<Fish>();
-        if (ctrl) {
-            if (ctrl.lastTrigger == this)
+        Fish fish = other.GetComponentInParent<Fish>();
+        if (fish) {
+            if (fish.lastTrigger == this)
                 return;
             
-            Vector3 rot = ctrl.targetRotation.eulerAngles;
+            Vector3 rot = fish.targetRotation.eulerAngles;
             rot.y += angle;
 
             Quaternion newRot = Quaternion.Euler(rot);
-            ctrl.Turn(newRot);
-            ctrl.lastTrigger = this;
+            fish.Turn(newRot);
+            fish.lastTrigger = this;
+
+            if (fish.GetComponent<FishController>())
+                fish.TurnCamera(angle);
         }
     }
 

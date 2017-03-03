@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour {
     }
 
     void Start() {
+        trickSystem = FindObjectOfType<Trick_Pattern>();
         if (playAuto)
             SpawnFishes();
     }
@@ -33,6 +34,7 @@ public class GameManager : MonoBehaviour {
     public GameObject _fish;
     public GameObject aiFish;
     public Canvas _endCanvas;
+    private Trick_Pattern trickSystem;
 
     public void SpawnFishes() {
         Instantiate(_fish, transform.position, transform.rotation);
@@ -50,8 +52,10 @@ public class GameManager : MonoBehaviour {
         StartRun();
     }
 
-    public void EndRun()
-    {
+    public void EndRun() {
+        if (trickSystem.isPlaying)
+            trickSystem.EndOfTrick();
+
         _endCanvas.enabled = true;
     }
 

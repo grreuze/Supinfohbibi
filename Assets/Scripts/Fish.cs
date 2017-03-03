@@ -23,6 +23,7 @@ public abstract class Fish : MonoBehaviour {
     public bool turning;
     public float turningSpeed = 2;
     public Quaternion targetRotation;
+    public float turnStabilisation = 2;
 
     public Trigger lastTrigger;
     #endregion
@@ -31,7 +32,6 @@ public abstract class Fish : MonoBehaviour {
     [HideInInspector]
     public Trick_Pattern trickSystem;
 
-    Rigidbody _rigid;
     CharacterController controller;
 
     Vector3 direction;
@@ -49,7 +49,6 @@ public abstract class Fish : MonoBehaviour {
     #region Monobehaviour
 
     void Awake() {
-        _rigid = GetComponent<Rigidbody>();
         controller = GetComponent<CharacterController>();
         trickSystem = FindObjectOfType<Trick_Pattern>();
         targetRotation = transform.rotation;
@@ -68,8 +67,9 @@ public abstract class Fish : MonoBehaviour {
         if (turning) {
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * turningSpeed * movementSpeed);
 
-            if (Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y) < 0.5f) {
+            if (Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y) < turnStabilisation) {
                 transform.rotation = targetRotation;
+                print("end turn");
                 turning = false;
             }
         }
@@ -106,7 +106,7 @@ public abstract class Fish : MonoBehaviour {
                 Turn(angle);
                 lastTrigger = trigger;
             }
-            
+
             if (hit.collider.GetComponent<EndRunTrigger>()) {
                 Vector3 endPosition = hit.transform.position;
                 endPosition.y = transform.position.y;
@@ -153,11 +153,15 @@ public abstract class Fish : MonoBehaviour {
         } else if (reachedMaxSpeed == 0) {
             verticalVelocity -= gravity * deltaTime;
             StartTrick();
+        } else if (transform.position.y < -300) {
+            OutOfBounds();
         }
 
         if (accelerating)
             verticalVelocity = -fallingSpeedWhenAccelerating;
     }
+
+    public abstract void OutOfBounds();
 
     public virtual void StartTrick() { }
 
@@ -180,6 +184,8 @@ public abstract class Fish : MonoBehaviour {
 
         lastTimeTurned = Time.time;
     }
+
+    public virtual void TurnCamera(float angle) { }
 
     public void Turn(Quaternion targetRot) {
         turning = true;

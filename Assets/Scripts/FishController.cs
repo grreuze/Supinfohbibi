@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FishController : Fish {
 
@@ -6,9 +8,12 @@ public class FishController : Fish {
     bool descending;
     float lastY;
 
+    new CameraScript camera;
+
     void Start() {
         renderer = GetComponent<Renderer>();
-        Camera.main.GetComponent<CameraScript>().follower = transform.FindChild("Follow");
+        camera = Camera.main.GetComponent<CameraScript>();
+        camera.SetFollower(FindObjectOfType<FollowerScript>());
     }
 
     public override void MovementSpeed() {
@@ -34,13 +39,36 @@ public class FishController : Fish {
     public override void StartTrick() {
         if (transform.position.y - startJumpY > heightLimitForTricks && !trickSystem.isPlaying && !hasAlreadyDoneTricks) {
             trickSystem.StartOfTrick();
+            camera.SetNewState(camera.descending);
+
             hasAlreadyDoneTricks = true;
         }
     }
 
     public override void EndTrick() {
-        if (trickSystem.isPlaying)
+        if (trickSystem.isPlaying) {
             trickSystem.EndOfTrick();
+        }
+
+        if (!turning && camera.currentState != camera.idle)
+            camera.SetNewState(camera.idle);
         hasAlreadyDoneTricks = false;
+    }
+
+    public override void TurnCamera(float angle) {
+        print("trun camera, angle: " + angle);
+        if (angle == 90 && camera.currentState != camera.turningRight) {
+            camera.SetNewState(camera.turningRight);
+            print("trun right");
+
+        } else if (angle == -90 && camera.currentState != camera.turningLeft) {
+            camera.SetNewState(camera.turningLeft);
+            print("trun left");
+        }
+    }
+
+    public override void OutOfBounds() {
+        Debug.LogWarning("OUT OF BOUNDS: Restarting the Scene.");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

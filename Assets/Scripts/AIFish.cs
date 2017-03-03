@@ -37,4 +37,9 @@ public class AIFish : Fish {
         }
         renderer.material = accelerating ? acceleratingMaterial : defaultMaterial;
     }
+
+    public override void OutOfBounds() {
+        Debug.LogWarning("An AI Went too far Out of Bounds and has been destroyed");
+        Destroy(gameObject);
+    }
 }

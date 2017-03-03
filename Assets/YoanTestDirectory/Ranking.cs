@@ -35,8 +35,7 @@ public class Ranking : MonoBehaviour {
         if(_rank == 0){
             InitiateRank();
         }
-        else if(_middleSpeed > _nextRankSpeed || _middleSpeed < _previousRankSpeed)
-        {
+        else if(_middleSpeed > _nextRankSpeed || _middleSpeed < _previousRankSpeed) {
             UpdateRank();
         }
 	}
@@ -45,20 +44,17 @@ public class Ranking : MonoBehaviour {
         _rank = 1;
         _nextRankSpeed = GameManager.GetInstance()._maxMoveSpeed;
         _previousRankSpeed = GameManager.GetInstance()._minMoveSpeed;
-        for (int i = 0; i < GameManager.GetInstance()._nbOpponent; i++)
-        {
-            if (_opponentList[i].movementSpeed > _middleSpeed)
-            {
-                if (_opponentList[i].movementSpeed < _nextRankSpeed)
-                {
+        for (int i = 0; i < GameManager.GetInstance()._nbOpponent; i++) {
+
+            if (_opponentList[i].movementSpeed > _middleSpeed) {
+
+                if (_opponentList[i].movementSpeed < _nextRankSpeed) {
                     _nextRankSpeed = _opponentList[i].movementSpeed;
                 }
                 _rank++;
             }
-            else
-            {
-                if (_opponentList[i].movementSpeed > _previousRankSpeed)
-                {
+            else {
+                if (_opponentList[i].movementSpeed > _previousRankSpeed) {
                     _previousRankSpeed = _opponentList[i].movementSpeed;
                 }
             }
@@ -66,17 +62,14 @@ public class Ranking : MonoBehaviour {
         display.text = _rank.ToString(); ;
     }
 
-    private void InitiateRank()
-    {
+    private void InitiateRank() {
         _opponentList = FindObjectsOfType<AIFish>();
-        if (_opponentList.Length != 0)
-        {
+        if (_opponentList.Length != 0) {
             UpdateRank();
         }
     }
 
-    public int GetRank()
-    {
+    public int GetRank() {
         return _rank;
     }
 }
