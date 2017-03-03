@@ -20,4 +20,10 @@ public class FishAnimator : MonoBehaviour {
     {
         anim.SetBool("IsAccelerate", newValue);
     }
+
+    public void SetTrick()
+    {
+        anim.SetInteger("Trick_Indexer", Random.Range(1, 10));
+        anim.SetTrigger("Trick_Trigger");
+    }
 }
