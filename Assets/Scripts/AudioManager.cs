@@ -42,11 +42,7 @@ public class AudioManager : MonoBehaviour
 				AS.loop = looping;
 				AS.clip = AC;
 				AS.Play ();               
-			} else {
-				Debug.Log (go.name + ": AudioManager Key not found!!!");
-			}    
-		} else {
-			Debug.Log (go.name + " has no AudioSource!!! Please add one.");
+			} 
 		}
 	}
 
@@ -55,8 +51,6 @@ public class AudioManager : MonoBehaviour
 		if (go.GetComponent<AudioSource> () != null) {
 			AudioSource AS = go.GetComponent<AudioSource> ();
 			AS.Stop ();
-		} else {
-			Debug.Log (go.name + " has no AudioSource!!! Please add one.");
 		}
 	}
 
@@ -75,8 +69,6 @@ public class AudioManager : MonoBehaviour
 				AS.loop = false;
 				AS.Play ();
 			}
-		} else {
-			Debug.Log (go.name + " has no AudioSource!!! Please add one.");
 		}
 	}
 }

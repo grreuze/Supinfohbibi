@@ -8,17 +8,17 @@ public class GameManager : MonoBehaviour {
 
     private void Awake() {
         if (instance != null && instance != this) {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         } else {
             instance = this;
-            DontDestroyOnLoad(this.gameObject);
+            DontDestroyOnLoad(gameObject);
         }
     }
 
     private BestScore[] bestScoreText;
 
     void Start() {
-        endRun = new EndRun();
+        endRun = GetComponent<EndRun>();
         Metrics.ins.Setup();
         endRun.OnRunStart();
         trickSystem = FindObjectOfType<Trick_Pattern>();
@@ -71,7 +71,9 @@ public class GameManager : MonoBehaviour {
     public void EndRun() {
         if (trickSystem.isPlaying)
             trickSystem.EndOfTrick();
-        
+
+        GameObject.Find("HUD").GetComponent<Canvas>().enabled = false;
+
         CameraScript camera = Camera.main.GetComponent<CameraScript>();
         camera.SetNewState(camera.end);
         
