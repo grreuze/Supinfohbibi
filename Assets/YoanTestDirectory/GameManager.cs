@@ -69,10 +69,12 @@ public class GameManager : MonoBehaviour {
         Metrics.ins.StartRun();
     }
 
-    public void EndRun() {
-        if (trickSystem.isPlaying)
-            trickSystem.EndOfTrick();
-
+    public void EndRun()
+    {
+        if(!trickSystem)
+            trickSystem = FindObjectOfType<Trick_Pattern>();
+        trickSystem.EndOfTrick(); 
+        
         GameObject.Find("HUD").GetComponent<Canvas>().enabled = false;
 
         CameraScript camera = Camera.main.GetComponent<CameraScript>();
