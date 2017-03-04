@@ -34,6 +34,7 @@ public class Metrics : MonoBehaviour {
         else Destroy(gameObject);
 
         DontDestroyOnLoad(gameObject);
+
     }
 
     public void Setup()
@@ -41,9 +42,11 @@ public class Metrics : MonoBehaviour {
         ER = FindObjectOfType<EndRun>();
 
         //setup des trucs techniques
-        AmplitudeHelper.AppId = "46acae4acfda355a0ed8a9c46d81007a";
-        Amplitude.Instance.startSession();
+        AmplitudeHelper.AppId = "e0c41856e17ab291ef2757bbc4fe19ec";
+        Amplitude.Instance.logging = true;
+        Amplitude.Instance.init("e0c41856e17ab291ef2757bbc4fe19ec");
         AmplitudeHelper.Instance.FillCustomProperties += FillTrackingProperties;
+        Amplitude.Instance.startSession();   
 
         //détection de l'heure de lancement de session et du modèle de téléphone
         var customProperties = new Dictionary<string, object>
