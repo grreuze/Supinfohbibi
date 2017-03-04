@@ -18,7 +18,7 @@ public class StartGame : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		AudioManager.ins.PlaySoundAtPosition ("Menu" + Random.Range (1, 5), GameObject.Find ("Music"), true);
+		AudioManager.ins.PlaySoundAtPosition ("Menu2", GameObject.Find ("Music"), true);
 
 		gm = GameManager.instance;
 		HUD.enabled = false;
@@ -29,7 +29,7 @@ public class StartGame : MonoBehaviour
 	{
 
 		AudioManager.ins.StopSound (GameObject.Find ("Music"));
-		AudioManager.ins.PlaySoundAtPosition ("Race" + Random.Range (1, 5), GameObject.Find ("Music"), true);
+		AudioManager.ins.PlaySoundAtPosition ("Race1", GameObject.Find ("Music"), true);
 
 
 		AudioManager.ins.PlaySoundAtPosition ("BigPok", gameObject, false);
