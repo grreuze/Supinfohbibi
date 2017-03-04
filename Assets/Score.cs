@@ -55,6 +55,11 @@ public class Score : MonoBehaviour
 
 	}
 
+    public float GetFinalTime()
+    {
+        return timeFinal;
+    }
+
 	/*	IEnumerator  RollingScore ()
 	{
 		int i = 0;

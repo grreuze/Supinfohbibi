@@ -78,6 +78,9 @@ public class Metrics : MonoBehaviour {
     {
         numberOfRuns++;
         AmplitudeHelper.Instance.LogEvent("Run Started");
+
+        totalJumps = 0;
+        totaljumpsWithTricks = 0;
     }
 
     public void OpenedCredits()
@@ -102,7 +105,7 @@ public class Metrics : MonoBehaviour {
         totalJumps++;      
     }
 
-    public void FinishRun(float remainingTime, int rank)
+    public void FinishRun(float time, int rank)
     {
         //calcul du nombre moyen de tricks par saut
         float totalTrickNum = 0;
@@ -112,12 +115,21 @@ public class Metrics : MonoBehaviour {
             totalTrickNum += allTrickScores[i];
         }
 
+        float jumpRatio;
+
         //calcul du ratio saut tricks/saut sans tricks
-        float jumpRatio = totaljumpsWithTricks / totalJumps;
+        if(totalJumps > 0)
+        {
+            jumpRatio = totaljumpsWithTricks / totalJumps;
+        }
+        else
+        {
+            jumpRatio = 0;
+        }
 
         var customProperties = new Dictionary<string, object>
         {
-            {"Remaining Time", remainingTime },
+            {"Run Time", time },
             {"Rank", rank },
             {"Skill Level", ER.CalculateSkillForThisGame() },
             {"Skill Difference Compared to average", ER.CalculateSkillForThisGame() - ER.PlayerStats.averageSkillLevel },
@@ -128,8 +140,7 @@ public class Metrics : MonoBehaviour {
 
         AmplitudeHelper.Instance.LogEvent("Run Finished", customProperties);
 
-        totalJumps = 0;
-        totaljumpsWithTricks = 0;
+        
     }
 
     //appelé quand le joueur quitte le jeu. Calcule pas mal de moyennes
