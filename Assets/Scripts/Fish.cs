@@ -74,10 +74,9 @@ public abstract class Fish : MonoBehaviour {
 
         if (turning) {
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * turningSpeed * movementSpeed);
-
-            if (Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y) < turnStabilisation) {
+            
+            if (lastTimeTurned > 3 || Mathf.Abs(transform.rotation.eulerAngles.y % 360 - targetRotation.eulerAngles.y % 360) < turnStabilisation) {
                 transform.rotation = targetRotation;
-                print("end turn");
                 turning = false;
             }
         }
@@ -116,7 +115,8 @@ public abstract class Fish : MonoBehaviour {
                 if (trigger.mode == Trigger.TriggerMode.Jump)
                     return;
                 float angle = trigger.mode == Trigger.TriggerMode.TurnLeft ? -90 : 90;
-                Turn(angle);
+                if (lastTrigger != trigger)
+                    Turn(angle);
                 lastTrigger = trigger;
             }
 
@@ -162,7 +162,7 @@ public abstract class Fish : MonoBehaviour {
             
         } else if (controller.isGrounded) {
             verticalVelocity = -gravity * deltaTime;
-            EndTrick();
+            Landing();
             if (slideParticle.isStopped)
                 slideParticle.Play();
 
@@ -181,7 +181,7 @@ public abstract class Fish : MonoBehaviour {
 
     public virtual void StartTrick() { }
 
-    public virtual void EndTrick() { }
+    public virtual void Landing() { }
 
     #endregion
 
@@ -189,6 +189,8 @@ public abstract class Fish : MonoBehaviour {
     float lastTimeTurned;
 
     void Turn(float angle) {
+        print("turn from raycast: " + angle);
+
         if (Time.time - lastTimeTurned < 1) return;
 
         Vector3 rot = targetRotation.eulerAngles;

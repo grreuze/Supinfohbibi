@@ -18,6 +18,8 @@ public class FishController : Fish {
         renderer = GetComponent<Renderer>();
         camera = Camera.main.GetComponent<CameraScript>();
         camera.SetFollower(FindObjectOfType<FollowerScript>());
+        camera.target = transform;
+
         speedParticle = Camera.main.GetComponentInChildren<ParticleSystem>();
     }
 
@@ -59,17 +61,20 @@ public class FishController : Fish {
         }
     }
 
-    public override void EndTrick() {
+    public override void Landing() {
         if (trickSystem.isPlaying) {
             trickSystem.EndOfTrick();
         }
 
-        if (!turning && camera.currentState != camera.idle)
+        if (!turning && camera.currentState != camera.idle) {
             camera.SetNewState(camera.idle); // Camera Idle
+            print("landing to idle");
+        }
         else if (turning && 
             ((camera.currentState != camera.turningLeft && lastAngle == -90) || 
              (camera.currentState != camera.turningRight && lastAngle == 90))) {
 
+            print("landing to turn " + lastAngle);
             TurnCamera(lastAngle);
         }
         hasAlreadyDoneTricks = false;

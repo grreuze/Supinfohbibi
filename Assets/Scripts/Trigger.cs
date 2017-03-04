@@ -42,8 +42,10 @@ public class Trigger : MonoBehaviour {
             fish.Turn(newRot);
             fish.lastTrigger = this;
 
-            if (fish.GetComponent<FishController>())
+            if (fish.GetComponent<FishController>()) {
                 fish.TurnCamera(angle);
+                print("turn from trigger: " + angle);
+            }
         }
     }
 
