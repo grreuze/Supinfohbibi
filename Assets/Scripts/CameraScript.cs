@@ -8,15 +8,15 @@ public class CameraScript : MonoBehaviour {
     [System.Serializable]
     public struct CameraState {
         public Vector3 cameraOffset;
-        public Vector3 followOffset;
+        public Vector3 targetOffset;
 
-        public CameraState(Vector3 cameraOffset, Vector3 followOffset) {
+        public CameraState(Vector3 cameraOffset, Vector3 targetOffset) {
             this.cameraOffset = cameraOffset;
-            this.followOffset = followOffset;
+            this.targetOffset = targetOffset;
         }
 
         public static bool operator ==(CameraState a, CameraState b) {
-            return a.cameraOffset == b.cameraOffset && a.followOffset == b.followOffset;
+            return a.cameraOffset == b.cameraOffset && a.targetOffset == b.targetOffset;
         }
 
         public static bool operator != (CameraState a, CameraState b) {
@@ -29,45 +29,36 @@ public class CameraScript : MonoBehaviour {
     public Vector3 targetOffset;
 
     public float speed = 20;
-
-    public Transform follower;
+    
     public Transform target;
 
     public CameraState idle, descending, turningLeft, turningRight, end;
     [HideInInspector]
     public CameraState currentState;
-
-    private FollowerScript followScript;
-
-    private Vector3 originalPos;
-    private Vector3 orignialRot;
-
+    
     Vector3 targetPosition, cameraPosition;
     Quaternion cameraRotation;
 
     //stockage des positions relatives initiales pour l'idle
     private void Start() {
-        originalPos = transform.position;
-        orignialRot = transform.eulerAngles;
-
         SetNewState(idle);
     }
 
     //méthode pour que la caméra suive le follower
     void LateUpdate()
     {
-        if (!follower) return;
+        if (!target) return;
 
         if (!overrideOffset) {
             cameraOffset = Vector3.Lerp(cameraOffset, currentState.cameraOffset, speed * Time.deltaTime);
-            targetOffset = Vector3.Lerp(targetOffset, currentState.cameraOffset, speed * Time.deltaTime);
+            targetOffset = Vector3.Lerp(targetOffset, currentState.targetOffset, speed * Time.deltaTime);
         }
 
         targetPosition = target.position + target.TransformDirection(targetOffset);
 
         cameraRotation = Quaternion.LookRotation(targetPosition - transform.position);
 
-        cameraPosition = target.localPosition + target.TransformDirection(relativePosition + cameraOffset);
+        cameraPosition = target.position + target.TransformDirection(relativePosition + cameraOffset);
 
         transform.localPosition = Vector3.Slerp(transform.position, cameraPosition, speed * Time.deltaTime);
         transform.localRotation = Quaternion.Slerp(transform.rotation, cameraRotation, speed * Time.deltaTime);
@@ -75,10 +66,5 @@ public class CameraScript : MonoBehaviour {
 
     public void SetNewState(CameraState newState) {
         currentState = newState;
-    }
-
-    public void SetFollower(FollowerScript target) {
-        followScript = target;
-        follower = target.transform;
     }
 }

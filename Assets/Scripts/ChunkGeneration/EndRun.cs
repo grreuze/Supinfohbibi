@@ -6,7 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public class EndRun : MonoBehaviour {
 
-    public Stats PlayerStats = new Stats();
+    public Stats PlayerStats;
 
     public float remainingTimeInSeconds;
     public float ratioOfCollectiblesFound;

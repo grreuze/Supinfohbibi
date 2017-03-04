@@ -75,7 +75,7 @@ public abstract class Fish : MonoBehaviour {
         if (turning) {
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * turningSpeed * movementSpeed);
             
-            if (lastTimeTurned > 3 || Mathf.Abs(transform.rotation.eulerAngles.y % 360 - targetRotation.eulerAngles.y % 360) < turnStabilisation) {
+            if (Time.time - lastTimeTurned > 3 || Mathf.Abs(transform.rotation.eulerAngles.y % 360 - targetRotation.eulerAngles.y % 360) < turnStabilisation) {
                 transform.rotation = targetRotation;
                 turning = false;
             }
@@ -100,8 +100,7 @@ public abstract class Fish : MonoBehaviour {
 
     public abstract void MovementSpeed();
 
-    public float GetAverageSpeed()
-    {
+    public float GetAverageSpeed() {
         return averageSpeed;
     }
 
@@ -131,9 +130,11 @@ public abstract class Fish : MonoBehaviour {
 
         if (!Physics.Raycast(transform.position + transform.right * stabilisationCheckDistance + transform.forward * 1.5f, Vector3.down, out hit)) {
             horizontalVelocity = -stabilisationSpeed * movementSpeed * deltaTime;
-        }
-        if (!Physics.Raycast(transform.position - transform.right * stabilisationCheckDistance + transform.forward * 1.5f, Vector3.down, out hit)) {
+        } else if (!Physics.Raycast(transform.position - transform.right * stabilisationCheckDistance + transform.forward * 1.5f, Vector3.down, out hit)) {
             horizontalVelocity = stabilisationSpeed * movementSpeed * deltaTime;
+        } else {
+            //horizontalVelocity = Mathf.Lerp(horizontalVelocity, 0, stabilisationSpeed * Time.deltaTime);
+            horizontalVelocity = 0;
         }
     }
 
@@ -169,6 +170,12 @@ public abstract class Fish : MonoBehaviour {
         } else if (reachedMaxSpeed == 0) {
             verticalVelocity -= gravity * deltaTime;
             StartTrick();
+            Debug.DrawLine(transform.position, transform.position + Vector3.up * 5, Color.red);
+            RaycastHit hit;
+            if (Physics.Linecast(transform.position + Vector3.up * 0.7f, transform.position + Vector3.up*2, out hit) && hit.collider.gameObject.layer != 8) {
+                verticalVelocity = -gravity * deltaTime;
+            }
+
         } else if (transform.position.y < -300) {
             OutOfBounds();
         }
@@ -187,10 +194,10 @@ public abstract class Fish : MonoBehaviour {
 
     #region Turning
     float lastTimeTurned;
+    [HideInInspector]
+    public float lastAngle;
 
     void Turn(float angle) {
-        print("turn from raycast: " + angle);
-
         if (Time.time - lastTimeTurned < 1) return;
 
         Vector3 rot = targetRotation.eulerAngles;
@@ -201,6 +208,7 @@ public abstract class Fish : MonoBehaviour {
         turning = true;
         targetRotation = newRot;
 
+        lastAngle = angle;
         lastTimeTurned = Time.time;
     }
 
@@ -209,6 +217,7 @@ public abstract class Fish : MonoBehaviour {
     public void Turn(Quaternion targetRot) {
         turning = true;
         targetRotation = targetRot;
+        lastTimeTurned = Time.time;
     }
     #endregion
 }

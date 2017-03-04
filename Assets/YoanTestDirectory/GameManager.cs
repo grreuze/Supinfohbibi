@@ -46,11 +46,9 @@ public class GameManager : MonoBehaviour {
     private int bestScore = 0;
     private EndRun endRun;
 
-    public void UpdateBestScore()
-    {
-        bestScoreText = GameObject.FindObjectsOfType<BestScore>();
-        foreach (BestScore best in bestScoreText)
-        {
+    public void UpdateBestScore() {
+        bestScoreText = FindObjectsOfType<BestScore>();
+        foreach (BestScore best in bestScoreText) {
             best.UpdateBestScore(bestScore);
         }
     }
@@ -73,7 +71,7 @@ public class GameManager : MonoBehaviour {
     public void EndRun() {
         if (trickSystem.isPlaying)
             trickSystem.EndOfTrick();
-
+        
         CameraScript camera = Camera.main.GetComponent<CameraScript>();
         camera.SetNewState(camera.end);
         
