@@ -18,11 +18,13 @@ public class GameManager : MonoBehaviour {
     private BestScore[] bestScoreText;
 
     void Start() {
+        endRun = new EndRun();
         Metrics.ins.Setup();
-
+        endRun.OnRunStart();
         trickSystem = FindObjectOfType<Trick_Pattern>();
         if (playAuto)
             SpawnFishes();
+        bestScore = endRun.PlayerStats.bestScore;
         UpdateBestScore();
     }
 
@@ -42,11 +44,11 @@ public class GameManager : MonoBehaviour {
     private Trick_Pattern trickSystem;
     public bool soundPause = false;
     private int bestScore = 0;
+    private EndRun endRun;
 
     public void UpdateBestScore()
     {
-        if(bestScoreText == null)
-            bestScoreText = GameObject.FindObjectsOfType<BestScore>();
+        bestScoreText = GameObject.FindObjectsOfType<BestScore>();
         foreach (BestScore best in bestScoreText)
         {
             best.UpdateBestScore(bestScore);
@@ -77,6 +79,7 @@ public class GameManager : MonoBehaviour {
         
         _endCanvas.enabled = true;
         _endCanvas.GetComponentInChildren<Score>().ScoreFinal();
+        endRun.LaunchEndRunProtocol();
     }
 
     public void StartRun()
@@ -96,5 +99,10 @@ public class GameManager : MonoBehaviour {
         {
             return false;
         }
+    }
+
+    public int GetBestScore()
+    {
+        return bestScore;
     }
 }

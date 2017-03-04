@@ -13,10 +13,22 @@ public class EndRun : MonoBehaviour {
 
     //niveau de skill moyen des parties
     public float newAverageSkillLevel;
-    
+
     //méthode qui va calculer la difficulté de la run
     public void OnRunStart()
     {
+        if (!Directory.Exists("Saves"))
+        {
+            Directory.CreateDirectory("Saves");
+        }
+        if (!File.Exists("Saves/statistics.jpp"))
+        {
+            PlayerStats.AllSkillLevels = new List<float>();
+            PlayerStats.bestScore = 0;
+            PlayerStats.totalRunsCount = 0;
+            PlayerStats.averageSkillLevel = 0;
+            SaveData();
+        }
         LoadData();
 
         //Formules à implémenter et à tester
@@ -36,15 +48,13 @@ public class EndRun : MonoBehaviour {
         CalculateAverageSkillLevel();
 
         PlayerStats.averageSkillLevel = newAverageSkillLevel;
+        PlayerStats.bestScore = GameManager.instance.GetBestScore();
 
         SaveData();
     }
 
     public void SaveData()
     {
-        if (!Directory.Exists("Saves"))       
-            Directory.CreateDirectory("Saves");
-
         BinaryFormatter formatter = new BinaryFormatter();
         FileStream Savefile = File.Create("Saves/statistics.jpp");
 
@@ -89,6 +99,8 @@ public class Stats
     public int totalRunsCount;
 
     public float averageSkillLevel;
+
+    public int bestScore;
 
     public List<float> AllSkillLevels;
 
