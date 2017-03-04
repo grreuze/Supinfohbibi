@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour {
     private BestScore[] bestScoreText;
 
     void Start() {
+        Screen.orientation = ScreenOrientation.Portrait;
         endRun = GetComponent<EndRun>();
         Metrics.ins.Setup();
         endRun.OnRunStart();
