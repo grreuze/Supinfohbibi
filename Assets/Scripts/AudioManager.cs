@@ -18,7 +18,6 @@ public class AudioManager : MonoBehaviour
 		if (AudioManager.ins == null) {
 			AudioManager.ins = this;
 		} else {
-			Debug.Log ("Second instance of AudioManager detected!!!! Destroying last instance.");
 			Destroy (gameObject);
 		}
 	}

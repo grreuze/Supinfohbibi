@@ -15,12 +15,15 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    private BestScore[] bestScoreText;
+
     void Start() {
         Metrics.ins.Setup();
 
         trickSystem = FindObjectOfType<Trick_Pattern>();
         if (playAuto)
             SpawnFishes();
+        UpdateBestScore();
     }
 
     public static GameManager GetInstance() {
@@ -38,6 +41,17 @@ public class GameManager : MonoBehaviour {
     public Canvas _endCanvas;
     private Trick_Pattern trickSystem;
     public bool soundPause = false;
+    private int bestScore = 0;
+
+    public void UpdateBestScore()
+    {
+        if(bestScoreText == null)
+            bestScoreText = GameObject.FindObjectsOfType<BestScore>();
+        foreach (BestScore best in bestScoreText)
+        {
+            best.UpdateBestScore(bestScore);
+        }
+    }
 
     public void SpawnFishes() {
         Instantiate(_fish, transform.position, transform.rotation);
@@ -68,5 +82,19 @@ public class GameManager : MonoBehaviour {
     public void StartRun()
     {
         _endCanvas.enabled = false;
+    }
+
+    public bool IsScoreBetterThanBest(int score)
+    {
+        if(score > bestScore)
+        {
+            bestScore = score;
+            UpdateBestScore();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

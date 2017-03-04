@@ -46,6 +46,11 @@ public class Score : MonoBehaviour
 		rankDisplay.text = "RANK: " + rankFinal;
 		scoreDisplay.text = "SCORE: " + scoreFinal;
 
+        if(GameManager.instance.IsScoreBetterThanBest(scoreFinal))
+        {
+            Debug.Log("BestScore");
+        }
+
 		//StartCoroutine ("RollingScore");
 
 	}
