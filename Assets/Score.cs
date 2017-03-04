@@ -41,10 +41,10 @@ public class Score : MonoBehaviour
 		scoreFinal = (int)((200 * (pointsFinal / timeFinal)) + Mathf.Abs ((((5 - rankFinal) * (pointsFinal - (2 * timeFinal))) / 2)));
 
 
-		timeDisplay.text = "TIME: " + timeFinal;
-		pointsDisplay.text = "POINTS: " + pointsFinal;
-		rankDisplay.text = "RANK: " + rankFinal;
-		scoreDisplay.text = "SCORE: " + scoreFinal;
+		timeDisplay.text = "" + timeFinal;
+		pointsDisplay.text = "" + pointsFinal;
+		rankDisplay.text = "" + rankFinal;
+		scoreDisplay.text = "" + scoreFinal;
 
 		//StartCoroutine ("RollingScore");
 
