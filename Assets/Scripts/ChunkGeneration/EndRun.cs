@@ -10,6 +10,7 @@ public class EndRun : MonoBehaviour {
 
     public float remainingTimeInSeconds;
     public float ratioOfCollectiblesFound;
+    //public float timeToBeat;
 
     //niveau de skill moyen des parties
     public float newAverageSkillLevel;
@@ -33,7 +34,7 @@ public class EndRun : MonoBehaviour {
 
         //Formules à implémenter et à tester
         //runLength = Random.Range(20, 30);
-        //timeToBeat = (RunLength*10)+((1-Playerstats.averageSkillLevel) * 12);
+        //timeToBeat = (LevelGeneration.ins.runLength*10)+((1-PlayerStats.averageSkillLevel) * 12);
     }
 	
 
@@ -49,7 +50,7 @@ public class EndRun : MonoBehaviour {
 
         PlayerStats.averageSkillLevel = newAverageSkillLevel;
         PlayerStats.bestScore = GameManager.instance.GetBestScore();
-
+        Metrics.ins.FinishRun(FindObjectOfType<Score>().GetFinalTime(), FindObjectOfType<Ranking>().GetRank());
         SaveData();
     }
 
