@@ -137,8 +137,8 @@ Shader "Shader Forge/water" {
 ////// Lighting:
 ////// Emissive:
                 float4 node_3824 = _Time + _TimeEditor;
-                float4 node_8355 = _Time + _TimeEditor;
-                float node_4127_ang = node_8355.g;
+                float4 node_5556 = _Time + _TimeEditor;
+                float node_4127_ang = node_5556.g;
                 float node_4127_spd = (node_3824.g*_Vitesse_Rotation);
                 float node_4127_cos = cos(node_4127_spd*node_4127_ang);
                 float node_4127_sin = sin(node_4127_spd*node_4127_ang);
