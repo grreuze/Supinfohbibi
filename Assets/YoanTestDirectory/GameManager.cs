@@ -15,12 +15,17 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    void Start() {
-        Metrics.ins.Setup();
+    private BestScore[] bestScoreText;
 
+    void Start() {
+        endRun = new EndRun();
+        Metrics.ins.Setup();
+        endRun.OnRunStart();
         trickSystem = FindObjectOfType<Trick_Pattern>();
         if (playAuto)
             SpawnFishes();
+        bestScore = endRun.PlayerStats.bestScore;
+        UpdateBestScore();
     }
 
     public static GameManager GetInstance() {
@@ -38,6 +43,17 @@ public class GameManager : MonoBehaviour {
     public Canvas _endCanvas;
     private Trick_Pattern trickSystem;
     public bool soundPause = false;
+    private int bestScore = 0;
+    private EndRun endRun;
+
+    public void UpdateBestScore()
+    {
+        bestScoreText = GameObject.FindObjectsOfType<BestScore>();
+        foreach (BestScore best in bestScoreText)
+        {
+            best.UpdateBestScore(bestScore);
+        }
+    }
 
     public void SpawnFishes() {
         Instantiate(_fish, transform.position, transform.rotation);
@@ -63,10 +79,30 @@ public class GameManager : MonoBehaviour {
         
         _endCanvas.enabled = true;
         _endCanvas.GetComponentInChildren<Score>().ScoreFinal();
+        endRun.LaunchEndRunProtocol();
     }
 
     public void StartRun()
     {
         _endCanvas.enabled = false;
+    }
+
+    public bool IsScoreBetterThanBest(int score)
+    {
+        if(score > bestScore)
+        {
+            bestScore = score;
+            UpdateBestScore();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public int GetBestScore()
+    {
+        return bestScore;
     }
 }
