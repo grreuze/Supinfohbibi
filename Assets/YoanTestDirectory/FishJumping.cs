@@ -11,7 +11,7 @@ public class FishJumping : MonoBehaviour
 	public float _timeWaitingEndOfJump;
 	public float _heightLimitForTricks;
 
-	private Rigidbody _rigid;
+	//private Rigidbody _rigid;
 	private FishMoving _fishMoving;
 	private CapsuleCollider _capscol;
 	private bool _onJump;
@@ -22,7 +22,7 @@ public class FishJumping : MonoBehaviour
 
 	private void Awake ()
 	{
-		_rigid = GetComponentInParent<Rigidbody> ();
+		//_rigid = GetComponentInParent<Rigidbody> ();
 		_fishMoving = GetComponentInParent<FishMoving> ();
 		_capscol = GetComponent<CapsuleCollider> ();
 	}
@@ -37,7 +37,7 @@ public class FishJumping : MonoBehaviour
 	public void CallJump (float jumpStrength)
 	{
 		print ("jump");
-		_rigid.AddRelativeForce (new Vector3 (0, _fishMoving.GetMovementSpeed () * jumpStrength, 0));
+		//_rigid.AddRelativeForce (new Vector3 (0, _fishMoving.GetMovementSpeed () * jumpStrength, 0));
 		_yPosBeforeJumpStart = transform.position.y;
 		_onJump = true;
 	}

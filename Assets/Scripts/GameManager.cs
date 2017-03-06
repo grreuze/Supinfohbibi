@@ -34,9 +34,13 @@ public class GameManager : MonoBehaviour {
     }
 
     public bool isPlaying = false;
-    public float _playerStartMoveSpeed;
-    public float _maxMoveSpeed;
-    public float _minMoveSpeed;
+    public float baseMoveSpeed;
+    public float accelerateMoveSpeed;
+    public float decelerateMoveSpeed;
+    public float maxValueToJump;
+    //public float _playerStartMoveSpeed;
+    //public float _maxMoveSpeed;
+    //public float _minMoveSpeed;
     public int _nbOpponent;
     public float _maxOpponentSpeed;
     public GameObject _fish;
@@ -62,7 +66,7 @@ public class GameManager : MonoBehaviour {
             spawnPosition.z += Random.Range(-2, 2);
 
             GameObject go = Instantiate(aiFish, spawnPosition, transform.rotation);
-            go.GetComponentInParent<AIFish>().movementSpeed = Random.Range(_minMoveSpeed, _maxMoveSpeed);
+            //go.GetComponentInParent<AIFish>().movementSpeed = Random.Range(_minMoveSpeed, _maxMoveSpeed);
         }
         isPlaying = true;
         StartRun();

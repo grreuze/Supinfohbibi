@@ -33,16 +33,26 @@ public class FishController : Fish {
         if (descending && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
             || Input.GetMouseButton(0)) && !trickSystem.isPlaying && distanceToFloor > distanceToFloorToAccelerate) {
 
-            if (movementSpeed < speed.max)
-                movementSpeed += accelerationFactor;
+            /*if (movementSpeed < speed.max)
+                movementSpeed += accelerationFactor;*/
 
+            movementSpeed = GameManager.instance.accelerateMoveSpeed;
             accelerating = true;
             if(speedParticle.isStopped)
                 speedParticle.Play();
 
         } else {
+            /*
             if (movementSpeed > speed.min)
-                movementSpeed -= decelerationFactor;
+                movementSpeed -= decelerationFactor;*/
+            if(!descending && Input.GetMouseButton(0))
+            {
+                movementSpeed = GameManager.instance.decelerateMoveSpeed;
+            }
+            else
+            {
+                movementSpeed = GameManager.instance.baseMoveSpeed;
+            }
             accelerating = false;
             if (speedParticle.isPlaying)
                 speedParticle.Stop();
