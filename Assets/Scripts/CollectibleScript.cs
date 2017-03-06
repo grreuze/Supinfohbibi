@@ -1,9 +1,21 @@
 ﻿using UnityEngine;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 
 public class CollectibleScript : MonoBehaviour {
 
-    public int scoreToAdd;
-    public int bigComboBonus;
+    [Header("Gros boost")]
+    [Range(1, 2)]
+    public float boostValue;
+    public float boostTime;
+
+    [Header("Petit Boost")]
+    [Range(1, 1.5f)]
+    public float smallBoostValue;
+    public float smallBoostTime;
+
+    float originalSpeed = GameManager.GetInstance()._maxMoveSpeed;
 
     static int combo = 0;
 
@@ -36,21 +48,45 @@ public class CollectibleScript : MonoBehaviour {
             if(CollectibleScript.combo < 5)
             {
                 CancelInvoke();
-                //collision.gameObject.GetComponent<Truc>().score += scoreToAdd;
+                
                 CollectibleScript.combo++;
                 Invoke("ResetCombo", 0.5f);
+
+                //reset des coroutines et de la vitesse pour éviter le stack de coroutines
+                StopCoroutine(SmallBoost());
+                GameManager.GetInstance()._maxMoveSpeed = originalSpeed;
+
+                StartCoroutine(SmallBoost());
 
                 AudioManager.ins.PlayCollectibleSound(combo, gameObject);
             }
             else //si le combo est complété
             {
-                //collision.gameObject.GetComponent<Truc>().score += (scoreToAdd + bigComboBonus);
+                StartCoroutine(Boost());
                 ResetCombo();
             }
 
             CollectedEffect.Emit(1);
             Destroy(gameObject);
         }
+    }
+
+    private IEnumerator Boost()
+    {
+        GameManager.GetInstance()._maxMoveSpeed *= boostValue;
+
+        yield return new WaitForSeconds(boostTime);
+
+        GameManager.GetInstance()._maxMoveSpeed = originalSpeed;
+    }
+
+    private IEnumerator SmallBoost()
+    {
+        GameManager.GetInstance()._maxMoveSpeed *= smallBoostValue;
+
+        yield return new WaitForSeconds(smallBoostTime);
+
+        GameManager.GetInstance()._maxMoveSpeed = originalSpeed;
     }
 
 }
