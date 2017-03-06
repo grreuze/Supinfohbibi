@@ -4,6 +4,8 @@
 public abstract class Fish : MonoBehaviour {
 
     #region public properties
+    public bool drawRays;
+
     [Header("Speed")]
     public float movementSpeed = 12;
     private float averageSpeed = 0;
@@ -128,19 +130,25 @@ public abstract class Fish : MonoBehaviour {
 
         }
 
-        Ray leftRay = new Ray(transform.position + transform.right * stabilisationCheckDistance + transform.forward * 1.5f + transform.up*0.1f, Vector3.down * 4);
-        Ray rightRay = new Ray(transform.position - transform.right * stabilisationCheckDistance + transform.forward * 1.5f + transform.up * 0.1f, Vector3.down * 4);
+        if (drawRays) {
+            Debug.DrawLine(transform.position + transform.right * stabilisationCheckDistance + transform.forward * 1.5f + Vector3.up*10,
+                           transform.position + transform.right * stabilisationCheckDistance + transform.forward * 1.5f - Vector3.up*100, Color.red);
+
+            Debug.DrawLine(transform.position - transform.right * stabilisationCheckDistance + transform.forward * 1.5f + Vector3.up*10,
+                           transform.position - transform.right * stabilisationCheckDistance + transform.forward * 1.5f - Vector3.up*100, Color.blue);
+        }
         
-        Debug.DrawRay(leftRay.origin, leftRay.direction, Color.red);
-        Debug.DrawRay(rightRay.origin, leftRay.direction, Color.blue);
+        bool hitRight = Physics.Linecast(transform.position + transform.right * stabilisationCheckDistance + transform.forward * 1.5f + Vector3.up*10,
+                         transform.position + transform.right * stabilisationCheckDistance + transform.forward * 1.5f - Vector3.up*100);
 
-        if (!Physics.Raycast(rightRay, out hit)) {
+        bool hitLeft = Physics.Linecast(transform.position - transform.right * stabilisationCheckDistance + transform.forward * 1.5f + Vector3.up*10,
+                         transform.position - transform.right * stabilisationCheckDistance + transform.forward * 1.5f - Vector3.up*100);
+
+        if (!hitRight) {
             horizontalVelocity = -stabilisationSpeed * movementSpeed * deltaTime;
-            if (GetComponent<FishController>()) print("hole to the right");
 
-        } else if (!Physics.Raycast(leftRay, out hit)) {
+        } else if (!hitLeft) {
             horizontalVelocity = stabilisationSpeed * movementSpeed * deltaTime;
-            if (GetComponent<FishController>()) print("hole to the left");
 
         } else {
             horizontalVelocity = 0;
