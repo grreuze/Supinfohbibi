@@ -1,107 +1,130 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
-public class FishController : Fish {
+public class FishController : Fish
+{
 
-    FishAnimator fishAnim;
-    public float distanceTofloorForPlayAirAnim;
+	FishAnimator fishAnim;
+	public float distanceTofloorForPlayAirAnim;
     
-    new Renderer renderer;
-    bool descending;
-    float lastY;
-    private Vector3 mousePositionForJump;
+	new Renderer renderer;
+	float lastY;
+	private Vector3 mousePositionForJump;
 
-    new CameraScript camera;
-    ParticleSystem speedParticle;
+	new CameraScript camera;
+	ParticleSystem speedParticle;
 
-    void Start() {
-        fishAnim = GetComponentInChildren<FishAnimator>();
-        renderer = GetComponent<Renderer>();
-        camera = Camera.main.GetComponent<CameraScript>();
-        camera.target = transform;
+	float fov;
+	public float accelerateFov = 90;
+	bool isAccFovOn = false;
 
-        speedParticle = Camera.main.GetComponentInChildren<ParticleSystem>();
-    }
+	void Start ()
+	{
+		fishAnim = GetComponentInChildren<FishAnimator> ();
+		renderer = GetComponent<Renderer> ();
+		camera = Camera.main.GetComponent<CameraScript> ();
+		camera.target = transform;
 
-    public override void MovementSpeed() {
-        int touchCount = Input.touchCount;
+		speedParticle = Camera.main.GetComponentInChildren<ParticleSystem> ();
+		fov = Camera.main.fieldOfView;
+	}
 
-        fishAnim.SetGrounded(distanceTofloorForPlayAirAnim > distanceToFloor);
-        fishAnim.SetAccelerate(descending && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
-            || Input.GetMouseButton(0)) && !trickSystem.isPlaying && distanceToFloor > distanceToFloorToAccelerate);
+	public override void MovementSpeed ()
+	{
+		int touchCount = Input.touchCount;
 
-        descending = transform.position.y < lastY;
-        lastY = transform.position.y;
+		fishAnim.SetGrounded (distanceTofloorForPlayAirAnim > distanceToFloor);
+		fishAnim.SetAccelerate (descending && ((Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Moved)
+		|| Input.GetMouseButton (0)) && !trickSystem.isPlaying);
         
-        if (descending && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
-            || Input.GetMouseButton(0)) && !trickSystem.isPlaying && distanceToFloor > distanceToFloorToAccelerate) {
+		if (descending && ((Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Moved)
+		    || Input.GetMouseButton (0)) && !trickSystem.isPlaying) {
 
-            movementSpeed = GameManager.instance.accelerateMoveSpeed;
+			movementSpeed = GameManager.instance.accelerateMoveSpeed;
 
-            accelerating = true;
-            if(speedParticle.isStopped)
-                speedParticle.Play();
+			accelerating = true;
+			if (speedParticle.isStopped)
+				speedParticle.Play ();
 
-        } else {
-            if (!descending && Input.GetMouseButton(0)) {
-                movementSpeed = GameManager.instance.decelerateMoveSpeed;
-            } else {
-                movementSpeed = GameManager.instance.baseMoveSpeed;
-            }
-            accelerating = false;
-            if (speedParticle.isPlaying)
-                speedParticle.Stop();
-        }
-        renderer.material = accelerating ? acceleratingMaterial : defaultMaterial;
-        if ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) || Input.GetMouseButtonDown(0)) {
-            mousePositionForJump = Input.mousePosition;
-            Debug.Log("Begin : " + Input.mousePosition.y);
-        }
-        if ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended) || Input.GetMouseButtonUp(0)) {
-            Debug.Log("End : " + Input.mousePosition.y);
-            if (isGrounded && mousePositionForJump.y < Input.mousePosition.y) {
-                CallJump();
-            }
-        }
-    }
+		} else {
+			if (!descending && Input.GetMouseButton (0)) {
+				movementSpeed = GameManager.instance.decelerateMoveSpeed;
+			} else {
+				movementSpeed = GameManager.instance.baseMoveSpeed;
+			}
+			accelerating = false;
+			if (speedParticle.isPlaying)
+				speedParticle.Stop ();
+		}
+		renderer.material = accelerating ? acceleratingMaterial : defaultMaterial;
+		if ((Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began) || Input.GetMouseButtonDown (0)) {
+			mousePositionForJump = Input.mousePosition;
+			//Debug.Log ("Begin : " + Input.mousePosition.y);
+		}
+		if ((Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Ended) || Input.GetMouseButtonUp (0)) {
+			//Debug.Log ("End : " + Input.mousePosition.y);
+			if (isGrounded && mousePositionForJump.y < Input.mousePosition.y) {
+				CallJump ();
+			}
+		}
 
-    bool hasAlreadyDoneTricks;
-    public override void StartTrick() {
-        if (transform.position.y - startJumpY > heightLimitForTricks && !trickSystem.isPlaying && !hasAlreadyDoneTricks) {
-            trickSystem.StartOfTrick();
-            camera.SetNewState(camera.descending); // Camera Descending
+		if (accelerating) {
+			if (isAccFovOn == false) {
+				isAccFovOn = true;
+				Camera.main.DOFieldOfView (accelerateFov, 0.3f);
 
-            hasAlreadyDoneTricks = true;
-        }
-    }
+			}
+		} else {
+			if (isAccFovOn == true) {
+				isAccFovOn = false;
+				Camera.main.DOFieldOfView (fov, 0.3f);
+			}
+		}
 
-    public override void Landing() {
-        if (trickSystem.isPlaying) {
-            trickSystem.EndOfTrick();
-        }
-        if (!turning && camera.currentState != camera.idle) {
-            camera.SetNewState(camera.idle); // Camera Idle
-        }
-        else if (turning && 
-            ((camera.currentState != camera.turningLeft && lastAngle == -90) || 
-             (camera.currentState != camera.turningRight && lastAngle == 90))) {
-            TurnCamera(lastAngle);
-        }
-        hasAlreadyDoneTricks = false;
-    }
+	}
 
-    public override void TurnCamera(float angle) {
-        lastAngle = angle;
-        if (angle == 90 && camera.currentState != camera.turningRight) {
-            camera.SetNewState(camera.turningRight); 
+	bool hasAlreadyDoneTricks;
 
-        } else if (angle == -90 && camera.currentState != camera.turningLeft) {
-            camera.SetNewState(camera.turningLeft);
-        }
-    }
+	public override void StartTrick ()
+	{
+		if (transform.position.y - startJumpY > heightLimitForTricks && !trickSystem.isPlaying && !hasAlreadyDoneTricks) {
+			trickSystem.StartOfTrick ();
+			camera.SetNewState (camera.descending); // Camera Descending
 
-    public override void OutOfBounds() {
-        Debug.LogWarning("OUT OF BOUNDS: Restarting the Scene.");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
+			hasAlreadyDoneTricks = true;
+		}
+	}
+
+	public override void Landing ()
+	{
+		if (trickSystem.isPlaying) {
+			trickSystem.EndOfTrick ();
+		}
+		if (!turning && camera.currentState != camera.idle) {
+			camera.SetNewState (camera.idle); // Camera Idle
+		} else if (turning &&
+		           ((camera.currentState != camera.turningLeft && lastAngle == -90) ||
+		           (camera.currentState != camera.turningRight && lastAngle == 90))) {
+			TurnCamera (lastAngle);
+		}
+		hasAlreadyDoneTricks = false;
+	}
+
+	public override void TurnCamera (float angle)
+	{
+		lastAngle = angle;
+		if (angle == 90 && camera.currentState != camera.turningRight) {
+			camera.SetNewState (camera.turningRight); 
+
+		} else if (angle == -90 && camera.currentState != camera.turningLeft) {
+			camera.SetNewState (camera.turningLeft);
+		}
+	}
+
+	public override void OutOfBounds ()
+	{
+		Debug.LogWarning ("OUT OF BOUNDS: Restarting the Scene.");
+		SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
+	}
 }
