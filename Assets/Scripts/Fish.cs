@@ -128,8 +128,8 @@ public abstract class Fish : MonoBehaviour {
 
         }
 
-        Ray leftRay = new Ray(transform.position + transform.right * stabilisationCheckDistance + transform.forward * 1.5f + transform.up, Vector3.down * 4);
-        Ray rightRay = new Ray(transform.position - transform.right * stabilisationCheckDistance + transform.forward * 1.5f + transform.up, Vector3.down * 4);
+        Ray leftRay = new Ray(transform.position + transform.right * stabilisationCheckDistance + transform.forward * 1.5f + transform.up*0.1f, Vector3.down * 4);
+        Ray rightRay = new Ray(transform.position - transform.right * stabilisationCheckDistance + transform.forward * 1.5f + transform.up * 0.1f, Vector3.down * 4);
         
         Debug.DrawRay(leftRay.origin, leftRay.direction, Color.red);
         Debug.DrawRay(rightRay.origin, leftRay.direction, Color.blue);
