@@ -5,6 +5,10 @@ public class LevelGeneration : MonoBehaviour {
 
     public static LevelGeneration ins;
 
+    //SEED
+    public string Seed;
+    string[] choppedSeed;
+
     //chunks spéciaux
     public GameObject FinalChunkPrefab;
 
@@ -42,23 +46,29 @@ public class LevelGeneration : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
+
+        GenerateSeed();
+        ChopSeed();
+
+        chunkScore = 0;
+
         StartCoroutine(GenerationCoroutine());
+        
     }
 
-    public void Generate() {
-        if (chunkScore == runLength && canGenerate) {
+    public void Generate(int ind)
+    {
+
+        if (chunkScore == runLength && canGenerate)
+        {
             GameObject finalChunk = Instantiate(FinalChunkPrefab, CurrentEndPoint.position, Quaternion.Euler(CurrentEndPoint.eulerAngles.x, CurrentEndPoint.eulerAngles.y, CurrentEndPoint.eulerAngles.z));
             canGenerate = false;
-        } else if (canGenerate) {
-            //on interdit les doublons de chunks via un do/while
-            do {
-                chunkIndexer = Random.Range(0, Chunks.Length);
-            } while (CheckChunkValidity(chunkIndexer));
-
-            previousChunkIndex = chunkIndexer;
-
+        }
+        else if (canGenerate)
+        {
+            
             //Instanciation du préfab
-            GameObject newChunk = Instantiate(Chunks[chunkIndexer], CurrentEndPoint.position, Quaternion.Euler(CurrentEndPoint.eulerAngles.x, CurrentEndPoint.eulerAngles.y, CurrentEndPoint.eulerAngles.z));
+            GameObject newChunk = Instantiate(Chunks[ind], CurrentEndPoint.position, Quaternion.Euler(CurrentEndPoint.eulerAngles.x, CurrentEndPoint.eulerAngles.y, CurrentEndPoint.eulerAngles.z));
 
             chunkScore++;
         }
@@ -74,10 +84,38 @@ public class LevelGeneration : MonoBehaviour {
         else return true;
     }
 
-    private IEnumerator GenerationCoroutine() {
-        for (int i = 0; i < runLength + 1; i++) {
-            Generate();
+    private void ChopSeed()
+    {
+        choppedSeed = Seed.Split(" "[0]);
+    }
+
+    private void GenerateSeed()
+    {
+        Seed = string.Empty;
+
+        for(int i = 0; i < runLength; i++)
+        {
+            do
+            {
+                chunkIndexer = Random.Range(0, Chunks.Length);
+            } while (CheckChunkValidity(chunkIndexer));
+
+            previousChunkIndex = chunkIndexer;
+            chunkScore++;
+
+            //append
+            Seed += chunkIndexer.ToString() + " "; 
+        }
+    }
+
+    IEnumerator GenerationCoroutine()
+    {
+        for (int i = 0; i < runLength; i++)
+        {
             yield return new WaitForEndOfFrame();
+
+            //générer chunk par chunk
+            Generate(int.Parse(choppedSeed[i]));         
         }
 
         yield return null;

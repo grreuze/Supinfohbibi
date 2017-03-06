@@ -23,6 +23,7 @@ public class CollectibleScript : MonoBehaviour {
     {
         originalSpeed = GameManager.GetInstance()._maxMoveSpeed;
         CollectedEffect = GetComponentInChildren<ParticleSystem>();
+        originalSpeed = GameManager.GetInstance()._maxMoveSpeed;
     }
 
     private void FixedUpdate()
