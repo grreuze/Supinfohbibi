@@ -52,7 +52,7 @@ public class Trigger : MonoBehaviour {
         if (fish) {
             if (fish.lastTrigger == this)
                 return;
-            fish.CallJump(jumpStrength);
+            //fish.CallJump(jumpStrength);
             fish.lastTrigger = this;
         }
     }

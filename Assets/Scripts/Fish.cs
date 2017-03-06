@@ -162,10 +162,9 @@ public abstract class Fish : MonoBehaviour {
     [HideInInspector]
     public float startJumpY;
 
-    public void CallJump(float jumpStrength) {
+    public void CallJump() {
         if (controller.isGrounded) {
             jumping = true;
-            this.jumpStrength = jumpStrength;
         }
     }
 
@@ -173,7 +172,7 @@ public abstract class Fish : MonoBehaviour {
         reachedMaxSpeed = verticalVelocity <= -maxFallingSpeed ? reachedMaxSpeed + deltaTime : 0;
 
         if (jumping) {
-            verticalVelocity = jumpStrength * movementSpeed * deltaTime;
+            verticalVelocity = GameManager.instance.JumpForce * deltaTime;
             startJumpY = transform.position.y;
             jumping = false;
             slideParticle.Stop();

@@ -6,7 +6,7 @@ public class TriggerJump : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) {
         Fish fish = other.GetComponentInParent<Fish>();
-        if (fish) 
-            fish.CallJump(jumpStrength);
+        /*if (fish) 
+            fish.CallJump(jumpStrength);*/
     }
 }

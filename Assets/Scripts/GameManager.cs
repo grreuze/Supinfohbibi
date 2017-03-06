@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour {
     public float baseMoveSpeed;
     public float accelerateMoveSpeed;
     public float decelerateMoveSpeed;
-    public float maxValueToJump;
+    public float JumpForce;
     //public float _playerStartMoveSpeed;
     //public float _maxMoveSpeed;
     //public float _minMoveSpeed;
