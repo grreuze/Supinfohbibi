@@ -43,6 +43,8 @@ public abstract class Fish : MonoBehaviour {
     float verticalVelocity, horizontalVelocity;
     float reachedMaxSpeed;
 
+    protected bool isGrounded;
+
     [HideInInspector]
     public float distanceToFloor;
 
@@ -59,6 +61,7 @@ public abstract class Fish : MonoBehaviour {
         trickSystem = FindObjectOfType<Trick_Pattern>();
         targetRotation = transform.rotation;
         slideParticle = GetComponentInChildren<ParticleSystem>();
+        isGrounded = true;
     }
 
     float deltaTime;
@@ -67,6 +70,10 @@ public abstract class Fish : MonoBehaviour {
 
         if (stopped)
             return;
+        
+        if (!isGrounded && controller.isGrounded) {
+            isGrounded = true;
+        }
 
         averageSpeed = ((averageSpeed * totalTimeForAvergaeSpeed) + (movementSpeed * deltaTime)) / (totalTimeForAvergaeSpeed + deltaTime);
         totalTimeForAvergaeSpeed += deltaTime;
@@ -162,10 +169,10 @@ public abstract class Fish : MonoBehaviour {
     [HideInInspector]
     public float startJumpY;
 
-    public void CallJump(float jumpStrength) {
+    public void CallJump() {
         if (controller.isGrounded) {
             jumping = true;
-            this.jumpStrength = jumpStrength;
+            isGrounded = false;
         }
     }
 
