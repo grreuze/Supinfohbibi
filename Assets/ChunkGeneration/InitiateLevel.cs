@@ -13,7 +13,7 @@ public class InitiateLevel : MonoBehaviour {
     IEnumerator _GenerateLevel() {
 
         for (int i = 0; i < lvlGen.runLength+1; i++) {
-            lvlGen.Generate();
+            //lvlGen.Generate();
             yield return null;
         }
         print("Done Generating");

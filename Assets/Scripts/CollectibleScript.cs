@@ -15,7 +15,7 @@ public class CollectibleScript : MonoBehaviour {
     public float smallBoostValue;
     public float smallBoostTime;
 
-    float originalSpeed = GameManager.GetInstance()._maxMoveSpeed;
+    float originalSpeed;
 
     static int combo = 0;
 
@@ -24,6 +24,7 @@ public class CollectibleScript : MonoBehaviour {
     private void Start()
     {
         CollectedEffect = GetComponentInChildren<ParticleSystem>();
+        originalSpeed = GameManager.GetInstance()._maxMoveSpeed;
     }
 
     private void FixedUpdate()
