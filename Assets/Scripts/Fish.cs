@@ -128,12 +128,21 @@ public abstract class Fish : MonoBehaviour {
 
         }
 
-        if (!Physics.Raycast(transform.position + transform.right * stabilisationCheckDistance + transform.forward * 1.5f, Vector3.down, out hit)) {
+        Ray leftRay = new Ray(transform.position + transform.right * stabilisationCheckDistance + transform.forward * 1.5f + transform.up, Vector3.down * 4);
+        Ray rightRay = new Ray(transform.position - transform.right * stabilisationCheckDistance + transform.forward * 1.5f + transform.up, Vector3.down * 4);
+        
+        Debug.DrawRay(leftRay.origin, leftRay.direction, Color.red);
+        Debug.DrawRay(rightRay.origin, leftRay.direction, Color.blue);
+
+        if (!Physics.Raycast(rightRay, out hit)) {
             horizontalVelocity = -stabilisationSpeed * movementSpeed * deltaTime;
-        } else if (!Physics.Raycast(transform.position - transform.right * stabilisationCheckDistance + transform.forward * 1.5f, Vector3.down, out hit)) {
+            if (GetComponent<FishController>()) print("hole to the right");
+
+        } else if (!Physics.Raycast(leftRay, out hit)) {
             horizontalVelocity = stabilisationSpeed * movementSpeed * deltaTime;
+            if (GetComponent<FishController>()) print("hole to the left");
+
         } else {
-            //horizontalVelocity = Mathf.Lerp(horizontalVelocity, 0, stabilisationSpeed * Time.deltaTime);
             horizontalVelocity = 0;
         }
     }
@@ -169,8 +178,7 @@ public abstract class Fish : MonoBehaviour {
 
         } else if (reachedMaxSpeed == 0) {
             verticalVelocity -= gravity * deltaTime;
-            StartTrick();
-            Debug.DrawLine(transform.position, transform.position + Vector3.up * 5, Color.red);
+            //StartTrick();
             RaycastHit hit;
             if (Physics.Linecast(transform.position + Vector3.up * 0.7f, transform.position + Vector3.up*2, out hit) && hit.collider.gameObject.layer != 8) {
                 verticalVelocity = -gravity * deltaTime;
