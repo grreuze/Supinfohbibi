@@ -180,7 +180,7 @@ public abstract class Fish : MonoBehaviour {
         reachedMaxSpeed = verticalVelocity <= -maxFallingSpeed ? reachedMaxSpeed + deltaTime : 0;
 
         if (jumping) {
-            verticalVelocity = jumpStrength * movementSpeed * deltaTime;
+            verticalVelocity = GameManager.instance.JumpForce * deltaTime;
             startJumpY = transform.position.y;
             jumping = false;
             slideParticle.Stop();

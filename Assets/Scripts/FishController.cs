@@ -55,12 +55,11 @@ public class FishController : Fish {
         renderer.material = accelerating ? acceleratingMaterial : defaultMaterial;
         if ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) || Input.GetMouseButtonDown(0)) {
             mousePositionForJump = Input.mousePosition;
-            Debug.Log("Begin : " + Input.mousePosition.y);
         }
         if ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended) || Input.GetMouseButtonUp(0)) {
-            Debug.Log("End : " + Input.mousePosition.y);
             if (isGrounded && mousePositionForJump.y < Input.mousePosition.y) {
                 CallJump();
+                print("jump");
             }
         }
     }

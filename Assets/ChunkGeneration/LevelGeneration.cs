@@ -53,13 +53,12 @@ public class LevelGeneration : MonoBehaviour {
         chunkScore = 0;
 
         StartCoroutine(GenerationCoroutine());
-        
     }
 
     public void Generate(int ind)
     {
 
-        if (chunkScore == runLength && canGenerate)
+        if (chunkScore == runLength-1 && canGenerate)
         {
             GameObject finalChunk = Instantiate(FinalChunkPrefab, CurrentEndPoint.position, Quaternion.Euler(CurrentEndPoint.eulerAngles.x, CurrentEndPoint.eulerAngles.y, CurrentEndPoint.eulerAngles.z));
             canGenerate = false;

@@ -1,0 +1,127 @@
+fileFormatVersion: 2
+guid: 1c55a842143bc9b46a6ecbf4b396889f
+timeCreated: 1488819717
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Corps
+    100002: //RootNode
+    100004: L_Fin_Back
+    100006: L_Fin_Front_1
+    100008: L_Fin_Front_2
+    100010: L_Fin_Front_3
+    100012: L_LittleFin_1
+    100014: L_LittleFin_2
+    100016: Oeil_Droit
+    100018: Oeil_Gauche
+    100020: R_Fin_Back
+    100022: R_Fin_Front_1
+    100024: R_Fin_Front_2
+    100026: R_Fin_Front_3
+    100028: R_LittleFin_1
+    100030: R_LittleFin_2
+    100032: Spine_Back2
+    100034: Spine_Back_1
+    100036: Spine_Center
+    100038: Spine_Front1
+    100040: Spine_Front2
+    400000: Corps
+    400002: //RootNode
+    400004: L_Fin_Back
+    400006: L_Fin_Front_1
+    400008: L_Fin_Front_2
+    400010: L_Fin_Front_3
+    400012: L_LittleFin_1
+    400014: L_LittleFin_2
+    400016: Oeil_Droit
+    400018: Oeil_Gauche
+    400020: R_Fin_Back
+    400022: R_Fin_Front_1
+    400024: R_Fin_Front_2
+    400026: R_Fin_Front_3
+    400028: R_LittleFin_1
+    400030: R_LittleFin_2
+    400032: Spine_Back2
+    400034: Spine_Back_1
+    400036: Spine_Center
+    400038: Spine_Front1
+    400040: Spine_Front2
+    2300000: Oeil_Droit
+    2300002: Oeil_Gauche
+    3300000: Oeil_Droit
+    3300002: Oeil_Gauche
+    4300000: Oeil_Droit
+    4300002: Oeil_Gauche
+    4300004: Corps
+    7400000: Take 001
+    9500000: //RootNode
+    13700000: Corps
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 2
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
