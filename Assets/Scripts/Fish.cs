@@ -50,6 +50,8 @@ public abstract class Fish : MonoBehaviour {
 
     [HideInInspector]
     public bool accelerating;
+    [HideInInspector]
+    public bool descending;
 
     ParticleSystem slideParticle;
     #endregion
@@ -62,6 +64,7 @@ public abstract class Fish : MonoBehaviour {
         targetRotation = transform.rotation;
         slideParticle = GetComponentInChildren<ParticleSystem>();
         isGrounded = true;
+        descending = true;
     }
 
     float deltaTime;
@@ -102,6 +105,7 @@ public abstract class Fish : MonoBehaviour {
     }
     #endregion
 
+    #region Movement
     bool stopped;
     public void StopMovement() {
         stopped = true;
@@ -161,6 +165,7 @@ public abstract class Fish : MonoBehaviour {
             horizontalVelocity = 0;
         }
     }
+    #endregion
 
     #region Jump & Gravity
 

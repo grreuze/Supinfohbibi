@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public class FishController : Fish {
 
@@ -7,12 +8,15 @@ public class FishController : Fish {
     public float distanceTofloorForPlayAirAnim;
     
     new Renderer renderer;
-    bool descending;
     float lastY;
     private Vector3 mousePositionForJump;
 
     new CameraScript camera;
     ParticleSystem speedParticle;
+
+    float fov;
+    public float accelerateFov = 90;
+    bool isAccFovOn = false;
 
     void Start() {
         fishAnim = GetComponentInChildren<FishAnimator>();
@@ -21,6 +25,7 @@ public class FishController : Fish {
         camera.target = transform;
 
         speedParticle = Camera.main.GetComponentInChildren<ParticleSystem>();
+        fov = Camera.main.fieldOfView;
     }
 
     public override void MovementSpeed() {
@@ -28,13 +33,10 @@ public class FishController : Fish {
 
         fishAnim.SetGrounded(distanceTofloorForPlayAirAnim > distanceToFloor);
         fishAnim.SetAccelerate(descending && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
-            || Input.GetMouseButton(0)) && !trickSystem.isPlaying && distanceToFloor > distanceToFloorToAccelerate);
-
-        descending = transform.position.y < lastY;
-        lastY = transform.position.y;
+            || Input.GetMouseButton(0)) && !trickSystem.isPlaying);
         
         if (descending && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
-            || Input.GetMouseButton(0)) && !trickSystem.isPlaying && distanceToFloor > distanceToFloorToAccelerate) {
+            || Input.GetMouseButton(0)) && !trickSystem.isPlaying) {
 
             movementSpeed = GameManager.instance.accelerateMoveSpeed;
 
@@ -59,7 +61,18 @@ public class FishController : Fish {
         if ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended) || Input.GetMouseButtonUp(0)) {
             if (isGrounded && mousePositionForJump.y < Input.mousePosition.y) {
                 CallJump();
-                print("jump");
+            }
+        }
+        if (accelerating) {
+            if (isAccFovOn == false) {
+                isAccFovOn = true;
+                Camera.main.DOFieldOfView(accelerateFov, 0.3f);
+
+            }
+        } else {
+            if (isAccFovOn == true) {
+                isAccFovOn = false;
+                Camera.main.DOFieldOfView(fov, 0.3f);
             }
         }
     }
