@@ -9,6 +9,7 @@ public class FishController : Fish {
     new Renderer renderer;
     bool descending;
     float lastY;
+    private Vector3 mousePositionForJump;
 
     new CameraScript camera;
     ParticleSystem speedParticle;
@@ -23,6 +24,9 @@ public class FishController : Fish {
     }
 
     public override void MovementSpeed() {
+        int touchCount = Input.touchCount;
+        //TouchPhase touchPhase = Input.GetTouch(0).phase;
+
         fishAnim.SetGrounded(distanceTofloorForPlayAirAnim > distanceToFloor);
         fishAnim.SetAccelerate(descending && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
             || Input.GetMouseButton(0)) && !trickSystem.isPlaying && distanceToFloor > distanceToFloorToAccelerate);
@@ -33,18 +37,12 @@ public class FishController : Fish {
         if (descending && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
             || Input.GetMouseButton(0)) && !trickSystem.isPlaying && distanceToFloor > distanceToFloorToAccelerate) {
 
-            /*if (movementSpeed < speed.max)
-                movementSpeed += accelerationFactor;*/
-
             movementSpeed = GameManager.instance.accelerateMoveSpeed;
             accelerating = true;
             if(speedParticle.isStopped)
                 speedParticle.Play();
 
         } else {
-            /*
-            if (movementSpeed > speed.min)
-                movementSpeed -= decelerationFactor;*/
             if(!descending && Input.GetMouseButton(0))
             {
                 movementSpeed = GameManager.instance.decelerateMoveSpeed;
@@ -58,6 +56,19 @@ public class FishController : Fish {
                 speedParticle.Stop();
         }
         renderer.material = accelerating ? acceleratingMaterial : defaultMaterial;
+        if ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) || Input.GetMouseButtonDown(0))
+        {
+            mousePositionForJump = Input.mousePosition;
+            Debug.Log("Begin : " + Input.mousePosition.y);
+        }
+        if ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended) || Input.GetMouseButtonUp(0))
+        {
+            Debug.Log("End : " + Input.mousePosition.y);
+            if (isGrounded && mousePositionForJump.y < Input.mousePosition.y)
+            {
+                CallJump();
+            }
+        }
     }
 
     bool hasAlreadyDoneTricks;

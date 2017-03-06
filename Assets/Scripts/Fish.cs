@@ -37,11 +37,13 @@ public abstract class Fish : MonoBehaviour {
     [HideInInspector]
     public Trick_Pattern trickSystem;
 
-    CharacterController controller;
+    public CharacterController controller;
 
     Vector3 direction;
     float verticalVelocity, horizontalVelocity;
     float reachedMaxSpeed;
+
+    protected bool isGrounded;
 
     [HideInInspector]
     public float distanceToFloor;
@@ -59,6 +61,7 @@ public abstract class Fish : MonoBehaviour {
         trickSystem = FindObjectOfType<Trick_Pattern>();
         targetRotation = transform.rotation;
         slideParticle = GetComponentInChildren<ParticleSystem>();
+        isGrounded = true;
     }
 
     float deltaTime;
@@ -67,6 +70,13 @@ public abstract class Fish : MonoBehaviour {
 
         if (stopped)
             return;
+
+        Debug.Log("IsGrouded ! " + isGrounded);
+        if (!isGrounded && controller.isGrounded)
+        {
+            isGrounded = true;
+            Debug.Log("jumping up");
+        }
 
         averageSpeed = ((averageSpeed * totalTimeForAvergaeSpeed) + (movementSpeed * deltaTime)) / (totalTimeForAvergaeSpeed + deltaTime);
         totalTimeForAvergaeSpeed += deltaTime;
@@ -165,6 +175,7 @@ public abstract class Fish : MonoBehaviour {
     public void CallJump() {
         if (controller.isGrounded) {
             jumping = true;
+            isGrounded = false;
         }
     }
 
@@ -172,6 +183,7 @@ public abstract class Fish : MonoBehaviour {
         reachedMaxSpeed = verticalVelocity <= -maxFallingSpeed ? reachedMaxSpeed + deltaTime : 0;
 
         if (jumping) {
+            Debug.Log("Saut");
             verticalVelocity = GameManager.instance.JumpForce * deltaTime;
             startJumpY = transform.position.y;
             jumping = false;
