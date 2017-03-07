@@ -2,27 +2,25 @@
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 
+[RequireComponent(typeof(Canvas))]
 public class RestartScript : MonoBehaviour {
 
-	public GameObject buttonMenu;
-	public GameObject buttonRestart;
+    [SerializeField]
+	private GameObject buttonMenu;
+    [SerializeField]
+	private GameObject buttonRestart;
 
 	// Use this for initialization
 	void Start ()
 	{
-		Canvas[] tmp = FindObjectsOfType<Canvas> ();
-		foreach (Canvas canvas in tmp) {
-			if (canvas.GetComponentInChildren<RestartScript> ()) {
-				GameManager.instance._endCanvas = canvas;
-			}
-		}
-		buttonMenu.transform.DOScale (new Vector3 (1.05f, 1.05f, 1.05f), 0.4f).SetLoops (-1, LoopType.Yoyo);
-		buttonRestart.transform.DOScale (new Vector3 (1.05f, 1.05f, 1.05f), 0.4f).SetLoops (-1, LoopType.Yoyo);
+        GameManager.GetInstance().SetEndCanvas(FindObjectOfType<RestartScript>().GetComponent<Canvas>());
+		buttonMenu.transform.DOScale(new Vector3 (1.05f, 1.05f, 1.05f), 0.4f).SetLoops(-1, LoopType.Yoyo);
+		buttonRestart.transform.DOScale(new Vector3 (1.05f, 1.05f, 1.05f), 0.4f).SetLoops(-1, LoopType.Yoyo);
 	}
 
 	public void ReloadScene ()
 	{
-		AudioManager.ins.PlaySoundAtPosition ("SmallPok", gameObject, false);
-		SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
+		AudioManager.GetInstance().PlaySoundAtPosition("SmallPok", gameObject, false);
+		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
 }

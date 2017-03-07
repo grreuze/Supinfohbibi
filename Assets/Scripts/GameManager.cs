@@ -119,4 +119,9 @@ public class GameManager : MonoBehaviour {
     {
         return bestScore;
     }
+
+    public void SetEndCanvas(Canvas newCanvas)
+    {
+        _endCanvas = newCanvas;
+    }
 }
