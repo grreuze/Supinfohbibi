@@ -169,7 +169,7 @@ public abstract class Fish : MonoBehaviour {
 
     #region Jump & Gravity
 
-    bool jumping;
+    protected bool jumping;
     float jumpStrength;
     [HideInInspector]
     public float startJumpY;
