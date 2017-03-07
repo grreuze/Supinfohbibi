@@ -36,9 +36,8 @@ public class Score : MonoBehaviour
 		//points = GameObject.Find ("Points");
 		//pointsFinal = points.GetComponent<Points> ().points;
 
-		HUDrank = GameObject.Find ("Rank").GetComponent<Text> ();
-		rank = GameObject.FindGameObjectWithTag ("Player");
-		rankFinal = rank.GetComponent<Ranking> ().GetRank ();
+		HUDrank = GameObject.Find("Rank").GetComponent<Text> ();
+		rankFinal = FindObjectOfType<Ranking>().GetRank ();
 
 		//scoreFinal = (int)((200 * (pointsFinal / timeFinal)) + Mathf.Abs ((((5 - rankFinal) * (pointsFinal - (2 * timeFinal))) / 2)));
 

@@ -5,12 +5,15 @@ using UnityEngine.UI;
 
 public class Main : MonoBehaviour
 {
+    private Text _moneyText;
 	Player player = new Player();
 
 	public void Start()
 	{
-		// Setup your Amplitude id
-		AmplitudeHelper.AppId = "46acae4acfda355a0ed8a9c46d81007a";
+        _moneyText = GameObject.Find("Money").GetComponent<Text>();
+
+        // Setup your Amplitude id
+        AmplitudeHelper.AppId = "46acae4acfda355a0ed8a9c46d81007a";
 
 		// Connect a callback that will be used to fill some meta data every time a log Event is sent
 		// This is very useful to track some properties that are not related to a specific event, and
@@ -25,7 +28,7 @@ public class Main : MonoBehaviour
 		// Start some gameplay
 		player.EnterMainMenu();
 
-		GameObject.Find("Money").GetComponent<Text>().text = player.Money.ToString() + " coins";
+		_moneyText.text = player.Money.ToString() + " coins";
 
 		StartCoroutine(WaitAndLaunchLevel());
 	}
@@ -54,7 +57,7 @@ public class Main : MonoBehaviour
 	{
 		player.Money += 100;
 
-		GameObject.Find("Money").GetComponent<Text>().text = player.Money.ToString() + " coins";
+		_moneyText.text = player.Money.ToString() + " coins";
 
 		AmplitudeHelper.Instance.LogEvent("Button has been clicked");
 	}

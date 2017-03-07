@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class InitiateLevel : MonoBehaviour {
 
-    LevelGeneration lvlGen;
+    /*LevelGeneration lvlGen;
     
 	void Start () {
         lvlGen = LevelGeneration.ins;
@@ -17,6 +17,6 @@ public class InitiateLevel : MonoBehaviour {
             yield return null;
         }
         print("Done Generating");
-    }
+    }*/
 
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LevelGeneration : MonoBehaviour {
 
-    public static LevelGeneration ins;
+    private static LevelGeneration ins;
 
     //SEED
     public string Seed;
@@ -35,6 +35,11 @@ public class LevelGeneration : MonoBehaviour {
     //BOOLS
     //détermine si on peut instancier ou pas de nouveaux chunks
     private bool canGenerate = true;
+
+    public static LevelGeneration GetInstance()
+    {
+        return ins;
+    }
 
     //Singleton
     private void Awake() {

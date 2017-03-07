@@ -2,6 +2,9 @@
 
 public class ChunkScript : MonoBehaviour {
 
+    private LevelGeneration _levelGeneration;
+    private Transform _transform;
+
     //la fin du chunk, qui détermine l'endroit et la rotation du prochain chunk instancié
     public Transform EndPoint;
 
@@ -15,8 +18,10 @@ public class ChunkScript : MonoBehaviour {
 
     private void Start()
     {
+        _levelGeneration = LevelGeneration.GetInstance();
+        _transform = transform;
         CalculateChunkLength();
-        if (LevelGeneration.ins)
+        if (_levelGeneration)
             Calibrate();
 
         if(Collectibles != null)
@@ -34,7 +39,7 @@ public class ChunkScript : MonoBehaviour {
     public void CalculateChunkLength()
     {
         //on crée 2 nouveaux vecteurs avec les positions de départ et d'arrivée mais au même niveau en Y.
-        Vector3 FlatStart = new Vector3(transform.position.x, 0, transform.position.z);
+        Vector3 FlatStart = new Vector3(_transform.position.x, 0, _transform.position.z);
         Vector3 FlatEnd = new Vector3(EndPoint.position.x, 0, EndPoint.position.z);
 
         //on calcule la distance "flat" entre les 2 points
@@ -43,7 +48,7 @@ public class ChunkScript : MonoBehaviour {
 
     //calibration du LevelGeneration (mise à jour des variables)
     public void Calibrate() {
-        LevelGeneration.ins.CurrentEndPoint = EndPoint;
-        LevelGeneration.ins.currentLength = chunkLength;
+        _levelGeneration.CurrentEndPoint = EndPoint;
+        _levelGeneration.currentLength = chunkLength;
     }
 }
