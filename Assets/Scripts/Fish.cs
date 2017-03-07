@@ -112,8 +112,6 @@ public abstract class Fish : MonoBehaviour {
     }
 
     public void SetDescending(bool value) {
-        if (GetComponent<FishController>())
-            print("set descending to: " + value);
         descending = value;
     }
 
