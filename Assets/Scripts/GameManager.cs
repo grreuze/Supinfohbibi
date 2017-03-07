@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour {
             spawnPosition.z += Random.Range(-2, 2);
 
             GameObject go = Instantiate(aiFish, spawnPosition, transform.rotation);
-            go.GetComponentInParent<AIFish>().movementSpeed = Random.Range(_minMoveSpeed, _maxMoveSpeed);
+            //go.GetComponentInParent<AIFish>().movementSpeed = Random.Range(_minMoveSpeed, _maxMoveSpeed);
         }
         isPlaying = true;
         StartRun();

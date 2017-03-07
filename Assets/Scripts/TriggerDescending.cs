@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 
-public class TriggerDescending : MonoBehaviour
-{
+public class TriggerDescending : MonoBehaviour {
 
-	void OnTriggerEnter (Collider other)
-	{
+	void OnTriggerEnter (Collider other) {
+        print("enter: " +other.name);
         Fish fish = other.gameObject.GetComponent<Fish>();
         if (fish) {
             fish.SetDescending(false);
@@ -12,6 +11,7 @@ public class TriggerDescending : MonoBehaviour
 	}
 
 	void OnTriggerExit (Collider other) {
+        print("left: " + other.name);
         Fish fish = other.gameObject.GetComponent<Fish>();
         if (fish) {
             fish.SetDescending(true);

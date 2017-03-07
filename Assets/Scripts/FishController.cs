@@ -61,8 +61,8 @@ public class FishController : Fish {
         }
 
         if (Input.GetKeyDown(KeyCode.Space) 
-            || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended) 
-            || (Input.GetMouseButtonUp(0) && mousePositionForJump.y < Input.mousePosition.y)) {
+            || (((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended) || (Input.GetMouseButtonUp(0)))
+            && mousePositionForJump.y < Input.mousePosition.y)) {
 
             CallJump();
         }
