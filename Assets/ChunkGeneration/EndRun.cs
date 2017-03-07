@@ -23,7 +23,7 @@ public class EndRun : MonoBehaviour {
         }
         if (!File.Exists("Saves/statistics.jpp"))
         {
-            PlayerStats.AllSkillLevels = new List<float>();
+            PlayerStats.AllSkillLevels = 0;
             PlayerStats.bestScore = 0;
             PlayerStats.totalRunsCount = 0;
             PlayerStats.averageSkillLevel = 0;
