@@ -36,7 +36,7 @@ public class StartGame : MonoBehaviour
 		gm.SpawnFishes ();
 		titleScreen.enabled = false;
 		HUD.enabled = true;
-		HUD.GetComponentInChildren<Chronometer> ().LaunchTimer ();        
+		//HUD.GetComponentInChildren<Chronometer>().LaunchTimer();        
 		Destroy (this);
 	}
 
