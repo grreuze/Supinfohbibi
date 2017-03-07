@@ -10,6 +10,7 @@ public class FishController : Fish {
     public float InputAmplitudeForJump;
     public float TimeLimitForJump;
     public float TimeLimitBoostWaiting;
+
     private bool jumpOK;
     private bool boosted;
     private bool lastJumping;
@@ -59,7 +60,6 @@ public class FishController : Fish {
                     accelerating = true;
                     if (speedParticle.isStopped)
                         speedParticle.Play();
-
                 }
                 else {
                     movementSpeed = GameManager.instance.baseMoveSpeed;

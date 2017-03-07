@@ -42,8 +42,6 @@ public class Metrics : MonoBehaviour {
         ER = FindObjectOfType<EndRun>();
 
         //setup des trucs techniques
-        AmplitudeHelper.AppId = "e0c41856e17ab291ef2757bbc4fe19ec";
-        AmplitudeHelper.Instance.FillCustomProperties += FillTrackingProperties;
         Amplitude.Instance.logging = true;
         Amplitude.Instance.init("e0c41856e17ab291ef2757bbc4fe19ec");   
         Amplitude.Instance.startSession();   
@@ -56,7 +54,7 @@ public class Metrics : MonoBehaviour {
             {"Android Version", SystemInfo.operatingSystem }
         };
 
-        AmplitudeHelper.Instance.LogEvent("Session Started", customProperties);
+        Amplitude.Instance.logEvent("Session Started", customProperties);
 
         averageSkillLevelAtStartOfSession = ER.PlayerStats.averageSkillLevel;
     }
@@ -77,7 +75,7 @@ public class Metrics : MonoBehaviour {
     public void StartRun()
     {
         numberOfRuns++;
-        AmplitudeHelper.Instance.LogEvent("Run Started");
+        Amplitude.Instance.logEvent("Run Started");
         timer = 0;
 
         totalJumps = 0;
@@ -142,7 +140,7 @@ public class Metrics : MonoBehaviour {
             {"Average trick jump ratio", jumpRatio }
         };
 
-        AmplitudeHelper.Instance.LogEvent("Run Finished", customProperties);
+        Amplitude.Instance.logEvent("Run Finished", customProperties);
      
     }
 
@@ -151,7 +149,7 @@ public class Metrics : MonoBehaviour {
         if (focus)
         {
             //app plus dans le background
-            AmplitudeHelper.Instance.LogEvent("Game Refocused");
+            Amplitude.Instance.logEvent("Game Refocused");
         }
         else
         {
@@ -170,7 +168,7 @@ public class Metrics : MonoBehaviour {
         };
 
             //logger dans un event
-            AmplitudeHelper.Instance.LogEvent("Session Ended", customProperties);
+            Amplitude.Instance.logEvent("Session Ended", customProperties);
 
             //fermer la session Amplitude
             Amplitude.Instance.endSession();

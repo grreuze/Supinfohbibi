@@ -54,6 +54,7 @@ public abstract class Fish : MonoBehaviour {
     public bool descending;
 
     ParticleSystem slideParticle;
+    GameObject waterEffect, speedWaterEffect;
     #endregion
 
     #region Monobehaviour
@@ -62,7 +63,9 @@ public abstract class Fish : MonoBehaviour {
         controller = GetComponent<CharacterController>();
         trickSystem = FindObjectOfType<Trick_Pattern>();
         targetRotation = transform.rotation;
-        slideParticle = GetComponentInChildren<ParticleSystem>();
+        slideParticle = transform.FindChild("P_Slide").GetComponent<ParticleSystem>();
+        waterEffect = transform.FindChild("P_Idle").gameObject;
+        speedWaterEffect = transform.FindChild("P_IdleSpeed").gameObject;
         isGrounded = true;
         descending = true;
     }
@@ -181,6 +184,17 @@ public abstract class Fish : MonoBehaviour {
         }
     }
 
+    void SetEffectsActive(bool value) {
+
+        if (value && slideParticle.isStopped)
+            slideParticle.Play();
+        else if (!value && slideParticle.isPlaying)
+            slideParticle.Stop();
+        
+        waterEffect.SetActive(value && !accelerating);
+        speedWaterEffect.SetActive(value && accelerating);
+    }
+
     void JumpAndGravity() {
         reachedMaxSpeed = verticalVelocity <= -maxFallingSpeed ? reachedMaxSpeed + deltaTime : 0;
 
@@ -188,15 +202,14 @@ public abstract class Fish : MonoBehaviour {
             verticalVelocity = GameManager.instance.JumpForce * deltaTime;
             startJumpY = transform.position.y;
             jumping = false;
-            slideParticle.Stop();
+            SetEffectsActive(false);
             StartJump();
             
         } else if (controller.isGrounded) {
             if(reachedMaxSpeed == 0)
                 verticalVelocity -= gravity * deltaTime;
             Landing();
-            if (slideParticle.isStopped)
-                slideParticle.Play();
+            SetEffectsActive(true);
 
         } else if (reachedMaxSpeed == 0) {
             verticalVelocity -= gravity * deltaTime;
