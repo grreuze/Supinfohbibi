@@ -1,8 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(Renderer))]
 public class CollectibleScript : MonoBehaviour
 {
+
+    private Renderer _renderer;
+    private GameManager _gameManager;
+    private AudioManager _audioManager;
 
 	[Header ("Gros boost")]
 	[Range (1, 2)]
@@ -14,7 +19,7 @@ public class CollectibleScript : MonoBehaviour
 	public float smallBoostValue;
 	public float smallBoostTime;
 
-	float originalSpeed;
+	private float originalSpeed;
 
 	static int combo = 0;
 
@@ -22,9 +27,12 @@ public class CollectibleScript : MonoBehaviour
 
 	private void Start ()
 	{
-		originalSpeed = GameManager.GetInstance ()._maxMoveSpeed;
+        _gameManager = GameManager.GetInstance();
+        _audioManager = AudioManager.GetInstance();
+        _renderer = GetComponent<Renderer>();
+		originalSpeed = _gameManager._maxMoveSpeed;
 		CollectedEffect = GetComponentInChildren<ParticleSystem> ();
-		originalSpeed = GameManager.GetInstance ()._maxMoveSpeed;
+		originalSpeed = _gameManager._maxMoveSpeed;
 	}
 
 	private void FixedUpdate ()
@@ -37,7 +45,7 @@ public class CollectibleScript : MonoBehaviour
 		CollectibleScript.combo = 0;
 	}
 
-	bool alreadyCalled;
+	private bool alreadyCalled;
 
 	private void OnTriggerEnter (Collider collision)
 	{
@@ -45,13 +53,13 @@ public class CollectibleScript : MonoBehaviour
 		if (collision.gameObject.tag == "Player") {
 
 			if (!alreadyCalled) {
-				GameManager.GetInstance ().coins++;
-				AudioManager.ins.PlayCollectibleSound (combo, gameObject);
+				_gameManager.coins++;
+				_audioManager.PlayCollectibleSound (combo, gameObject);
 				alreadyCalled = true;
 			}
 
 			//Lecture du son de pickup
-			AudioManager.ins.PlayCollectibleSound (combo, gameObject);
+			_audioManager.PlayCollectibleSound (combo, gameObject);
 
 			//Si le combo est en cours
 			if (CollectibleScript.combo < 5) {
@@ -62,7 +70,7 @@ public class CollectibleScript : MonoBehaviour
 
 				//reset des coroutines et de la vitesse pour éviter le stack de coroutines
 				StopCoroutine (SmallBoost ());
-				GameManager.GetInstance ()._maxMoveSpeed = originalSpeed;
+				_gameManager._maxMoveSpeed = originalSpeed;
 
 				StartCoroutine (SmallBoost ());
 
@@ -73,7 +81,7 @@ public class CollectibleScript : MonoBehaviour
 			}
 
 			CollectedEffect.Emit (1);
-			GetComponent<Renderer> ().enabled = false;
+			_renderer.enabled = false;
 			Invoke ("Disable", CollectedEffect.main.duration);
 		}
 	}
@@ -85,20 +93,20 @@ public class CollectibleScript : MonoBehaviour
 
 	private IEnumerator Boost ()
 	{
-		GameManager.GetInstance ()._maxMoveSpeed *= boostValue;
+		_gameManager._maxMoveSpeed *= boostValue;
 
 		yield return new WaitForSeconds (boostTime);
 
-		GameManager.GetInstance ()._maxMoveSpeed = originalSpeed;
+		_gameManager._maxMoveSpeed = originalSpeed;
 	}
 
 	private IEnumerator SmallBoost ()
 	{
-		GameManager.GetInstance ()._maxMoveSpeed *= smallBoostValue;
+		_gameManager._maxMoveSpeed *= smallBoostValue;
 
 		yield return new WaitForSeconds (smallBoostTime);
 
-		GameManager.GetInstance ()._maxMoveSpeed = originalSpeed;
+		_gameManager._maxMoveSpeed = originalSpeed;
 	}
 
 }

@@ -174,4 +174,9 @@ public class Metrics : MonoBehaviour {
             Amplitude.Instance.endSession();
         }
     }
+
+    public static Metrics GetInstance()
+    {
+        return ins;
+    }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
 
-	public static AudioManager ins;
+	private static AudioManager ins;
 
 	private Dictionary<string, AudioClip> AllClips = new Dictionary<string, AudioClip> ();
 

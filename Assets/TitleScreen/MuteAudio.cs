@@ -1,27 +1,31 @@
 ﻿using UnityEngine;
 
 public class MuteAudio : MonoBehaviour {
+    private GameManager _gameManager;
+    private AudioManager _audioManager;
 	public GameObject SpriteOn;
 	public GameObject SpriteOff;
     
 	void Start () {
-		AudioListener.pause = GameManager.GetInstance ().soundPause;
+        _gameManager = GameManager.GetInstance();
+        _audioManager = AudioManager.GetInstance();
+		AudioListener.pause = _gameManager.soundPause;
 	}
 
 	public void OnClicked () {
-		AudioManager.ins.PlaySoundAtPosition ("SmallPok", gameObject, false);
+		_audioManager.PlaySoundAtPosition ("SmallPok", gameObject, false);
 		AudioListener.pause = !AudioListener.pause;
 	}
 
 	void Update () {
 		if (AudioListener.pause == false) {
-			GameManager.GetInstance ().soundPause = false;
+			_gameManager.soundPause = false;
 			SpriteOn.SetActive (true);
 			SpriteOff.SetActive(false);
 		}
 
 		if (AudioListener.pause == true) {
-			GameManager.GetInstance ().soundPause = true;
+			_gameManager.soundPause = true;
 			SpriteOn.SetActive (false);
 			SpriteOff.SetActive(true);
 		}
