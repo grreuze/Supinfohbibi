@@ -54,10 +54,10 @@ public class StartGame : MonoBehaviour
 	public void Go ()
 	{
 
-		_audioManager.StopSound (_music);
+		_audioManager.StopSound (_musicAudioSource);
 		_audioManager.PlaySoundAtPosition ("Race", _musicAudioSource, true);
 
-		_audioManager.StopSound (_waterSound);
+		_audioManager.StopSound (_waterSoundAudioSource);
 		_audioManager.PlaySoundAtPosition ("BigRipple", _waterSoundAudioSource, true);
 
 		_audioManager.PlaySoundAtPosition ("BigPok", _audioSource, false);

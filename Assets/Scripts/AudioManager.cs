@@ -50,12 +50,12 @@ public class AudioManager : MonoBehaviour
 		}
 	}
 
-	public void StopSound (GameObject go)
+	public void StopSound (AudioSource AS)
 	{
-		if (go.GetComponent<AudioSource> () != null) {
-			AudioSource AS = go.GetComponent<AudioSource> ();
-			AS.Stop ();
-		}
+        if (AS != null)
+        {
+            AS.Stop();
+        }
 	}
 
 	//méthode pour jouer le son des collectible avec changement de pitch en fonction du niveau de combo
