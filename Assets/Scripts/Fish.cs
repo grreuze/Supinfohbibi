@@ -176,6 +176,7 @@ public abstract class Fish : MonoBehaviour {
 
     public void CallJump() {
         if (isGrounded) {
+            print("jump !");
             jumping = true;
             isGrounded = false;
         }
@@ -185,6 +186,7 @@ public abstract class Fish : MonoBehaviour {
         reachedMaxSpeed = verticalVelocity <= -maxFallingSpeed ? reachedMaxSpeed + deltaTime : 0;
 
         if (jumping) {
+            print("yo I'm jumping !");
             verticalVelocity = GameManager.instance.JumpForce * deltaTime;
             startJumpY = transform.position.y;
             jumping = false;

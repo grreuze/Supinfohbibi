@@ -77,13 +77,13 @@ public class FishController : Fish {
             else
             {
                 timeAccelerateRemaining -= deltaTime;
+                if (speedParticle.isPlaying)
+                    speedParticle.Stop();
             }
             if(timeAccelerateRemaining <= 0)
             {
                 timeAccelerateRemaining = 0;
                 accelerating = false;
-                if (speedParticle.isPlaying)
-                    speedParticle.Stop();
             }
             else
             {
@@ -104,25 +104,36 @@ public class FishController : Fish {
             || (((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended) || (Input.GetMouseButtonUp(0)))
             &&  InputAmplitudeForJump < Input.mousePosition.y - mousePositionForJump.y && jumpOK)) {
 
+            print(jumpOK);
             CallJump();
         }
-
-        if (accelerating) {
-            if (isAccFovOn == false) {
-                isAccFovOn = true;
-                Camera.main.DOFieldOfView(accelerateFov, 0.3f);
-
-            }
-        } else {
-            if (isAccFovOn == true) {
-                isAccFovOn = false;
-                Camera.main.DOFieldOfView(fov, 0.3f);
-            }
-        }
+        
+        DoCameraFOV();
     }
 
-    private IEnumerator WaitingJump()
-    {
+    void DoCameraFOV() {
+
+        float t = (movementSpeed - GameManager.instance.baseMoveSpeed) / (GameManager.instance.accelerateMoveSpeed - GameManager.instance.baseMoveSpeed);
+
+        camera.targetFOV = Mathf.Lerp(fov, accelerateFov, t);
+
+
+        //if (accelerating) {
+        //    if (isAccFovOn == false) {
+        //        isAccFovOn = true;
+        //        Camera.main.DOFieldOfView(accelerateFov, 0.3f);
+
+        //    }
+        //} else {
+        //    if (isAccFovOn == true) {
+        //        isAccFovOn = false;
+        //        Camera.main.DOFieldOfView(fov, 0.3f);
+        //    }
+        //}
+    }
+
+
+    private IEnumerator WaitingJump()   {
         yield return new WaitForSeconds(TimeLimitForJump);
         jumpOK = false;
     }
