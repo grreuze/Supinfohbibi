@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 using DG.Tweening;
 
 public class FishController : Fish {
 
     FishAnimator fishAnim;
     public float distanceTofloorForPlayAirAnim;
+    public float InputAmplitudeForJump;
+    public float TimeLimitForJump;
+    private bool jumpOK;
     
     new Renderer renderer;
     float lastY;
@@ -26,6 +30,7 @@ public class FishController : Fish {
 
         speedParticle = Camera.main.GetComponentInChildren<ParticleSystem>();
         fov = Camera.main.fieldOfView;
+        jumpOK = false;
     }
 
     public override void MovementSpeed() {
@@ -58,11 +63,13 @@ public class FishController : Fish {
         renderer.material = accelerating ? acceleratingMaterial : defaultMaterial;
         if ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) || Input.GetMouseButtonDown(0)) {
             mousePositionForJump = Input.mousePosition;
+            jumpOK = true;
+            StartCoroutine(WaitingJump());
         }
 
         if (Input.GetKeyDown(KeyCode.Space) 
             || (((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended) || (Input.GetMouseButtonUp(0)))
-            && mousePositionForJump.y < Input.mousePosition.y)) {
+            &&  InputAmplitudeForJump < Input.mousePosition.y - mousePositionForJump.y && jumpOK)) {
 
             CallJump();
         }
@@ -79,6 +86,12 @@ public class FishController : Fish {
                 Camera.main.DOFieldOfView(fov, 0.3f);
             }
         }
+    }
+
+    private IEnumerator WaitingJump()
+    {
+        yield return new WaitForSeconds(TimeLimitForJump);
+        jumpOK = false;
     }
 
     bool hasAlreadyDoneTricks;
