@@ -34,7 +34,7 @@ public class AudioManager : MonoBehaviour
 	//méthode à lancer depuis le GameObject émetteur de son. Doit être équipé d'un AudioSource!
 	public void PlaySoundAtPosition (string key, GameObject go, bool looping)
 	{
-		if (go.GetComponent<AudioSource>() != null) {
+		if (go.GetComponent<AudioSource> () != null) {
 			AudioSource AS = go.GetComponent<AudioSource> ();
 			AudioClip AC = null;
 
@@ -61,10 +61,11 @@ public class AudioManager : MonoBehaviour
 			AudioSource AS = go.GetComponent<AudioSource> ();
 			AudioClip AC = null;
 
-			string key = "Collectible_Sound";
+			string key = "Coin";
 
 			if (AllClips.TryGetValue (key, out AC)) {
-				AS.pitch = 1 + (0.2f * combo);
+				AS.pitch = 1;
+				//AS.pitch = 1 + (0.2f * (combo - 1));
 				AS.clip = AC;
 				AS.loop = false;
 				AS.Play ();

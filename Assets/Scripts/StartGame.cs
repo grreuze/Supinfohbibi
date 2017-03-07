@@ -18,8 +18,9 @@ public class StartGame : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		AudioManager.ins.PlaySoundAtPosition ("Menu2", GameObject.Find ("Music"), true);
+		AudioManager.ins.PlaySoundAtPosition ("Menu", GameObject.Find ("Music"), true);
 
+		AudioManager.ins.PlaySoundAtPosition ("CalmFlow", GameObject.Find ("WaterSound"), true);
 		gm = GameManager.instance;
 		HUD.enabled = false;
 		StartCoroutine ("MenuAnim");	
@@ -29,14 +30,16 @@ public class StartGame : MonoBehaviour
 	{
 
 		AudioManager.ins.StopSound (GameObject.Find ("Music"));
-		AudioManager.ins.PlaySoundAtPosition ("Race1", GameObject.Find ("Music"), true);
+		AudioManager.ins.PlaySoundAtPosition ("Race", GameObject.Find ("Music"), true);
 
+		AudioManager.ins.StopSound (GameObject.Find ("WaterSound"));
+		AudioManager.ins.PlaySoundAtPosition ("BigRipple", GameObject.Find ("WaterSound"), true);
 
 		AudioManager.ins.PlaySoundAtPosition ("BigPok", gameObject, false);
 		gm.SpawnFishes ();
 		titleScreen.enabled = false;
 		HUD.enabled = true;
-		//HUD.GetComponentInChildren<Chronometer>().LaunchTimer();        
+		//HUD.GetComponentInChildren<Chronometer> ().LaunchTimer ();        
 		Destroy (this);
 	}
 
