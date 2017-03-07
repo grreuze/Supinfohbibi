@@ -2,9 +2,10 @@
 using System.Collections;
 
 [RequireComponent(typeof(Renderer))]
+[RequireComponent(typeof(AudioSource))]
 public class CollectibleScript : MonoBehaviour
 {
-
+    private AudioSource _audioSource;
     private Renderer _renderer;
     private GameManager _gameManager;
     private AudioManager _audioManager;
@@ -30,6 +31,7 @@ public class CollectibleScript : MonoBehaviour
         _gameManager = GameManager.GetInstance();
         _audioManager = AudioManager.GetInstance();
         _renderer = GetComponent<Renderer>();
+        _audioSource = GetComponent<AudioSource>();
 		originalSpeed = _gameManager._maxMoveSpeed;
 		CollectedEffect = GetComponentInChildren<ParticleSystem> ();
 		originalSpeed = _gameManager._maxMoveSpeed;
@@ -54,12 +56,12 @@ public class CollectibleScript : MonoBehaviour
 
 			if (!alreadyCalled) {
 				_gameManager.coins++;
-				_audioManager.PlayCollectibleSound (combo, gameObject);
+				_audioManager.PlayCollectibleSound (combo, _audioSource);
 				alreadyCalled = true;
 			}
 
 			//Lecture du son de pickup
-			_audioManager.PlayCollectibleSound (combo, gameObject);
+			_audioManager.PlayCollectibleSound (combo, _audioSource);
 
 			//Si le combo est en cours
 			if (CollectibleScript.combo < 5) {

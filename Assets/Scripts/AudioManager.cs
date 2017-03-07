@@ -59,10 +59,9 @@ public class AudioManager : MonoBehaviour
 	}
 
 	//méthode pour jouer le son des collectible avec changement de pitch en fonction du niveau de combo
-	public void PlayCollectibleSound (int combo, GameObject go)
+	public void PlayCollectibleSound (int combo, AudioSource AS)
 	{
-		if (go.GetComponent<AudioSource> () != null) {
-			AudioSource AS = go.GetComponent<AudioSource> ();
+		if (AS != null) {
 			AudioClip AC = null;
 
 			string key = "Coin";
