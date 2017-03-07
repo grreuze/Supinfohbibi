@@ -224,7 +224,7 @@ public abstract class Fish : MonoBehaviour {
         }
 
         if (accelerating)
-            verticalVelocity = -fallingSpeedWhenAccelerating;
+            verticalVelocity = -fallingSpeedWhenAccelerating* deltaTime;
     }
 
     public abstract void OutOfBounds();

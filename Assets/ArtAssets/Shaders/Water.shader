@@ -52,7 +52,7 @@ Shader "Shader Forge/water" {
             #include "UnityCG.cginc"
             #include "AutoLight.cginc"
             #pragma multi_compile_fwdbase_fullshadows
-            #pragma only_renderers d3d9 d3d11 glcore gles 
+            #pragma only_renderers d3d9 d3d11 glcore gles gles3 
             #pragma target 2.0
             uniform float4 _TimeEditor;
             uniform float4 _Color1;
@@ -159,7 +159,7 @@ Shader "Shader Forge/water" {
             #include "UnityCG.cginc"
             #include "AutoLight.cginc"
             #pragma multi_compile_fwdadd_fullshadows
-            #pragma only_renderers d3d9 d3d11 glcore gles 
+            #pragma only_renderers d3d9 d3d11 glcore gles gles3 
             #pragma target 2.0
             uniform float4 _TimeEditor;
             uniform float4 _Color1;
@@ -262,7 +262,7 @@ Shader "Shader Forge/water" {
             #include "Lighting.cginc"
             #pragma fragmentoption ARB_precision_hint_fastest
             #pragma multi_compile_shadowcaster
-            #pragma only_renderers d3d9 d3d11 glcore gles 
+            #pragma only_renderers d3d9 d3d11 glcore gles gles3 
             #pragma target 2.0
             uniform float4 _TimeEditor;
             uniform float _Wave_Quantity_U;
