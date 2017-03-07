@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 
 public class EndRun : MonoBehaviour {
 
@@ -44,7 +43,7 @@ public class EndRun : MonoBehaviour {
 
         //on attribue toutes les stats nécessaires à sauvegarder
         PlayerStats.totalRunsCount++;
-        PlayerStats.AllSkillLevels.Add(CalculateSkillForThisGame());
+        PlayerStats.AllSkillLevels += CalculateSkillForThisGame();
 
         CalculateAverageSkillLevel();
 
@@ -56,32 +55,32 @@ public class EndRun : MonoBehaviour {
 
     public void SaveData()
     {
-        BinaryFormatter formatter = new BinaryFormatter();
-        FileStream Savefile = File.Create(Application.persistentDataPath + "/statistics.jpp");
+ 
+        PlayerPrefs.SetInt("Best Score", PlayerStats.bestScore);
+        PlayerPrefs.SetFloat("Average Skill Level", PlayerStats.averageSkillLevel);
 
-        formatter.Serialize(Savefile, PlayerStats);
-        Savefile.Close();
+        if (PlayerPrefs.HasKey("All Skill Levels"))
+            PlayerPrefs.SetFloat("All Skill Levels", PlayerPrefs.GetFloat("All Skill Levels") + CalculateSkillForThisGame());
+        else PlayerPrefs.SetFloat("All Skill Levels", 0);
+    
+        PlayerPrefs.SetInt("Total Runs Count", PlayerStats.totalRunsCount);
+       
+        PlayerPrefs.Save();
+
     }
 
     public void LoadData()
     {
-        BinaryFormatter formatter = new BinaryFormatter();
-        FileStream SaveFile = File.Open(Application.persistentDataPath + "/statistics.jpp", FileMode.Open);
+        PlayerStats.bestScore = PlayerPrefs.GetInt("Best Score");
+        PlayerStats.averageSkillLevel = PlayerPrefs.GetFloat("Average Skill Level");
+        PlayerStats.totalRunsCount = PlayerPrefs.GetInt("Total Runs Count");
+        PlayerStats.AllSkillLevels = PlayerPrefs.GetFloat("All Skill Levels");
 
-        PlayerStats = (Stats)formatter.Deserialize(SaveFile);
-        SaveFile.Close();
     }
     
     private void CalculateAverageSkillLevel()
     {
-        float totalSkill = 0;
-
-        for(int i = 0; i < PlayerStats.AllSkillLevels.Count; i++)
-        {
-            totalSkill += PlayerStats.AllSkillLevels[i];
-        }
-
-        newAverageSkillLevel = totalSkill / PlayerStats.AllSkillLevels.Count;
+        newAverageSkillLevel = PlayerStats.AllSkillLevels / PlayerStats.totalRunsCount;
     }
 
     //calcule le taux de skill de la game (à lancer juste avant la save)
@@ -103,6 +102,6 @@ public class Stats
 
     public int bestScore;
 
-    public List<float> AllSkillLevels;
+    public float AllSkillLevels;
 
 }
