@@ -6,7 +6,7 @@ using DG.Tweening;
 public class FishController : Fish {
 
     FishAnimator fishAnim;
-    public float distanceTofloorForPlayAirAnim;
+    public float distanceToFloorToPlayAirAnim;
     public float InputAmplitudeForJump;
     public float TimeLimitForJump;
     private bool jumpOK;
@@ -36,7 +36,7 @@ public class FishController : Fish {
     public override void MovementSpeed() {
         int touchCount = Input.touchCount;
 
-        fishAnim.SetGrounded(distanceTofloorForPlayAirAnim > distanceToFloor);
+        fishAnim.SetGrounded(distanceToFloorToPlayAirAnim > distanceToFloor);
         fishAnim.SetAccelerate(descending && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
             || Input.GetMouseButton(0)) && !trickSystem.isPlaying);
         

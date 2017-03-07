@@ -19,28 +19,32 @@ public class CollectibleScript : MonoBehaviour {
 
     ParticleSystem CollectedEffect;
 
-    private void Start()
-    {
+    private void Start() {
         originalSpeed = GameManager.GetInstance()._maxMoveSpeed;
         CollectedEffect = GetComponentInChildren<ParticleSystem>();
         originalSpeed = GameManager.GetInstance()._maxMoveSpeed;
     }
 
-    private void FixedUpdate()
-    {
+    private void FixedUpdate() {
         transform.eulerAngles += new Vector3(0, 5, 0);
     }
 
-    private void ResetCombo()
-    {
+    private void ResetCombo() {
         CollectibleScript.combo = 0;
     }
 
+    bool alreadyCalled;
     private void OnTriggerEnter(Collider collision)
     {
         //si le joueur est un player
         if(collision.gameObject.tag == "Player")
         {
+
+            if(!alreadyCalled) {
+                GameManager.GetInstance().coins++;
+                alreadyCalled = true;
+            }
+
             //Lecture du son de pickup
             AudioManager.ins.PlayCollectibleSound(combo, gameObject);
 

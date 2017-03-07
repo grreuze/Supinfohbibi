@@ -46,8 +46,10 @@ public class GameManager : MonoBehaviour {
     public GameObject _fish;
     public GameObject aiFish;
     public Canvas _endCanvas;
-    private Trick_Pattern trickSystem;
     public bool soundPause = false;
+    public int coins;
+
+    private Trick_Pattern trickSystem;
     private int bestScore = 0;
     private EndRun endRun;
 
