@@ -49,12 +49,9 @@ public class LevelGeneration : MonoBehaviour {
     void Start() {
 
         GenerateSeed();
-        ChopSeed();
+        ChopSeed();    
 
-        chunkScore = 0;
-
-        StartCoroutine(GenerationCoroutine());
-        
+        StartCoroutine(GenerationCoroutine(choppedSeed));
     }
 
     public void Generate(int ind)
@@ -109,14 +106,16 @@ public class LevelGeneration : MonoBehaviour {
         }
     }
 
-    IEnumerator GenerationCoroutine()
+    public IEnumerator GenerationCoroutine(string[] CS)
     {
+        chunkScore = 0;
+
         for (int i = 0; i < runLength; i++)
         {
             yield return new WaitForEndOfFrame();
 
             //générer chunk par chunk
-            Generate(int.Parse(choppedSeed[i]));         
+            Generate(int.Parse(CS[i]));         
         }
 
         yield return null;

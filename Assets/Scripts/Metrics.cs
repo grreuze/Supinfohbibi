@@ -43,9 +43,9 @@ public class Metrics : MonoBehaviour {
 
         //setup des trucs techniques
         AmplitudeHelper.AppId = "e0c41856e17ab291ef2757bbc4fe19ec";
-        Amplitude.Instance.logging = true;
-        Amplitude.Instance.init("e0c41856e17ab291ef2757bbc4fe19ec");
         AmplitudeHelper.Instance.FillCustomProperties += FillTrackingProperties;
+        Amplitude.Instance.logging = true;
+        Amplitude.Instance.init("e0c41856e17ab291ef2757bbc4fe19ec");   
         Amplitude.Instance.startSession();   
 
         //détection de l'heure de lancement de session et du modèle de téléphone

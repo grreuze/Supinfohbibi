@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class AmplitudeHelper
 {
-	public static string AppId;
+	public static string AppId = "e0c41856e17ab291ef2757bbc4fe19ec";
 
 	public delegate void FillPropertiesDel(Dictionary<string, object> properties);
 	public event FillPropertiesDel FillCustomProperties;
