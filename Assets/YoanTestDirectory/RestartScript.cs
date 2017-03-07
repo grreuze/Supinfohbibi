@@ -20,7 +20,7 @@ public class RestartScript : MonoBehaviour {
 
 	public void ReloadScene ()
 	{
-		AudioManager.GetInstance().PlaySoundAtPosition("SmallPok", gameObject, false);
+		AudioManager.GetInstance().PlaySoundAtPosition("SmallPok", GetComponent<AudioSource>(), false);
 		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
 }

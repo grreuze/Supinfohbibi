@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class Team_Credits : MonoBehaviour
 {
+    private AudioSource _audioSource;
     private AudioManager _audioManager;
     private Metrics _metrics;
     private Animation _fadeAnim;
@@ -15,6 +17,7 @@ public class Team_Credits : MonoBehaviour
     {
         _audioManager = AudioManager.GetInstance();
         _metrics = Metrics.GetInstance();
+        _audioSource = GetComponent<AudioSource>();
         _fadeAnim = Fade.GetComponent<Animation>();
         _creditAnim = Credit.GetComponent<Animation>();
     }
@@ -23,7 +26,7 @@ public class Team_Credits : MonoBehaviour
 	{
         _metrics.OpenedCredits();
 
-        _audioManager.PlaySoundAtPosition ("SmallPok", gameObject, false);
+        _audioManager.PlaySoundAtPosition ("SmallPok", _audioSource, false);
 
 		if (dispCredits == false) {
 			dispCredits = true;

@@ -5,6 +5,7 @@ using DG.Tweening;
 
 
 [RequireComponent(typeof(Canvas))]
+[RequireComponent(typeof(AudioSource))]
 public class StartGame : MonoBehaviour
 {
 
@@ -14,7 +15,9 @@ public class StartGame : MonoBehaviour
     private Transform _buttonSoundTransform;
     private Transform _bestScoreTextTransform;
     private Canvas _canvas;
-    private GameObject _gameObject;
+    private AudioSource _audioSource;
+    private AudioSource _musicAudioSource;
+    private AudioSource _waterSoundAudioSource;
 
     [SerializeField]
 	private GameObject _buttonTeam;
@@ -29,31 +32,35 @@ public class StartGame : MonoBehaviour
 	[SerializeField]
 	private Canvas _HUD;
 
+
+
 	// Use this for initialization
 	void Start ()
 	{
         _gameManager = GameManager.GetInstance();
         _audioManager = AudioManager.GetInstance();
+        _waterSoundAudioSource = _waterSound.GetComponent<AudioSource>();
+        _musicAudioSource = _music.GetComponent<AudioSource>();
+        _audioSource = GetComponent<AudioSource>();
         _buttonTeamTransform = _buttonTeam.transform;
         _buttonSoundTransform = _buttonSound.transform;
         _bestScoreTextTransform = _bestScoreText.transform;
         _canvas = GetComponent<Canvas>();
-        _gameObject = gameObject;
-		_audioManager.PlaySoundAtPosition ("Menu", _music, true);
-		_audioManager.PlaySoundAtPosition ("CalmFlow", _waterSound, true);
+		_audioManager.PlaySoundAtPosition ("Menu", _musicAudioSource, true);
+		_audioManager.PlaySoundAtPosition ("CalmFlow", _waterSoundAudioSource, true);
 		StartCoroutine ("MenuAnim");	
 	}
 
 	public void Go ()
 	{
 
-		_audioManager.StopSound (GameObject.Find ("Music"));
-		_audioManager.PlaySoundAtPosition ("Race", _music, true);
+		_audioManager.StopSound (_music);
+		_audioManager.PlaySoundAtPosition ("Race", _musicAudioSource, true);
 
-		_audioManager.StopSound (GameObject.Find ("WaterSound"));
-		_audioManager.PlaySoundAtPosition ("BigRipple", _waterSound, true);
+		_audioManager.StopSound (_waterSound);
+		_audioManager.PlaySoundAtPosition ("BigRipple", _waterSoundAudioSource, true);
 
-		_audioManager.PlaySoundAtPosition ("BigPok", _gameObject, false);
+		_audioManager.PlaySoundAtPosition ("BigPok", _audioSource, false);
 		_gameManager.SpawnFishes ();
 		_HUD.enabled = true;
         //HUD.GetComponentInChildren<Chronometer> ().LaunchTimer ();        
