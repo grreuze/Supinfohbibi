@@ -199,7 +199,7 @@ public abstract class Fish : MonoBehaviour {
         reachedMaxSpeed = verticalVelocity <= -maxFallingSpeed ? reachedMaxSpeed + deltaTime : 0;
 
         if (jumping) {
-            verticalVelocity = GameManager.instance.JumpForce * deltaTime;
+            verticalVelocity = GameManager.instance.JumpForce;
             startJumpY = transform.position.y;
             jumping = false;
             SetEffectsActive(false);
