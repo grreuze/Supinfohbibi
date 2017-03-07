@@ -57,7 +57,7 @@ public class EndRun : MonoBehaviour {
     public void SaveData()
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        FileStream Savefile = File.Create("Saves/statistics.jpp");
+        FileStream Savefile = File.Create(Application.persistentDataPath + "/statistics.jpp");
 
         formatter.Serialize(Savefile, PlayerStats);
         Savefile.Close();
@@ -66,7 +66,7 @@ public class EndRun : MonoBehaviour {
     public void LoadData()
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        FileStream SaveFile = File.Open("Saves/statistics.jpp", FileMode.Open);
+        FileStream SaveFile = File.Open(Application.persistentDataPath + "/statistics.jpp", FileMode.Open);
 
         PlayerStats = (Stats)formatter.Deserialize(SaveFile);
         SaveFile.Close();
