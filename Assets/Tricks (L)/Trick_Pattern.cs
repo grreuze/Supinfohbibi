@@ -48,7 +48,7 @@ public class Trick_Pattern : MonoBehaviour
 	public void EndOfTrick () {
         if (isPlaying == true) {
             
-            Metrics.ins.LogEndTrick(buttonCount - 2); //Le nombre de boutons spawnés moins 2 -> le nombre de tricks effectués
+            //Metrics.ins.LogEndTrick(buttonCount - 2); //Le nombre de boutons spawnés moins 2 -> le nombre de tricks effectués
 
             if (fishAnim == null)
                 fishAnim = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<FishAnimator>();
@@ -135,8 +135,7 @@ public class Trick_Pattern : MonoBehaviour
 		//On compte que c'est un bouton de plus
 		buttonCount++;
 		//Et on instancie
-		GameObject TrickButton_Instance;
-		TrickButton_Instance = Instantiate (TrickButton_Prefab, spawn, Quaternion.identity, this.gameObject.transform)as GameObject;
+		Instantiate (TrickButton_Prefab, spawn, Quaternion.identity, this.gameObject.transform);
 	}
 }
 

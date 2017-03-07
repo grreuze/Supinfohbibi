@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Metrics : MonoBehaviour {
 
-    public static Metrics ins;
+    private static Metrics ins;
 
     //Classes
     EndRun ER;

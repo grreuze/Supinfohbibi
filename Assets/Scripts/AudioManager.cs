@@ -5,7 +5,7 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
 
-	private static AudioManager ins;
+	private static AudioManager instance;
 
 	private Dictionary<string, AudioClip> AllClips = new Dictionary<string, AudioClip> ();
 
@@ -14,14 +14,14 @@ public class AudioManager : MonoBehaviour
 
     public static AudioManager GetInstance()
     {
-        return ins;
+        return instance;
     }
 
 	//Singleton
 	void Awake ()
 	{
-		if (AudioManager.ins == null) {
-			AudioManager.ins = this;
+		if (AudioManager.instance == null) {
+			AudioManager.instance = this;
 		} else {
 			Destroy (gameObject);
 		}

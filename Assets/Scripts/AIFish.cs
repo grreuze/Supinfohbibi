@@ -6,13 +6,10 @@ public class AIFish : Fish
 	[Range (0, 1)]
 	public float chanceToAccelerate = 0.1f;
 
-	new Renderer renderer;
+	//new Renderer renderer;
 	bool accelerateForThisJump;
 	float lastY, lastCheckForAcceleration;
 
-	void Start () {
-		renderer = GetComponent<Renderer> ();
-	}
 
 	public override void MovementSpeed () {
         float time = Time.time;

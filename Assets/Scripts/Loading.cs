@@ -10,7 +10,7 @@ public class Loading : MonoBehaviour
 
 	IEnumerator Start ()
 	{
-		AsyncOperation async = Application.LoadLevelAsync ("GrrGeneration");
+		AsyncOperation async = SceneManager.LoadSceneAsync("GrrGeneration");
 		bar.fillAmount = async.progress;
 		yield return async;
 

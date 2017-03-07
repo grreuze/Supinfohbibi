@@ -59,14 +59,14 @@ public class LevelGeneration : MonoBehaviour {
 
         if (chunkScore == runLength -1 && canGenerate)
         {
-            GameObject finalChunk = Instantiate(FinalChunkPrefab, CurrentEndPoint.position, Quaternion.Euler(CurrentEndPoint.eulerAngles.x, CurrentEndPoint.eulerAngles.y, CurrentEndPoint.eulerAngles.z));
+            Instantiate(FinalChunkPrefab, CurrentEndPoint.position, Quaternion.Euler(CurrentEndPoint.eulerAngles.x, CurrentEndPoint.eulerAngles.y, CurrentEndPoint.eulerAngles.z));
             canGenerate = false;
         }
         else if (canGenerate)
         {
             
             //Instanciation du préfab
-            GameObject newChunk = Instantiate(Chunks[ind], CurrentEndPoint.position, Quaternion.Euler(CurrentEndPoint.eulerAngles.x, CurrentEndPoint.eulerAngles.y, CurrentEndPoint.eulerAngles.z));
+            Instantiate(Chunks[ind], CurrentEndPoint.position, Quaternion.Euler(CurrentEndPoint.eulerAngles.x, CurrentEndPoint.eulerAngles.y, CurrentEndPoint.eulerAngles.z));
 
             chunkScore++;
         }

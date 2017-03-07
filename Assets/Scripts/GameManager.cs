@@ -5,6 +5,7 @@ public class GameManager : MonoBehaviour {
     private static GameManager instance;
     [SerializeField]
     private bool playAuto;
+    private Metrics _metrics;
 
     private void Awake() {
         if (instance != null && instance != this) {
@@ -17,9 +18,10 @@ public class GameManager : MonoBehaviour {
 
 
     void Start() {
+        _metrics = Metrics.GetInstance();
         Screen.orientation = ScreenOrientation.Portrait;
         endRun = GetComponent<EndRun>();
-        Metrics.ins.Setup();
+        _metrics.Setup();
         endRun.OnRunStart();
         trickSystem = FindObjectOfType<Trick_Pattern>();
         if (playAuto)
@@ -70,12 +72,12 @@ public class GameManager : MonoBehaviour {
             spawnPosition.x += Random.Range(-2, 2);
             spawnPosition.z += Random.Range(-2, 2);
 
-            GameObject go = Instantiate(aiFish, spawnPosition, transform.rotation);
+            Instantiate(aiFish, spawnPosition, transform.rotation);
             //go.GetComponentInParent<AIFish>().movementSpeed = Random.Range(_minMoveSpeed, _maxMoveSpeed);
         }
         isPlaying = true;
         StartRun();
-        Metrics.ins.StartRun();
+        _metrics.StartRun();
     }
 
     public void EndRun()

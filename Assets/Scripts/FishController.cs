@@ -16,7 +16,7 @@ public class FishController : Fish {
     private bool lastJumping;
     private float timeAccelerateRemaining;
     
-    new Renderer renderer;
+    //new Renderer renderer;
     float lastY;
     private Vector3 mousePositionForJump;
 
@@ -25,11 +25,11 @@ public class FishController : Fish {
 
     float fov;
     public float accelerateFov = 90;
-    bool isAccFovOn = false;
+    //bool isAccFovOn = false;
 
     void Start() {
         fishAnim = GetComponentInChildren<FishAnimator>();
-        renderer = GetComponent<Renderer>();
+        //renderer = GetComponent<Renderer>();
         camera = Camera.main.GetComponent<CameraScript>();
         camera.target = transform;
 
