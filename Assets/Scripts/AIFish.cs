@@ -14,29 +14,25 @@ public class AIFish : Fish
 		renderer = GetComponent<Renderer> ();
 	}
 
-	public override void MovementSpeed ()
-	{
-		descending = transform.position.y < lastY;
-		lastY = transform.position.y;
+	public override void MovementSpeed () {
 
 		if (Time.time - lastCheckForAcceleration > 3) {
 			accelerateForThisJump = Random.value < chanceToAccelerate;
 			lastCheckForAcceleration = Time.time;
 		}
 
-		if (descending && accelerateForThisJump && !trickSystem.isPlaying && distanceToFloor > distanceToFloorToAccelerate) {
-
-			if (movementSpeed < speed.max)
-				movementSpeed += accelerationFactor;
-
-			accelerating = true;
-		} else {
-
-			if (movementSpeed > speed.min)
-				movementSpeed -= decelerationFactor;
-			accelerating = false;
-		}
-		renderer.material = accelerating ? acceleratingMaterial : defaultMaterial;
+        if (accelerateForThisJump) {
+            if (descending) {
+                movementSpeed = GameManager.instance.accelerateMoveSpeed;
+                accelerating = true;
+            } else {
+                movementSpeed = GameManager.instance.decelerateMoveSpeed;
+                accelerating = false;
+            }
+        } else {
+            movementSpeed = GameManager.instance.baseMoveSpeed;
+            accelerating = false;
+        }
 	}
 
 	public override void OutOfBounds ()

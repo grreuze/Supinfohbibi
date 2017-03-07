@@ -60,7 +60,7 @@ public class FishController : Fish {
             if (speedParticle.isPlaying)
                 speedParticle.Stop();
         }
-        renderer.material = accelerating ? acceleratingMaterial : defaultMaterial;
+
         if ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) || Input.GetMouseButtonDown(0)) {
             mousePositionForJump = Input.mousePosition;
             jumpOK = true;
