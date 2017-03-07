@@ -67,8 +67,13 @@ public class CollectibleScript : MonoBehaviour {
             }
 
             CollectedEffect.Emit(1);
-            Destroy(gameObject);
+            GetComponent<Renderer>().enabled = false;
+            Invoke("Disable", CollectedEffect.main.duration);
         }
+    }
+
+    void Disable() {
+        gameObject.SetActive(false);
     }
 
     private IEnumerator Boost()

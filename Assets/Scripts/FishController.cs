@@ -87,6 +87,10 @@ public class FishController : Fish {
         }
     }
 
+    public override void StartJump() {
+        camera.SetNewState(camera.jumping);
+    }
+
     public override void Landing() {
         if (trickSystem.isPlaying) {
             trickSystem.EndOfTrick();

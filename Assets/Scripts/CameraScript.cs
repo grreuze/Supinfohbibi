@@ -32,7 +32,7 @@ public class CameraScript : MonoBehaviour {
     
     public Transform target;
 
-    public CameraState idle, descending, turningLeft, turningRight, end;
+    public CameraState idle, jumping, descending, turningLeft, turningRight, end;
     [HideInInspector]
     public CameraState currentState;
     

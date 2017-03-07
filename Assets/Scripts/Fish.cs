@@ -189,6 +189,7 @@ public abstract class Fish : MonoBehaviour {
             startJumpY = transform.position.y;
             jumping = false;
             slideParticle.Stop();
+            StartJump();
             
         } else if (controller.isGrounded) {
             verticalVelocity = -gravity * deltaTime;
@@ -217,6 +218,8 @@ public abstract class Fish : MonoBehaviour {
     public virtual void StartTrick() { }
 
     public virtual void Landing() { }
+
+    public virtual void StartJump() { }
 
     #endregion
 
