@@ -35,8 +35,9 @@ public class FishController : Fish {
         fishAnim.SetAccelerate(descending && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
             || Input.GetMouseButton(0)) && !trickSystem.isPlaying);
         
-        if (descending && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
-            || Input.GetMouseButton(0)) && !trickSystem.isPlaying) {
+        if (((isGrounded && descending) || !isGrounded) 
+            && (( Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
+               || Input.GetMouseButton(0)) && !trickSystem.isPlaying) {
 
             movementSpeed = GameManager.instance.accelerateMoveSpeed;
 

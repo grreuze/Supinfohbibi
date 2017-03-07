@@ -111,6 +111,10 @@ public abstract class Fish : MonoBehaviour {
         stopped = true;
     }
 
+    public void SetDescending(bool value) {
+        descending = value;
+    }
+
     public abstract void MovementSpeed();
 
     public float GetAverageSpeed() {
@@ -138,7 +142,6 @@ public abstract class Fish : MonoBehaviour {
 
             //    transform.position = Vector3.Lerp(transform.position, endPosition, 0.5f * movementSpeed * Time.deltaTime);
             //}
-
         }
 
         if (drawRays) {

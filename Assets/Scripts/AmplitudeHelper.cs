@@ -15,10 +15,8 @@ public class AmplitudeHelper
 	private Dictionary<string, object> UserProperties = new Dictionary<string, object>();
 
 	private static AmplitudeHelper instance;
-	public static AmplitudeHelper Instance
-	{
-		get
-		{
+	public static AmplitudeHelper Instance {
+		get {
 			if (instance == null)
 				instance = new AmplitudeHelper();
 			return instance;
