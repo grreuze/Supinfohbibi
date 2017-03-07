@@ -26,7 +26,7 @@ public class AIFish : Fish
                 movementSpeed = GameManager.instance.accelerateMoveSpeed;
                 accelerating = true;
             } else {
-                movementSpeed = GameManager.instance.decelerateMoveSpeed;
+                movementSpeed = GameManager.instance.baseMoveSpeed;
                 accelerating = false;
             }
         } else {

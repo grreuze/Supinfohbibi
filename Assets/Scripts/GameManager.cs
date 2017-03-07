@@ -36,7 +36,12 @@ public class GameManager : MonoBehaviour {
     public bool isPlaying = false;
     public float baseMoveSpeed;
     public float accelerateMoveSpeed;
-    public float decelerateMoveSpeed;
+    public float boostMoveSpeed;
+    public bool deceleratingLerp_AccelerateToBase;
+    public float timeToLosingAcceleration;
+    public bool deceleratingLerp_BoostToAccelerate;
+    public float timeToLosingBoost;
+    //public float decelerateMoveSpeed;
     public float JumpForce;
     public float _playerStartMoveSpeed;
     public float _maxMoveSpeed;

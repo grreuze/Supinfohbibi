@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class Ranking : MonoBehaviour {
+public class Ranking : MonoBehaviour
+{
 
 	private FishController fish;
 	private AIFish[] _opponentList;
@@ -34,7 +35,6 @@ public class Ranking : MonoBehaviour {
 		if (_rank != lastRank) {
 			display.GetComponent<Text> ().text = _rank.ToString ();
 			display.GetComponent<Text> ().color = Color.Lerp (firstColor, lastColor, (float)(((float)_rank - 1f) / ((float)GameManager.GetInstance ()._nbOpponent + 1f)));
-			print (_rank);
 			display.GetComponent<Animation> ().Play ("RankAnim");
 			lastRank = _rank;
 
