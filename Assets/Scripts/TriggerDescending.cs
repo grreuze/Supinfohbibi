@@ -4,15 +4,13 @@ public class TriggerDescending : MonoBehaviour {
 
 	void OnTriggerEnter (Collider other) {
         Fish fish = other.gameObject.GetComponent<Fish>();
-        if (fish) {
+        if (fish) 
             fish.SetDescending(false);
-		}
 	}
 
 	void OnTriggerExit (Collider other) {
         Fish fish = other.gameObject.GetComponent<Fish>();
-        if (fish) {
+        if (fish) 
             fish.SetDescending(true);
-        }
 	}
 }

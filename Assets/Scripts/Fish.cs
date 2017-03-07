@@ -153,10 +153,10 @@ public abstract class Fish : MonoBehaviour {
         }
         
         bool hitRight = Physics.Linecast(transform.position + transform.right * stabilisationCheckDistance + transform.forward * 1.5f + Vector3.up*10,
-                         transform.position + transform.right * stabilisationCheckDistance + transform.forward * 1.5f - Vector3.up*100);
+                         transform.position + transform.right * stabilisationCheckDistance + transform.forward * 1.5f - Vector3.up*100, out hit);
 
         bool hitLeft = Physics.Linecast(transform.position - transform.right * stabilisationCheckDistance + transform.forward * 1.5f + Vector3.up*10,
-                         transform.position - transform.right * stabilisationCheckDistance + transform.forward * 1.5f - Vector3.up*100);
+                         transform.position - transform.right * stabilisationCheckDistance + transform.forward * 1.5f - Vector3.up*100, out hit);
 
         if (!hitRight) 
             horizontalVelocity = -stabilisationSpeed * movementSpeed * deltaTime;
