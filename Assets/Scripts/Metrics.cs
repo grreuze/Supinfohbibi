@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Metrics : MonoBehaviour {
 
-    private static Metrics ins;
+    private static Metrics instance;
 
     //Classes
     EndRun ER;
@@ -29,8 +29,8 @@ public class Metrics : MonoBehaviour {
     //Singleton
     private void Awake()
     {
-        if (Metrics.ins == null)
-            Metrics.ins = this;
+        if (Metrics.instance == null)
+            Metrics.instance = this;
         else Destroy(gameObject);
 
         DontDestroyOnLoad(gameObject);
@@ -177,6 +177,6 @@ public class Metrics : MonoBehaviour {
 
     public static Metrics GetInstance()
     {
-        return ins;
+        return instance;
     }
 }
