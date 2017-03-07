@@ -106,7 +106,7 @@ public abstract class Fish : MonoBehaviour {
     #endregion
 
     #region Movement
-    bool stopped;
+    protected bool stopped;
     public void StopMovement() {
         stopped = true;
     }
