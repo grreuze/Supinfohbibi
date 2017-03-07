@@ -139,18 +139,24 @@ public class Metrics : MonoBehaviour {
         };
 
         AmplitudeHelper.Instance.LogEvent("Run Finished", customProperties);
-
-        
+     
     }
 
-    //appelé quand le joueur quitte le jeu. Calcule pas mal de moyennes
-    private void OnApplicationQuit()
+    private void OnApplicationFocus(bool focus)
     {
-        //faire des trucs
-        float skillDifference = ER.newAverageSkillLevel - averageSkillLevelAtStartOfSession;      
+        if (focus)
+        {
+            //app plus dans le background
+            AmplitudeHelper.Instance.LogEvent("Game Refocused");
+        }
+        else
+        {
+            //app passe en background
+            //faire des trucs
+            float skillDifference = ER.newAverageSkillLevel - averageSkillLevelAtStartOfSession;
 
-        //mettre tous les trucs dans un dictionnaire
-        var customProperties = new Dictionary<string, object>
+            //mettre tous les trucs dans un dictionnaire
+            var customProperties = new Dictionary<string, object>
         {
             {"Number of runs played", numberOfRuns },
             {"Time played in minutes", timer/60 },
@@ -159,10 +165,11 @@ public class Metrics : MonoBehaviour {
             {"Has viewed options?", hasSeenOptions }
         };
 
-        //logger dans un event
-        AmplitudeHelper.Instance.LogEvent("Session Ended", customProperties);
+            //logger dans un event
+            AmplitudeHelper.Instance.LogEvent("Session Ended", customProperties);
 
-        //fermer la session Amplitude
-        Amplitude.Instance.endSession();
+            //fermer la session Amplitude
+            Amplitude.Instance.endSession();
+        }
     }
 }
