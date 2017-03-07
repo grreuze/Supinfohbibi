@@ -3,69 +3,88 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
+
+[RequireComponent(typeof(Canvas))]
 public class StartGame : MonoBehaviour
 {
 
-	GameManager gm;
+	private GameManager _gameManager;
+    private AudioManager _audioManager;
+    private Transform _buttonTeamTransform;
+    private Transform _buttonSoundTransform;
+    private Transform _bestScoreTextTransform;
+    private Canvas _canvas;
+    private GameObject _gameObject;
 
-	public GameObject buttonTeam;
-	public GameObject buttonSound;
-	public GameObject bestScore;
-
+    [SerializeField]
+	private GameObject _buttonTeam;
+    [SerializeField]
+	private GameObject _buttonSound;
+    [SerializeField]
+	private GameObject _bestScoreText;
+    [SerializeField]
+    private GameObject _music;
+    [SerializeField]
+    private GameObject _waterSound;
 	[SerializeField]
-	Canvas titleScreen, HUD;
+	private Canvas _HUD;
 
 	// Use this for initialization
 	void Start ()
 	{
-		AudioManager.ins.PlaySoundAtPosition ("Menu", GameObject.Find ("Music"), true);
-
-		AudioManager.ins.PlaySoundAtPosition ("CalmFlow", GameObject.Find ("WaterSound"), true);
-		gm = GameManager.instance;
-		HUD.enabled = false;
+        _gameManager = GameManager.GetInstance();
+        _audioManager = AudioManager.GetInstance();
+        _buttonTeamTransform = _buttonTeam.transform;
+        _buttonSoundTransform = _buttonSound.transform;
+        _bestScoreTextTransform = _bestScoreText.transform;
+        _canvas = GetComponent<Canvas>();
+        _gameObject = gameObject;
+		_audioManager.PlaySoundAtPosition ("Menu", _music, true);
+		_audioManager.PlaySoundAtPosition ("CalmFlow", _waterSound, true);
 		StartCoroutine ("MenuAnim");	
 	}
 
 	public void Go ()
 	{
 
-		AudioManager.ins.StopSound (GameObject.Find ("Music"));
-		AudioManager.ins.PlaySoundAtPosition ("Race", GameObject.Find ("Music"), true);
+		_audioManager.StopSound (GameObject.Find ("Music"));
+		_audioManager.PlaySoundAtPosition ("Race", _music, true);
 
-		AudioManager.ins.StopSound (GameObject.Find ("WaterSound"));
-		AudioManager.ins.PlaySoundAtPosition ("BigRipple", GameObject.Find ("WaterSound"), true);
+		_audioManager.StopSound (GameObject.Find ("WaterSound"));
+		_audioManager.PlaySoundAtPosition ("BigRipple", _waterSound, true);
 
-		AudioManager.ins.PlaySoundAtPosition ("BigPok", gameObject, false);
-		gm.SpawnFishes ();
-		titleScreen.enabled = false;
-		HUD.enabled = true;
-		//HUD.GetComponentInChildren<Chronometer> ().LaunchTimer ();        
-		Destroy (this);
+		_audioManager.PlaySoundAtPosition ("BigPok", _gameObject, false);
+		_gameManager.SpawnFishes ();
+		_HUD.enabled = true;
+        //HUD.GetComponentInChildren<Chronometer> ().LaunchTimer ();        
+        //Destroy (this);
+        _canvas.enabled = false;
 	}
 
 	IEnumerator MenuAnim ()
 	{
-		Vector3 bestScoreStartPos = bestScore.transform.transform.localPosition;
-		bestScore.transform.localPosition = new Vector3 (bestScore.transform.localPosition.x, bestScore.transform.localPosition.y - 220, bestScore.transform.localPosition.z);
+		Vector3 bestScoreStartPos = _bestScoreTextTransform.localPosition;
+        //bestScore.transform.localPosition = new Vector3 (bestScore.transform.localPosition.x, bestScore.transform.localPosition.y - 220, bestScore.transform.localPosition.z);
+        _bestScoreTextTransform.localPosition += new Vector3(0, -220, 0);
 
-		Vector3 buttonTeamStartPos = buttonTeam.transform.transform.localPosition;
-		buttonTeam.transform.localPosition = new Vector3 (buttonTeam.transform.localPosition.x, buttonTeam.transform.localPosition.y + 220, buttonTeam.transform.localPosition.z);
-		buttonTeam.transform.DOLocalMove (buttonTeamStartPos, 0.8f, false).SetEase (Ease.OutBounce).OnComplete (() => {
-			buttonTeam.transform.DOScale (new Vector3 (1.05f, 1.05f, 1.05f), 0.4f).SetLoops (-1, LoopType.Yoyo);
+        Vector3 buttonTeamStartPos = _buttonTeamTransform.localPosition;
+        //buttonTeam.transform.localPosition = new Vector3 (buttonTeam.transform.localPosition.x, buttonTeam.transform.localPosition.y + 220, buttonTeam.transform.localPosition.z);
+        _buttonTeamTransform.localPosition += new Vector3(0, 220, 0);
+		_buttonTeamTransform.DOLocalMove (buttonTeamStartPos, 0.8f, false).SetEase (Ease.OutBounce).OnComplete (() => {
+			_buttonTeamTransform.DOScale (new Vector3 (1.05f, 1.05f, 1.05f), 0.4f).SetLoops (-1, LoopType.Yoyo);
 		});
 
-		Vector3 buttonSoundStartPos = buttonSound.transform.transform.localPosition;
-		buttonSound.transform.localPosition = new Vector3 (buttonSound.transform.localPosition.x, buttonSound.transform.localPosition.y + 220, buttonSound.transform.localPosition.z);
-		buttonSound.transform.DOLocalMove (buttonSoundStartPos, 0.8f, false).SetEase (Ease.OutBounce).OnComplete (() => {
-			buttonSound.transform.DOScale (new Vector3 (1.05f, 1.05f, 1.05f), 0.4f).SetLoops (-1, LoopType.Yoyo);
+		Vector3 buttonSoundStartPos = _buttonSoundTransform.localPosition;
+        //buttonSound.transform.localPosition = new Vector3 (buttonSound.transform.localPosition.x, buttonSound.transform.localPosition.y + 220, buttonSound.transform.localPosition.z);
+        _buttonSoundTransform.localPosition += new Vector3(0, 220, 0);
+        _buttonSoundTransform.DOLocalMove (buttonSoundStartPos, 0.8f, false).SetEase (Ease.OutBounce).OnComplete (() => {
+			_buttonSoundTransform.DOScale (new Vector3 (1.05f, 1.05f, 1.05f), 0.4f).SetLoops (-1, LoopType.Yoyo);
 		});
 
 		yield return new WaitForSeconds (1f);
 
 	
-		bestScore.transform.DOLocalMove (bestScoreStartPos, 0.8f, false).SetEase (Ease.OutCirc);
-
-		yield return null;
+		_bestScoreTextTransform.DOLocalMove (bestScoreStartPos, 0.8f, false).SetEase (Ease.OutCirc);
 	
 	}
 

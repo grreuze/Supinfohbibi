@@ -63,7 +63,7 @@ public abstract class Fish : MonoBehaviour {
     void Awake() {
         controller = GetComponent<CharacterController>();
         trickSystem = FindObjectOfType<Trick_Pattern>();
-        _gameManager = GameManager.instance;
+        _gameManager = GameManager.GetInstance();
         targetRotation = transform.rotation;
         slideParticle = transform.FindChild("P_Slide").GetComponent<ParticleSystem>();
         waterEffect = transform.FindChild("P_Idle").gameObject;

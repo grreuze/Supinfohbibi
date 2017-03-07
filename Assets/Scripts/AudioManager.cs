@@ -12,6 +12,11 @@ public class AudioManager : MonoBehaviour
 	//ATTENTION ces deux arrays doivent avoir la même longueur!!!!! (et dans l'ordre aussi)
 	public AudioClip[] AllSounds;
 
+    public static AudioManager GetInstance()
+    {
+        return ins;
+    }
+
 	//Singleton
 	void Awake ()
 	{
