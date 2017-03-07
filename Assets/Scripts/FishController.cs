@@ -58,11 +58,14 @@ public class FishController : Fish {
         if ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) || Input.GetMouseButtonDown(0)) {
             mousePositionForJump = Input.mousePosition;
         }
-        if ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended) || Input.GetMouseButtonUp(0)) {
-            if (isGrounded && mousePositionForJump.y < Input.mousePosition.y) {
-                CallJump();
-            }
+
+        if (Input.GetKeyDown(KeyCode.Space) 
+            || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended) 
+            || (Input.GetMouseButtonUp(0) && mousePositionForJump.y < Input.mousePosition.y)) {
+
+            CallJump();
         }
+
         if (accelerating) {
             if (isAccFovOn == false) {
                 isAccFovOn = true;

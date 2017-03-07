@@ -132,12 +132,12 @@ public abstract class Fish : MonoBehaviour {
                 lastTrigger = trigger;
             }
 
-            if (hit.collider.GetComponent<EndRunTrigger>() && hit.distance < maxDistanceToEndTrigger) {
-                Vector3 endPosition = hit.transform.position;
-                endPosition.y = transform.position.y;
+            //if (hit.collider.GetComponent<EndRunTrigger>() && hit.distance < maxDistanceToEndTrigger) {
+            //    Vector3 endPosition = hit.transform.position;
+            //    endPosition.y = transform.position.y;
 
-                transform.position = Vector3.Lerp(transform.position, endPosition, 0.5f * movementSpeed * Time.deltaTime);
-            }
+            //    transform.position = Vector3.Lerp(transform.position, endPosition, 0.5f * movementSpeed * Time.deltaTime);
+            //}
 
         }
 
@@ -175,7 +175,7 @@ public abstract class Fish : MonoBehaviour {
     public float startJumpY;
 
     public void CallJump() {
-        if (controller.isGrounded) {
+        if (isGrounded) {
             jumping = true;
             isGrounded = false;
         }
