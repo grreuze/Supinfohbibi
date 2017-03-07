@@ -10,6 +10,7 @@ public class FishController : Fish {
     public float InputAmplitudeForJump;
     public float TimeLimitForJump;
     private bool jumpOK;
+    private float timeAccelerateRemaining;
     
     new Renderer renderer;
     float lastY;
@@ -31,34 +32,66 @@ public class FishController : Fish {
         speedParticle = Camera.main.GetComponentInChildren<ParticleSystem>();
         fov = Camera.main.fieldOfView;
         jumpOK = false;
+        timeAccelerateRemaining = 0;
     }
 
     public override void MovementSpeed() {
         int touchCount = Input.touchCount;
+        float deltaTime = Time.deltaTime;
 
         fishAnim.SetGrounded(distanceToFloorToPlayAirAnim > distanceToFloor);
         fishAnim.SetAccelerate(descending && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
             || Input.GetMouseButton(0)) && !trickSystem.isPlaying);
-        
-        if (((isGrounded && descending) || !isGrounded) 
-            && (( Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
-               || Input.GetMouseButton(0)) && !trickSystem.isPlaying) {
 
-            movementSpeed = GameManager.instance.accelerateMoveSpeed;
+        if (!GameManager.instance.deceleratingLerp_AccelerateToBase)
+        {
+            if (((isGrounded && descending) || !isGrounded)
+                && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
+                   || Input.GetMouseButton(0)) && !trickSystem.isPlaying)
+            {
 
-            accelerating = true;
-            if(speedParticle.isStopped)
-                speedParticle.Play();
+                movementSpeed = GameManager.instance.accelerateMoveSpeed;
 
-        } else {
-            if (!descending && Input.GetMouseButton(0)) {
-                movementSpeed = GameManager.instance.decelerateMoveSpeed;
-            } else {
-                movementSpeed = GameManager.instance.baseMoveSpeed;
+                accelerating = true;
+                if (speedParticle.isStopped)
+                    speedParticle.Play();
+
             }
-            accelerating = false;
-            if (speedParticle.isPlaying)
-                speedParticle.Stop();
+            else
+            {
+                movementSpeed = GameManager.instance.baseMoveSpeed;
+
+                accelerating = false;
+                if (speedParticle.isPlaying)
+                    speedParticle.Stop();
+            }
+        }
+        else
+        {
+            if (((isGrounded && descending) || !isGrounded)
+                && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
+                   || Input.GetMouseButton(0)) && !trickSystem.isPlaying)
+            {
+                timeAccelerateRemaining = GameManager.instance.timeToLosingAcceleration;
+            }
+            else
+            {
+                timeAccelerateRemaining -= deltaTime;
+            }
+            if(timeAccelerateRemaining <= 0)
+            {
+                timeAccelerateRemaining = 0;
+                accelerating = false;
+                if (speedParticle.isPlaying)
+                    speedParticle.Stop();
+            }
+            else
+            {
+                accelerating = true;
+                if (speedParticle.isStopped)
+                    speedParticle.Play();
+            }
+            movementSpeed = Mathf.Lerp(GameManager.instance.baseMoveSpeed,GameManager.instance.accelerateMoveSpeed,timeAccelerateRemaining/GameManager.instance.timeToLosingAcceleration);
         }
 
         if ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) || Input.GetMouseButtonDown(0)) {

@@ -35,8 +35,6 @@ public class Ranking : MonoBehaviour
 		if (_rank != lastRank) {
 			display.GetComponent<Text> ().text = _rank.ToString ();
 			display.GetComponent<Text> ().color = Color.Lerp (firstColor, lastColor, (float)(((float)_rank - 1f) / ((float)GameManager.GetInstance ()._nbOpponent + 1f)));
-			print ((_rank - 1) / (GameManager.GetInstance ()._nbOpponent + 1));
-			print (_rank);
 			display.GetComponent<Animation> ().Play ("RankAnim");
 			lastRank = _rank;
 
