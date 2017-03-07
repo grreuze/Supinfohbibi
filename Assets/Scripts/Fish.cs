@@ -97,6 +97,8 @@ public abstract class Fish : MonoBehaviour {
 
         direction.x = horizontalVelocity;
         direction.y = verticalVelocity;
+        if(GetComponent<FishController>())
+            print(direction.y);
         direction.z = movementSpeed * deltaTime;
 
         direction = transform.TransformDirection(direction);
@@ -195,7 +197,7 @@ public abstract class Fish : MonoBehaviour {
             StartJump();
             
         } else if (controller.isGrounded) {
-            verticalVelocity = -gravity * deltaTime;
+            verticalVelocity -= gravity * deltaTime;
             Landing();
             if (slideParticle.isStopped)
                 slideParticle.Play();
