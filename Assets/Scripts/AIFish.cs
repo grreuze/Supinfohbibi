@@ -15,22 +15,22 @@ public class AIFish : Fish
 	}
 
 	public override void MovementSpeed () {
-
-		if (Time.time - lastCheckForAcceleration > 3) {
+        float time = Time.time;
+		if (time - lastCheckForAcceleration > 3) {
 			accelerateForThisJump = Random.value < chanceToAccelerate;
-			lastCheckForAcceleration = Time.time;
+			lastCheckForAcceleration = time;
 		}
 
         if (accelerateForThisJump) {
             if (descending) {
-                movementSpeed = GameManager.instance.accelerateMoveSpeed;
+                movementSpeed = _gameManager.accelerateMoveSpeed;
                 accelerating = true;
             } else {
-                movementSpeed = GameManager.instance.baseMoveSpeed;
+                movementSpeed = _gameManager.baseMoveSpeed;
                 accelerating = false;
             }
         } else {
-            movementSpeed = GameManager.instance.baseMoveSpeed;
+            movementSpeed = _gameManager.baseMoveSpeed;
             accelerating = false;
         }
 	}

@@ -49,20 +49,20 @@ public class FishController : Fish {
 
         if (!boosted) {
 
-            if (!GameManager.instance.deceleratingLerp_AccelerateToBase) {
+            if (!_gameManager.deceleratingLerp_AccelerateToBase) {
                 if (((isGrounded && descending) || !isGrounded)
                     && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
                        || Input.GetMouseButton(0)) && !trickSystem.isPlaying)
                 {
 
-                    movementSpeed = GameManager.instance.accelerateMoveSpeed;
+                    movementSpeed = _gameManager.accelerateMoveSpeed;
 
                     accelerating = true;
                     if (speedParticle.isStopped)
                         speedParticle.Play();
                 }
                 else {
-                    movementSpeed = GameManager.instance.baseMoveSpeed;
+                    movementSpeed = _gameManager.baseMoveSpeed;
 
                     accelerating = false;
                     if (speedParticle.isPlaying)
@@ -76,7 +76,7 @@ public class FishController : Fish {
                        || Input.GetMouseButton(0)) && !trickSystem.isPlaying)
                 {
                     accelerating = true;
-                    timeAccelerateRemaining = GameManager.instance.timeToLosingAcceleration;
+                    timeAccelerateRemaining = _gameManager.timeToLosingAcceleration;
                 }
                 else {
                     accelerating = false;
@@ -92,12 +92,12 @@ public class FishController : Fish {
                     if (speedParticle.isStopped)
                         speedParticle.Play();
                 }
-                movementSpeed = Mathf.Lerp(GameManager.instance.baseMoveSpeed, GameManager.instance.accelerateMoveSpeed, timeAccelerateRemaining / GameManager.instance.timeToLosingAcceleration);
+                movementSpeed = Mathf.Lerp(_gameManager.baseMoveSpeed, _gameManager.accelerateMoveSpeed, timeAccelerateRemaining / _gameManager.timeToLosingAcceleration);
             }
         }
         else
         {
-            if (GameManager.instance.deceleratingLerp_BoostToAccelerate)
+            if (_gameManager.deceleratingLerp_BoostToAccelerate)
             {
                 timeAccelerateRemaining -= deltaTime;
                 if (timeAccelerateRemaining <= 0)
@@ -105,20 +105,20 @@ public class FishController : Fish {
                     timeAccelerateRemaining = 0;
                     boosted = false;
                 }
-                movementSpeed = Mathf.Lerp(GameManager.instance.accelerateMoveSpeed, GameManager.instance.boostMoveSpeed, timeAccelerateRemaining / GameManager.instance.timeToLosingBoost);
+                movementSpeed = Mathf.Lerp(_gameManager.accelerateMoveSpeed, _gameManager.boostMoveSpeed, timeAccelerateRemaining / _gameManager.timeToLosingBoost);
             }
             else
             {
                 timeAccelerateRemaining -= deltaTime;
                 if (timeAccelerateRemaining <= 0)
                 {
-                    timeAccelerateRemaining = GameManager.instance.timeToLosingAcceleration;
-                    movementSpeed = GameManager.instance.accelerateMoveSpeed;
+                    timeAccelerateRemaining = _gameManager.timeToLosingAcceleration;
+                    movementSpeed = _gameManager.accelerateMoveSpeed;
                     boosted = false;
                 }
                 else
                 {
-                    movementSpeed = GameManager.instance.boostMoveSpeed;
+                    movementSpeed = _gameManager.boostMoveSpeed;
                 }
             }
             accelerating = false;
@@ -153,7 +153,7 @@ public class FishController : Fish {
 
     void DoCameraFOV() {
 
-        float t = (movementSpeed - GameManager.instance.baseMoveSpeed) / (GameManager.instance.accelerateMoveSpeed - GameManager.instance.baseMoveSpeed);
+        float t = (movementSpeed - _gameManager.baseMoveSpeed) / (_gameManager.accelerateMoveSpeed - _gameManager.baseMoveSpeed);
 
         camera.targetFOV = Mathf.Lerp(fov, accelerateFov, t);
 
@@ -182,11 +182,10 @@ public class FishController : Fish {
     {
         float timer = 0;
         while(timer < TimeLimitBoostWaiting) {
-            Debug.Log(Input.GetMouseButton(0));
             if((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) || Input.GetMouseButton(0))
             {
                 boosted = true;
-                timeAccelerateRemaining = GameManager.instance.timeToLosingBoost;
+                timeAccelerateRemaining = _gameManager.timeToLosingBoost;
                 timer = TimeLimitBoostWaiting;
             }
             timer += Time.deltaTime;

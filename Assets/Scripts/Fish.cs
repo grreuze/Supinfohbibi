@@ -34,6 +34,7 @@ public abstract class Fish : MonoBehaviour {
     #endregion
 
     #region private properties
+    protected GameManager _gameManager;
     [HideInInspector]
     public Trick_Pattern trickSystem;
 
@@ -62,6 +63,7 @@ public abstract class Fish : MonoBehaviour {
     void Awake() {
         controller = GetComponent<CharacterController>();
         trickSystem = FindObjectOfType<Trick_Pattern>();
+        _gameManager = GameManager.instance;
         targetRotation = transform.rotation;
         slideParticle = transform.FindChild("P_Slide").GetComponent<ParticleSystem>();
         waterEffect = transform.FindChild("P_Idle").gameObject;
@@ -199,7 +201,7 @@ public abstract class Fish : MonoBehaviour {
         reachedMaxSpeed = verticalVelocity <= -maxFallingSpeed ? reachedMaxSpeed + deltaTime : 0;
 
         if (jumping) {
-            verticalVelocity = GameManager.instance.JumpForce;
+            verticalVelocity = _gameManager.JumpForce;
             startJumpY = transform.position.y;
             jumping = false;
             SetEffectsActive(false);
