@@ -169,14 +169,13 @@ public abstract class Fish : MonoBehaviour {
 
     #region Jump & Gravity
 
-    bool jumping;
+    protected bool jumping;
     float jumpStrength;
     [HideInInspector]
     public float startJumpY;
 
     public void CallJump() {
         if (isGrounded) {
-            print("jump !");
             jumping = true;
             isGrounded = false;
         }
@@ -186,7 +185,6 @@ public abstract class Fish : MonoBehaviour {
         reachedMaxSpeed = verticalVelocity <= -maxFallingSpeed ? reachedMaxSpeed + deltaTime : 0;
 
         if (jumping) {
-            print("yo I'm jumping !");
             verticalVelocity = GameManager.instance.JumpForce * deltaTime;
             startJumpY = transform.position.y;
             jumping = false;
@@ -194,7 +192,8 @@ public abstract class Fish : MonoBehaviour {
             StartJump();
             
         } else if (controller.isGrounded) {
-            verticalVelocity -= gravity * deltaTime;
+            if(reachedMaxSpeed == 0)
+                verticalVelocity -= gravity * deltaTime;
             Landing();
             if (slideParticle.isStopped)
                 slideParticle.Play();

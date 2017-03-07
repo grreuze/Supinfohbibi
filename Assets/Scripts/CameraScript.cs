@@ -58,13 +58,10 @@ public class CameraScript : MonoBehaviour {
         }
 
         targetPosition = target.position + target.TransformDirection(targetOffset);
-
         cameraRotation = Quaternion.LookRotation(targetPosition - transform.position);
-
         cameraPosition = target.position + target.TransformDirection(relativePosition + cameraOffset);
 
         camera.fieldOfView = Mathf.Lerp(camera.fieldOfView, targetFOV, t);
-
         transform.localPosition = Vector3.Slerp(transform.position, cameraPosition, t);
         transform.localRotation = Quaternion.Slerp(transform.rotation, cameraRotation, t);
     }

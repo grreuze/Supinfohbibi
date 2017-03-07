@@ -42,11 +42,10 @@ public class CollectibleScript : MonoBehaviour {
 
             if(!alreadyCalled) {
                 GameManager.GetInstance().coins++;
+                AudioManager.ins.PlayCollectibleSound(combo, gameObject);
                 alreadyCalled = true;
             }
-
             //Lecture du son de pickup
-            AudioManager.ins.PlayCollectibleSound(combo, gameObject);
 
             //Si le combo est en cours
             if(CollectibleScript.combo < 5)
