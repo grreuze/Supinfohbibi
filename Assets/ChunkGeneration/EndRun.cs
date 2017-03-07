@@ -50,7 +50,7 @@ public class EndRun : MonoBehaviour {
 
         PlayerStats.averageSkillLevel = newAverageSkillLevel;
         PlayerStats.bestScore = GameManager.instance.GetBestScore();
-        Metrics.ins.FinishRun(FindObjectOfType<Score>().GetFinalTime(), FindObjectOfType<Ranking>().GetRank());
+        Metrics.ins.FinishRun(FindObjectOfType<Ranking>().GetRank());
         SaveData();
     }
 
