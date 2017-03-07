@@ -2,9 +2,9 @@
 
 public class GameManager : MonoBehaviour {
 
-    public static GameManager instance;
+    private static GameManager instance;
     [SerializeField]
-    bool playAuto;
+    private bool playAuto;
 
     private void Awake() {
         if (instance != null && instance != this) {
@@ -15,7 +15,6 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    private BestScore[] bestScoreText;
 
     void Start() {
         Screen.orientation = ScreenOrientation.Portrait;
@@ -25,7 +24,7 @@ public class GameManager : MonoBehaviour {
         trickSystem = FindObjectOfType<Trick_Pattern>();
         if (playAuto)
             SpawnFishes();
-        bestScore = endRun.PlayerStats.bestScore;
+        _bestScore = endRun.PlayerStats.bestScore;
         UpdateBestScore();
     }
 
@@ -55,13 +54,12 @@ public class GameManager : MonoBehaviour {
     public int coins;
 
     private Trick_Pattern trickSystem;
-    private int bestScore = 0;
+    private int _bestScore = 0;
     private EndRun endRun;
 
     public void UpdateBestScore() {
-        bestScoreText = FindObjectsOfType<BestScore>();
-        foreach (BestScore best in bestScoreText) {
-            best.UpdateBestScore(bestScore);
+        foreach (BestScore best in FindObjectsOfType<BestScore>()) {
+            best.UpdateBestScore(_bestScore);
         }
     }
 
@@ -103,9 +101,9 @@ public class GameManager : MonoBehaviour {
 
     public bool IsScoreBetterThanBest(int score)
     {
-        if(score > bestScore)
+        if(score > _bestScore)
         {
-            bestScore = score;
+            _bestScore = score;
             UpdateBestScore();
             return true;
         }
@@ -117,7 +115,7 @@ public class GameManager : MonoBehaviour {
 
     public int GetBestScore()
     {
-        return bestScore;
+        return _bestScore;
     }
 
     public void SetEndCanvas(Canvas newCanvas)

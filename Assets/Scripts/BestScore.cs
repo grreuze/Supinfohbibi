@@ -3,15 +3,15 @@ using UnityEngine.UI;
 
 public class BestScore : MonoBehaviour {
 
-    public Text bestScore;
+    [SerializeField]
+    private Text _bestScoreText;
 
     private void Start()
     {
-        GameManager.instance.UpdateBestScore();
+        _bestScoreText.text = GameManager.GetInstance().GetBestScore().ToString();
     }
 
-    // Update is called once per frame
-    public void UpdateBestScore (int newBest) {
-        bestScore.text = newBest.ToString();
-	}
+    public void UpdateBestScore(int newBestScore) {
+        _bestScoreText.text = newBestScore.ToString();
+    }
 }
