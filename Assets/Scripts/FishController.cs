@@ -130,8 +130,9 @@ public class FishController : Fish {
             lastJumping = true;
         }
 
-        if(lastJumping && reachedMaxSpeed > 0 && distanceToFloor < 3.5f)
+        if(lastJumping && reachedMaxSpeed > 0 && distanceToFloor < 3.5f && verticalVelocity < 0)
         {
+            print("boostcall");
             StartCoroutine(WaitBoostCall());
             lastJumping = false;
         }

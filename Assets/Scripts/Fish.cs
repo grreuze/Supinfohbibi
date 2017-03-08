@@ -37,7 +37,7 @@ public abstract class Fish : MonoBehaviour {
     GameObject waterEffect, speedWaterEffect;
 
     Vector3 direction;
-    float verticalVelocity, horizontalVelocity;
+    protected float verticalVelocity, horizontalVelocity;
 
     private float averageSpeed = 0;
     private float totalTimeForAverageSpeed = 0;
