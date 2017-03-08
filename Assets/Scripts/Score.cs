@@ -46,6 +46,7 @@ public class Score : MonoBehaviour
 		//pointsDisplay.text = "" + pointsFinal;
 		rankDisplay.text = "" + rankFinal;
 		rankDisplay.color = HUDrank.color;
+
 		coinsDisplay.text = "" + GameObject.Find ("Coins").GetComponent<CoinsCount> ().runCoins;
 
 		GameManager.GetInstance ().UpdateBestScore ();
