@@ -48,8 +48,12 @@ public class EndRun : MonoBehaviour {
         CalculateAverageSkillLevel();
 
         PlayerStats.averageSkillLevel = newAverageSkillLevel;
+        PlayerStats.totalCoins += GameManager.GetInstance().coins;
         PlayerStats.bestScore = GameManager.GetInstance().GetBestScore();
         Metrics.GetInstance().FinishRun(FindObjectOfType<Ranking>().GetRank());
+
+        PlayerStats.totalCoins += GameManager.GetInstance().coins;
+
         SaveData();
     }
 
@@ -61,9 +65,10 @@ public class EndRun : MonoBehaviour {
 
         if (PlayerPrefs.HasKey("All Skill Levels"))
             PlayerPrefs.SetFloat("All Skill Levels", PlayerPrefs.GetFloat("All Skill Levels") + CalculateSkillForThisGame());
-        else PlayerPrefs.SetFloat("All Skill Levels", 0);
+        else PlayerPrefs.SetFloat("All Skill Levels", CalculateSkillForThisGame());
     
         PlayerPrefs.SetInt("Total Runs Count", PlayerStats.totalRunsCount);
+        PlayerPrefs.SetInt("All Coins", PlayerStats.totalCoins);
        
         PlayerPrefs.Save();
 
@@ -75,6 +80,7 @@ public class EndRun : MonoBehaviour {
         PlayerStats.averageSkillLevel = PlayerPrefs.GetFloat("Average Skill Level");
         PlayerStats.totalRunsCount = PlayerPrefs.GetInt("Total Runs Count");
         PlayerStats.AllSkillLevels = PlayerPrefs.GetFloat("All Skill Levels");
+        PlayerStats.totalCoins = PlayerPrefs.GetInt("All Coins");
 
     }
     
@@ -103,5 +109,7 @@ public class Stats
     public int bestScore;
 
     public float AllSkillLevels;
+
+    public int totalCoins;
 
 }
