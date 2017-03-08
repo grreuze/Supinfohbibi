@@ -48,7 +48,7 @@ public class EndRun : MonoBehaviour {
         CalculateAverageSkillLevel();
 
         PlayerStats.averageSkillLevel = newAverageSkillLevel;
-        PlayerStats.totalCoins += GameManager.GetInstance().coins;
+        PlayerStats.totalCoins = GameManager.GetInstance().coins;
         PlayerStats.bestScore = GameManager.GetInstance().GetBestScore();
         Metrics.GetInstance().FinishRun(FindObjectOfType<Ranking>().GetRank());
 
@@ -81,6 +81,7 @@ public class EndRun : MonoBehaviour {
         PlayerStats.totalRunsCount = PlayerPrefs.GetInt("Total Runs Count");
         PlayerStats.AllSkillLevels = PlayerPrefs.GetFloat("All Skill Levels");
         PlayerStats.totalCoins = PlayerPrefs.GetInt("All Coins");
+        GameManager.GetInstance().coins = PlayerStats.totalCoins;
 
     }
     
