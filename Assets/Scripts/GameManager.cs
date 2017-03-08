@@ -16,7 +16,6 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-
     void Start() {
         _metrics = Metrics.GetInstance();
         Screen.orientation = ScreenOrientation.Portrait;
@@ -35,20 +34,18 @@ public class GameManager : MonoBehaviour {
     }
 
     public bool isPlaying = false;
-    public float baseMoveSpeed;
+    /*public float baseMoveSpeed;
     public float accelerateMoveSpeed;
-    public float boostMoveSpeed;
+    public float boostMoveSpeed;*/
     public bool deceleratingLerp_AccelerateToBase;
     public float timeToLosingAcceleration;
     public bool deceleratingLerp_BoostToAccelerate;
     public float timeToLosingBoost;
-    //public float decelerateMoveSpeed;
     public float JumpForce;
     public float _playerStartMoveSpeed;
     public float _maxMoveSpeed;
     public float _minMoveSpeed;
-    public int _nbOpponent;
-    public float _maxOpponentSpeed;
+    
     public GameObject _fish;
     public AIFish aiFish;
     public Canvas _endCanvas;
@@ -59,6 +56,14 @@ public class GameManager : MonoBehaviour {
     private int _bestScore = 0;
     private EndRun endRun;
 
+    [System.Serializable]
+    public struct AI {
+        public float baseMoveSpeed;
+        public float accelerateMoveSpeed;
+        public float chanceToAccelerate;
+    }
+    public AI[] opponents;
+    
     public void UpdateBestScore() {
         foreach (BestScore best in FindObjectsOfType<BestScore>()) {
             best.UpdateBestScore(_bestScore);
@@ -67,15 +72,15 @@ public class GameManager : MonoBehaviour {
 
     public void SpawnFishes() {
         Instantiate(_fish, transform.position, transform.rotation);
-        for (int i = 0; i < _nbOpponent; i++) {
+        for (int i = 0; i < opponents.Length; i++) {
             Vector3 spawnPosition = transform.position;
             spawnPosition.x += Random.Range(-2, 2);
             spawnPosition.z += Random.Range(-2, 2);
 
             AIFish newFish = Instantiate(aiFish, spawnPosition, transform.rotation);
-            newFish.GetComponentInParent<AIFish>().chanceToAccelerate = Random.Range(0, 1f);
-
-            //go.GetComponentInParent<AIFish>().movementSpeed = Random.Range(_minMoveSpeed, _maxMoveSpeed);
+            newFish.baseMoveSpeed = opponents[i].baseMoveSpeed;
+            newFish.accelerateMoveSpeed = opponents[i].accelerateMoveSpeed;
+            newFish.chanceToAccelerate = opponents[i].chanceToAccelerate;
         }
         isPlaying = true;
         StartRun();

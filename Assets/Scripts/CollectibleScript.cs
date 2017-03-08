@@ -42,9 +42,7 @@ public class CollectibleScript : MonoBehaviour
 		transform.eulerAngles += new Vector3 (0, 5, 0);
 	}
 
-	private void ResetCombo ()
-	{
-        print("reset combo");
+	private void ResetCombo () {
 		CollectibleScript.combo = 0;
 	}
 
@@ -60,7 +58,6 @@ public class CollectibleScript : MonoBehaviour
 				_audioManager.PlayCollectibleSound (combo, _audioSource);
 				alreadyCalled = true;
 			}
-            print(combo);
 
 			//Lecture du son de pickup
 			_audioManager.PlayCollectibleSound (combo, _audioSource);
@@ -79,10 +76,8 @@ public class CollectibleScript : MonoBehaviour
 				StartCoroutine (SmallBoost ());
                 
 			} else { //si le combo est complété
-
-                print("full combo");
+                
                 collision.GetComponent<FishController>().StartBoost();
-
 				//StartCoroutine (Boost ());
 				//ResetCombo ();
 			}

@@ -43,22 +43,14 @@ public class Ranking : MonoBehaviour
                 }
             }
         }
-
 		if (_rank != lastRank) {
 			displayText.text = _rank.ToString ();
-			displayText.color = Color.Lerp (firstColor, lastColor, (_rank - 1f) / (_gameManager._nbOpponent + 1f));
+			displayText.color = Color.Lerp (firstColor, lastColor, (_rank - 1f) / (_gameManager.opponents.Length + 1f));
 			displayAnim.Play ("RankAnim");
 			lastRank = _rank;
-
 		}
-
-
-
 	}
-
-
-
-
+    
 	public int GetRank ()
 	{
 		return _rank;

@@ -8,21 +8,17 @@ public abstract class Fish : MonoBehaviour {
 
     [Header("Speed")]
     public float movementSpeed = 12;
-    private float averageSpeed = 0;
-    private float totalTimeForAvergaeSpeed = 0;
-    public MinMax speed = new MinMax(10, 30);
-    public float accelerationFactor = 1, decelerationFactor = 1;
-    public float distanceToFloorToAccelerate = 1.2f;
-    public Material defaultMaterial, acceleratingMaterial;
-    public float stabilisationCheckDistance = 2;
-    public float stabilisationSpeed = 2;
+    public float baseMoveSpeed = 12, accelerateMoveSpeed = 20, boostMoveSpeed = 30;
 
     [Header("In the Air")]
     public float gravity;
     public float maxFallingSpeed = 0.4f;
     public float fallingSpeedWhenAccelerating = 0.7f;
     public float heightLimitForTricks = 2;
-    public float maxDistanceToEndTrigger = 50;
+    
+    [Header("Stabilisation")]
+    public float stabilisationCheckDistance = 2;
+    public float stabilisationSpeed = 2;
 
     [Header("Turning")]
     public bool turning;
@@ -35,27 +31,21 @@ public abstract class Fish : MonoBehaviour {
 
     #region private properties
     protected GameManager _gameManager;
-    [HideInInspector]
-    public Trick_Pattern trickSystem;
-
+    protected Trick_Pattern trickSystem;
     CharacterController controller;
+    ParticleSystem slideParticle;
+    GameObject waterEffect, speedWaterEffect;
 
     Vector3 direction;
     float verticalVelocity, horizontalVelocity;
+
+    private float averageSpeed = 0;
+    private float totalTimeForAverageSpeed = 0;
+
     protected float reachedMaxSpeed;
-
-    protected bool isGrounded;
-
-    [HideInInspector]
-    public float distanceToFloor;
-
-    [HideInInspector]
-    public bool accelerating;
-    [HideInInspector]
-    public bool descending;
-
-    ParticleSystem slideParticle;
-    GameObject waterEffect, speedWaterEffect;
+    protected float distanceToFloor;
+    
+    protected bool isGrounded, accelerating, descending;
     #endregion
 
     #region Monobehaviour
@@ -83,8 +73,8 @@ public abstract class Fish : MonoBehaviour {
             isGrounded = true;
         }
 
-        averageSpeed = ((averageSpeed * totalTimeForAvergaeSpeed) + (movementSpeed * deltaTime)) / (totalTimeForAvergaeSpeed + deltaTime);
-        totalTimeForAvergaeSpeed += deltaTime;
+        averageSpeed = ((averageSpeed * totalTimeForAverageSpeed) + (movementSpeed * deltaTime)) / (totalTimeForAverageSpeed + deltaTime);
+        totalTimeForAverageSpeed += deltaTime;
 
         MovementSpeed();
         JumpAndGravity();

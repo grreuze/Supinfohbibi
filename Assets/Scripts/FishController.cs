@@ -1,16 +1,16 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
-using DG.Tweening;
 
 public class FishController : Fish {
 
-    FishAnimator fishAnim;
+    [Header("Player")]
     public float distanceToFloorToPlayAirAnim;
     public float InputAmplitudeForJump;
     public float TimeLimitForJump;
     public float TimeLimitBoostWaiting;
 
+    FishAnimator fishAnim;
     private bool jumpOK;
     private bool boosted;
     private bool lastJumping;
@@ -55,14 +55,14 @@ public class FishController : Fish {
                        || Input.GetMouseButton(0)) && !trickSystem.isPlaying)
                 {
 
-                    movementSpeed = _gameManager.accelerateMoveSpeed;
+                    movementSpeed = accelerateMoveSpeed;
 
                     accelerating = true;
                     if (speedParticle.isStopped)
                         speedParticle.Play();
                 }
                 else {
-                    movementSpeed = _gameManager.baseMoveSpeed;
+                    movementSpeed = baseMoveSpeed;
 
                     accelerating = false;
                     if (speedParticle.isPlaying)
@@ -92,7 +92,7 @@ public class FishController : Fish {
                     if (speedParticle.isStopped)
                         speedParticle.Play();
                 }
-                movementSpeed = Mathf.Lerp(_gameManager.baseMoveSpeed, _gameManager.accelerateMoveSpeed, timeAccelerateRemaining / _gameManager.timeToLosingAcceleration);
+                movementSpeed = Mathf.Lerp(baseMoveSpeed, accelerateMoveSpeed, timeAccelerateRemaining / _gameManager.timeToLosingAcceleration);
             }
         }
         else
@@ -105,7 +105,7 @@ public class FishController : Fish {
                     timeAccelerateRemaining = 0;
                     boosted = false;
                 }
-                movementSpeed = Mathf.Lerp(_gameManager.accelerateMoveSpeed, _gameManager.boostMoveSpeed, timeAccelerateRemaining / _gameManager.timeToLosingBoost);
+                movementSpeed = Mathf.Lerp(accelerateMoveSpeed, boostMoveSpeed, timeAccelerateRemaining / _gameManager.timeToLosingBoost);
             }
             else
             {
@@ -113,12 +113,11 @@ public class FishController : Fish {
                 if (timeAccelerateRemaining <= 0)
                 {
                     timeAccelerateRemaining = _gameManager.timeToLosingAcceleration;
-                    movementSpeed = _gameManager.accelerateMoveSpeed;
+                    movementSpeed = accelerateMoveSpeed;
                     boosted = false;
                 }
                 else {
-                    print("i'm boosting");
-                    movementSpeed = _gameManager.boostMoveSpeed;
+                    movementSpeed = boostMoveSpeed;
                 }
             }
             accelerating = false;
@@ -153,28 +152,11 @@ public class FishController : Fish {
     }
 
     void DoCameraFOV() {
-
-        float t = (movementSpeed - _gameManager.baseMoveSpeed) / (_gameManager.boostMoveSpeed - _gameManager.baseMoveSpeed);
-
+        float t = (movementSpeed - baseMoveSpeed) / (boostMoveSpeed - baseMoveSpeed);
         camera.targetFOV = Mathf.Lerp(fov, accelerateFov, t);
-
-
-        //if (accelerating) {
-        //    if (isAccFovOn == false) {
-        //        isAccFovOn = true;
-        //        Camera.main.DOFieldOfView(accelerateFov, 0.3f);
-
-        //    }
-        //} else {
-        //    if (isAccFovOn == true) {
-        //        isAccFovOn = false;
-        //        Camera.main.DOFieldOfView(fov, 0.3f);
-        //    }
-        //}
     }
 
-    private IEnumerator WaitingJump()
-    {
+    private IEnumerator WaitingJump() {
         yield return new WaitForSeconds(TimeLimitForJump);
         jumpOK = false;
     }
