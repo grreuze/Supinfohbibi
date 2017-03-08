@@ -4,31 +4,34 @@ using UnityEngine;
 using DG.Tweening;
 
 
-[RequireComponent(typeof(Canvas))]
-[RequireComponent(typeof(AudioSource))]
+[RequireComponent (typeof(Canvas))]
+[RequireComponent (typeof(AudioSource))]
 public class StartGame : MonoBehaviour
 {
 
 	private GameManager _gameManager;
-    private AudioManager _audioManager;
-    private Transform _buttonTeamTransform;
-    private Transform _buttonSoundTransform;
-    private Transform _bestScoreTextTransform;
-    private Canvas _canvas;
-    private AudioSource _audioSource;
-    private AudioSource _musicAudioSource;
-    private AudioSource _waterSoundAudioSource;
+	private AudioManager _audioManager;
+	private Transform _buttonTeamTransform;
+	private Transform _buttonTutoTransform;
+	private Transform _buttonSoundTransform;
+	private Transform _bestScoreTextTransform;
+	private Canvas _canvas;
+	private AudioSource _audioSource;
+	private AudioSource _musicAudioSource;
+	private AudioSource _waterSoundAudioSource;
 
-    [SerializeField]
+	[SerializeField]
 	private GameObject _buttonTeam;
-    [SerializeField]
+	[SerializeField]
+	private GameObject _buttonTuto;
+	[SerializeField]
 	private GameObject _buttonSound;
-    [SerializeField]
+	[SerializeField]
 	private GameObject _bestScoreText;
-    [SerializeField]
-    private GameObject _music;
-    [SerializeField]
-    private GameObject _waterSound;
+	[SerializeField]
+	private GameObject _music;
+	[SerializeField]
+	private GameObject _waterSound;
 	[SerializeField]
 	private Canvas _HUD;
 
@@ -37,15 +40,16 @@ public class StartGame : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-        _gameManager = GameManager.GetInstance();
-        _audioManager = AudioManager.GetInstance();
-        _waterSoundAudioSource = _waterSound.GetComponent<AudioSource>();
-        _musicAudioSource = _music.GetComponent<AudioSource>();
-        _audioSource = GetComponent<AudioSource>();
-        _buttonTeamTransform = _buttonTeam.transform;
-        _buttonSoundTransform = _buttonSound.transform;
-        _bestScoreTextTransform = _bestScoreText.transform;
-        _canvas = GetComponent<Canvas>();
+		_gameManager = GameManager.GetInstance ();
+		_audioManager = AudioManager.GetInstance ();
+		_waterSoundAudioSource = _waterSound.GetComponent<AudioSource> ();
+		_musicAudioSource = _music.GetComponent<AudioSource> ();
+		_audioSource = GetComponent<AudioSource> ();
+		_buttonTeamTransform = _buttonTeam.transform;
+		_buttonTutoTransform = _buttonTuto.transform;
+		_buttonSoundTransform = _buttonSound.transform;
+		_bestScoreTextTransform = _bestScoreText.transform;
+		_canvas = GetComponent<Canvas> ();
 		_audioManager.PlaySoundAtPosition ("Menu", _musicAudioSource, true);
 		_audioManager.PlaySoundAtPosition ("CalmFlow", _waterSoundAudioSource, true);
 		StartCoroutine ("MenuAnim");	
@@ -63,28 +67,35 @@ public class StartGame : MonoBehaviour
 		_audioManager.PlaySoundAtPosition ("BigPok", _audioSource, false);
 		_gameManager.SpawnFishes ();
 		_HUD.enabled = true;
-        //HUD.GetComponentInChildren<Chronometer> ().LaunchTimer ();        
-        //Destroy (this);
-        _canvas.enabled = false;
+		//HUD.GetComponentInChildren<Chronometer> ().LaunchTimer ();        
+		//Destroy (this);
+		_canvas.enabled = false;
 	}
 
 	IEnumerator MenuAnim ()
 	{
 		Vector3 bestScoreStartPos = _bestScoreTextTransform.localPosition;
-        //bestScore.transform.localPosition = new Vector3 (bestScore.transform.localPosition.x, bestScore.transform.localPosition.y - 220, bestScore.transform.localPosition.z);
-        _bestScoreTextTransform.localPosition += new Vector3(0, -220, 0);
+		//bestScore.transform.localPosition = new Vector3 (bestScore.transform.localPosition.x, bestScore.transform.localPosition.y - 220, bestScore.transform.localPosition.z);
+		_bestScoreTextTransform.localPosition += new Vector3 (0, -220, 0);
 
-        Vector3 buttonTeamStartPos = _buttonTeamTransform.localPosition;
-        //buttonTeam.transform.localPosition = new Vector3 (buttonTeam.transform.localPosition.x, buttonTeam.transform.localPosition.y + 220, buttonTeam.transform.localPosition.z);
-        _buttonTeamTransform.localPosition += new Vector3(0, 220, 0);
+		Vector3 buttonTeamStartPos = _buttonTeamTransform.localPosition;
+		//buttonTeam.transform.localPosition = new Vector3 (buttonTeam.transform.localPosition.x, buttonTeam.transform.localPosition.y + 220, buttonTeam.transform.localPosition.z);
+		_buttonTeamTransform.localPosition += new Vector3 (0, 220, 0);
 		_buttonTeamTransform.DOLocalMove (buttonTeamStartPos, 0.8f, false).SetEase (Ease.OutBounce).OnComplete (() => {
 			_buttonTeamTransform.DOScale (new Vector3 (1.05f, 1.05f, 1.05f), 0.4f).SetLoops (-1, LoopType.Yoyo);
 		});
 
+		Vector3 buttonTutoStartPos = _buttonTutoTransform.localPosition;
+		//buttonTeam.transform.localPosition = new Vector3 (buttonTeam.transform.localPosition.x, buttonTeam.transform.localPosition.y + 220, buttonTeam.transform.localPosition.z);
+		_buttonTutoTransform.localPosition += new Vector3 (0, 220, 0);
+		_buttonTutoTransform.DOLocalMove (buttonTutoStartPos, 0.8f, false).SetEase (Ease.OutBounce).OnComplete (() => {
+			_buttonTutoTransform.DOScale (new Vector3 (1.05f, 1.05f, 1.05f), 0.4f).SetLoops (-1, LoopType.Yoyo);
+		});
+
 		Vector3 buttonSoundStartPos = _buttonSoundTransform.localPosition;
-        //buttonSound.transform.localPosition = new Vector3 (buttonSound.transform.localPosition.x, buttonSound.transform.localPosition.y + 220, buttonSound.transform.localPosition.z);
-        _buttonSoundTransform.localPosition += new Vector3(0, 220, 0);
-        _buttonSoundTransform.DOLocalMove (buttonSoundStartPos, 0.8f, false).SetEase (Ease.OutBounce).OnComplete (() => {
+		//buttonSound.transform.localPosition = new Vector3 (buttonSound.transform.localPosition.x, buttonSound.transform.localPosition.y + 220, buttonSound.transform.localPosition.z);
+		_buttonSoundTransform.localPosition += new Vector3 (0, 220, 0);
+		_buttonSoundTransform.DOLocalMove (buttonSoundStartPos, 0.8f, false).SetEase (Ease.OutBounce).OnComplete (() => {
 			_buttonSoundTransform.DOScale (new Vector3 (1.05f, 1.05f, 1.05f), 0.4f).SetLoops (-1, LoopType.Yoyo);
 		});
 
