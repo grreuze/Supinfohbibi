@@ -10,9 +10,9 @@ public class CameraScript : MonoBehaviour {
         public Vector3 cameraOffset;
         public Vector3 targetOffset;
 
-        public CameraState(Vector3 cameraOffset, Vector3 targetOffset) {
-            this.cameraOffset = cameraOffset;
-            this.targetOffset = targetOffset;
+        public CameraState(Vector3 NcameraOffset, Vector3 NtargetOffset) {
+            cameraOffset = NcameraOffset;
+            targetOffset = NtargetOffset;
         }
 
         public static bool operator ==(CameraState a, CameraState b) {
@@ -33,16 +33,18 @@ public class CameraScript : MonoBehaviour {
     public Transform target;
 
     public float targetFOV = 60;
-    public CameraState idle, jumping, descending, turningLeft, turningRight, end;
+    public CameraState idle, jumping, descending, end;
     [HideInInspector]
     public CameraState currentState;
     
     Vector3 targetPosition, cameraPosition;
     Quaternion cameraRotation;
+    Transform _transform;
     new Camera camera;
 
     //stockage des positions relatives initiales pour l'idle
     private void Start() {
+        _transform = transform;
         camera = GetComponent<Camera>();
         SetNewState(idle);
     }
@@ -58,12 +60,12 @@ public class CameraScript : MonoBehaviour {
         }
 
         targetPosition = target.position + target.TransformDirection(targetOffset);
-        cameraRotation = Quaternion.LookRotation(targetPosition - transform.position);
+        cameraRotation = Quaternion.LookRotation(targetPosition - _transform.position);
         cameraPosition = target.position + target.TransformDirection(relativePosition + cameraOffset);
 
         camera.fieldOfView = Mathf.Lerp(camera.fieldOfView, targetFOV, t);
-        transform.localPosition = Vector3.Slerp(transform.position, cameraPosition, t);
-        transform.localRotation = Quaternion.Slerp(transform.rotation, cameraRotation, t);
+        _transform.localPosition = Vector3.Slerp(_transform.position, cameraPosition, t);
+        _transform.localRotation = Quaternion.Slerp(_transform.rotation, cameraRotation, t);
     }
 
     public void SetNewState(CameraState newState) {

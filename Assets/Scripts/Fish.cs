@@ -18,14 +18,6 @@ public abstract class Fish : MonoBehaviour {
     [Header("Stabilisation")]
     public float stabilisationCheckDistance = 2;
     public float stabilisationSpeed = 2;
-
-    [Header("Turning")]
-    public bool turning;
-    public float turningSpeed = 2;
-    public Quaternion targetRotation;
-    public float turnStabilisation = 2;
-
-    public Trigger lastTrigger;
     #endregion
 
     #region private properties
@@ -35,7 +27,9 @@ public abstract class Fish : MonoBehaviour {
     private GameObject waterEffect, speedWaterEffect;
     private Transform _transform;
 
-    Vector3 direction;
+    protected bool stopped;
+
+    private Vector3 direction;
     protected float verticalVelocity, horizontalVelocity;
 
     private float averageSpeed = 0;
@@ -45,6 +39,11 @@ public abstract class Fish : MonoBehaviour {
     protected float distanceToFloor;
     
     protected bool isGrounded, accelerating, descending;
+
+    protected bool jumping;
+    float jumpStrength;
+    private float startJumpY;
+
     #endregion
 
     #region Monobehaviour
@@ -53,7 +52,6 @@ public abstract class Fish : MonoBehaviour {
         _transform = GetComponent<Transform>();
         controller = GetComponent<CharacterController>();
         _gameManager = GameManager.GetInstance();
-        targetRotation = _transform.rotation;
         slideParticle = _transform.FindChild("P_Slide").GetComponent<ParticleSystem>();
         waterEffect = _transform.FindChild("P_Idle").gameObject;
         speedWaterEffect = _transform.FindChild("P_IdleSpeed").gameObject;
@@ -84,14 +82,13 @@ public abstract class Fish : MonoBehaviour {
         direction.y = verticalVelocity;
         direction.z = movementSpeed * deltaTime;
 
-        direction = transform.TransformDirection(direction);
+        direction = _transform.TransformDirection(direction);
 
         controller.Move(direction);
     }
     #endregion
 
     #region Movement
-    protected bool stopped;
     public void StopMovement() {
         stopped = true;
     }
@@ -108,16 +105,16 @@ public abstract class Fish : MonoBehaviour {
 
     void Stabilisation() {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit) && hit.collider.gameObject.layer != 8) {
+        if (Physics.Raycast(_transform.position, Vector3.down, out hit) && hit.collider.gameObject.layer != 8) {
             // There's floor under us
             distanceToFloor = hit.distance;
         }
         
-        bool hitRight = Physics.Linecast(transform.position + transform.right * stabilisationCheckDistance + transform.forward * 1.5f + Vector3.up*10,
-                         transform.position + transform.right * stabilisationCheckDistance + transform.forward * 1.5f - Vector3.up*100, out hit);
+        bool hitRight = Physics.Linecast(_transform.position + _transform.right * stabilisationCheckDistance + _transform.forward * 1.5f + Vector3.up*10,
+                         _transform.position + _transform.right * stabilisationCheckDistance + _transform.forward * 1.5f - Vector3.up*100, out hit);
 
-        bool hitLeft = Physics.Linecast(transform.position - transform.right * stabilisationCheckDistance + transform.forward * 1.5f + Vector3.up*10,
-                         transform.position - transform.right * stabilisationCheckDistance + transform.forward * 1.5f - Vector3.up*100, out hit);
+        bool hitLeft = Physics.Linecast(_transform.position - _transform.right * stabilisationCheckDistance + _transform.forward * 1.5f + Vector3.up*10,
+                         _transform.position - _transform.right * stabilisationCheckDistance + _transform.forward * 1.5f - Vector3.up*100, out hit);
 
         if (!hitRight) 
             horizontalVelocity = -stabilisationSpeed * movementSpeed * deltaTime;
@@ -130,10 +127,7 @@ public abstract class Fish : MonoBehaviour {
 
     #region Jump & Gravity
 
-    protected bool jumping;
-    float jumpStrength;
-    [HideInInspector]
-    public float startJumpY;
+
 
     public void CallJump() {
         if (isGrounded) {
@@ -158,7 +152,7 @@ public abstract class Fish : MonoBehaviour {
 
         if (jumping) {
             verticalVelocity = _gameManager.JumpForce;
-            startJumpY = transform.position.y;
+            startJumpY = _transform.position.y;
             jumping = false;
             SetEffectsActive(false);
             StartJump();
@@ -171,13 +165,12 @@ public abstract class Fish : MonoBehaviour {
 
         } else if (reachedMaxSpeed == 0) {
             verticalVelocity -= gravity * deltaTime;
-            //StartTrick();
             RaycastHit hit;
-            if (Physics.Linecast(transform.position + Vector3.up * 0.7f, transform.position + Vector3.up*2, out hit) && hit.collider.gameObject.layer != 8) {
+            if (Physics.Linecast(_transform.position + Vector3.up * 0.7f, _transform.position + Vector3.up*2, out hit) && hit.collider.gameObject.layer != 8) {
                 verticalVelocity = -gravity * deltaTime;
             }
 
-        } else if (transform.position.y < -300) {
+        } else if (_transform.position.y < -300) {
             OutOfBounds();
         }
 
