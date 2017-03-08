@@ -12,9 +12,11 @@ public class FishController : Fish {
 
     FishAnimator fishAnim;
     private bool jumpOK;
+    private bool waitingBoost;
     private bool boosted;
     private bool lastJumping;
     private float timeAccelerateRemaining;
+    private float timerWaitingBoost;
     
     //new Renderer renderer;
     float lastY;
@@ -36,6 +38,7 @@ public class FishController : Fish {
         speedParticle = Camera.main.GetComponentInChildren<ParticleSystem>();
         fov = Camera.main.fieldOfView;
         jumpOK = false;
+        waitingBoost = false;
         timeAccelerateRemaining = 0;
     }
 
@@ -124,17 +127,29 @@ public class FishController : Fish {
             if (speedParticle.isStopped)
                 speedParticle.Play();
         }
-        
-        if (!isGrounded && !lastJumping)
-        {
+        if (distanceToFloor > 3.5f && !lastJumping) {
             lastJumping = true;
         }
 
-        if(lastJumping && reachedMaxSpeed > 0 && distanceToFloor < 3.5f && verticalVelocity < 0)
+        if(!waitingBoost && lastJumping && reachedMaxSpeed > 0 && distanceToFloor < 3.5f && verticalVelocity < 0)
         {
-            print("boostcall");
-            StartCoroutine(WaitBoostCall());
+            waitingBoost = true;
+            timerWaitingBoost = 0;
             lastJumping = false;
+        }
+
+        if(waitingBoost)
+        {
+            if (Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))
+            {
+                StartBoost();
+                waitingBoost = false;
+            }
+            timerWaitingBoost += deltaTime;
+            if(timerWaitingBoost > TimeLimitBoostWaiting)
+            {
+                waitingBoost = false;
+            }
         }
 
         if ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) || Input.GetMouseButtonDown(0)) {
@@ -160,20 +175,6 @@ public class FishController : Fish {
     private IEnumerator WaitingJump() {
         yield return new WaitForSeconds(TimeLimitForJump);
         jumpOK = false;
-    }
-
-    private IEnumerator WaitBoostCall()
-    {
-        float timer = 0;
-        while (timer < TimeLimitBoostWaiting) {
-            if (Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))
-            {
-                StartBoost();
-                timer = TimeLimitBoostWaiting;
-            }
-            timer += Time.deltaTime;
-            yield return new WaitForEndOfFrame();
-        }
     }
 
     public void StartBoost() {
