@@ -42,7 +42,7 @@ public abstract class Fish : MonoBehaviour {
 
     Vector3 direction;
     float verticalVelocity, horizontalVelocity;
-    float reachedMaxSpeed;
+    protected float reachedMaxSpeed;
 
     protected bool isGrounded;
 

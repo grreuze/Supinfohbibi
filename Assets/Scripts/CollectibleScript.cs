@@ -44,6 +44,7 @@ public class CollectibleScript : MonoBehaviour
 
 	private void ResetCombo ()
 	{
+        print("reset combo");
 		CollectibleScript.combo = 0;
 	}
 
@@ -59,27 +60,31 @@ public class CollectibleScript : MonoBehaviour
 				_audioManager.PlayCollectibleSound (combo, _audioSource);
 				alreadyCalled = true;
 			}
+            print(combo);
 
 			//Lecture du son de pickup
 			_audioManager.PlayCollectibleSound (combo, _audioSource);
 
 			//Si le combo est en cours
-			if (CollectibleScript.combo < 5) {
+			if (CollectibleScript.combo < 4) {
 				CancelInvoke ();
                 
 				CollectibleScript.combo++;
-				Invoke ("ResetCombo", 0.5f);
+				Invoke ("ResetCombo", 1f);
 
 				//reset des coroutines et de la vitesse pour éviter le stack de coroutines
 				StopCoroutine (SmallBoost ());
 				_gameManager._maxMoveSpeed = originalSpeed;
 
 				StartCoroutine (SmallBoost ());
-
                 
 			} else { //si le combo est complété
-				StartCoroutine (Boost ());
-				ResetCombo ();
+
+                print("full combo");
+                collision.GetComponent<FishController>().StartBoost();
+
+				//StartCoroutine (Boost ());
+				//ResetCombo ();
 			}
 
 			CollectedEffect.Emit (1);

@@ -116,8 +116,8 @@ public class FishController : Fish {
                     movementSpeed = _gameManager.accelerateMoveSpeed;
                     boosted = false;
                 }
-                else
-                {
+                else {
+                    print("i'm boosting");
                     movementSpeed = _gameManager.boostMoveSpeed;
                 }
             }
@@ -125,12 +125,13 @@ public class FishController : Fish {
             if (speedParticle.isStopped)
                 speedParticle.Play();
         }
-        if(!isGrounded && !lastJumping)
+        
+        if (!isGrounded && !lastJumping)
         {
             lastJumping = true;
         }
 
-        if(lastJumping && isGrounded)
+        if(lastJumping && reachedMaxSpeed > 0 && distanceToFloor < 3.5f)
         {
             StartCoroutine(WaitBoostCall());
             lastJumping = false;
@@ -153,7 +154,7 @@ public class FishController : Fish {
 
     void DoCameraFOV() {
 
-        float t = (movementSpeed - _gameManager.baseMoveSpeed) / (_gameManager.accelerateMoveSpeed - _gameManager.baseMoveSpeed);
+        float t = (movementSpeed - _gameManager.baseMoveSpeed) / (_gameManager.boostMoveSpeed - _gameManager.baseMoveSpeed);
 
         camera.targetFOV = Mathf.Lerp(fov, accelerateFov, t);
 
@@ -181,16 +182,20 @@ public class FishController : Fish {
     private IEnumerator WaitBoostCall()
     {
         float timer = 0;
-        while(timer < TimeLimitBoostWaiting) {
-            if((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) || Input.GetMouseButton(0))
+        while (timer < TimeLimitBoostWaiting) {
+            if (Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))
             {
-                boosted = true;
-                timeAccelerateRemaining = _gameManager.timeToLosingBoost;
+                StartBoost();
                 timer = TimeLimitBoostWaiting;
             }
             timer += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
+    }
+
+    public void StartBoost() {
+        boosted = true;
+        timeAccelerateRemaining = _gameManager.timeToLosingBoost;
     }
 
     bool hasAlreadyDoneTricks;
