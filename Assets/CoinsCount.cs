@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class CoinsCount : MonoBehaviour
 {
-
+    private GameManager _gameManager;
+    private Text _myText;
 	public int runCoins;
 
 	int coins = 0;
@@ -13,20 +14,19 @@ public class CoinsCount : MonoBehaviour
 
 	void Start ()
 	{
-		coins = GameManager.GetInstance ().coins;
-		lastCoins = GameManager.GetInstance ().coins;
-		this.gameObject.GetComponent<Text> ().text = "" + (runCoins);
+        _gameManager = GameManager.GetInstance();
+        _myText = GetComponent<Text>();
+		coins = _gameManager.coins;
+		lastCoins = coins;
+		_myText.text = "" + (runCoins);
 	}
 
 	void Update ()
 	{
-
-		coins = GameManager.GetInstance ().coins;
-
+		coins = _gameManager.coins;
 		runCoins = coins - lastCoins;
-
 		if (coins != lastCoins) {
-			this.gameObject.GetComponent<Text> ().text = "" + (runCoins);
+			_myText.text = "" + (runCoins);
 		}
 	}
 }

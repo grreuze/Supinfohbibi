@@ -28,7 +28,6 @@ public class GameManager : MonoBehaviour
 		trickSystem = FindObjectOfType<Trick_Pattern> ();
 		if (playAuto)
 			SpawnFishes ();
-		_bestScore = endRun.PlayerStats.bestScore;
 		UpdateBestScore ();
 	}
 
@@ -56,7 +55,6 @@ public class GameManager : MonoBehaviour
 	public int coins;
 
 	private Trick_Pattern trickSystem;
-	private int _bestScore = 0;
 	private EndRun endRun;
 
 	[System.Serializable]
@@ -95,11 +93,7 @@ public class GameManager : MonoBehaviour
 	}
 
 	public void EndRun ()
-	{
-		if (!trickSystem)
-			trickSystem = FindObjectOfType<Trick_Pattern> ();
-		trickSystem.EndOfTrick (); 
-        
+	{   
 		GameObject.Find ("HUD").GetComponent<Canvas> ().enabled = false;
 
 		CameraScript camera = Camera.main.GetComponent<CameraScript> ();
@@ -116,22 +110,6 @@ public class GameManager : MonoBehaviour
 	public void StartRun ()
 	{
 		_endCanvas.enabled = false;
-	}
-
-	public bool IsScoreBetterThanBest (int score)
-	{
-		if (score > _bestScore) {
-			_bestScore = score;
-			UpdateBestScore ();
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public int GetBestScore ()
-	{
-		return _bestScore;
 	}
 
 	public void SetEndCanvas (Canvas newCanvas)

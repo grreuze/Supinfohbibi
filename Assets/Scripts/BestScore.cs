@@ -9,10 +9,11 @@ public class BestScore : MonoBehaviour {
 
     private void Start()
     {
-        _bestScoreText.text = GameManager.GetInstance().GetBestScore().ToString();
+        _bestScoreText.text = GameManager.GetInstance().coins.ToString();
     }
 
     public void UpdateBestScore(int newBestScore) {
+        print(newBestScore);
         _bestScoreText.text = newBestScore.ToString();
     }
 }

@@ -56,7 +56,7 @@ public class EndRun : MonoBehaviour {
 
         PlayerStats.averageSkillLevel = newAverageSkillLevel;
         PlayerStats.totalCoins = _gameManager.coins;
-        PlayerStats.bestScore = _gameManager.GetBestScore();
+        PlayerStats.bestScore = 0;
         Metrics.GetInstance().FinishRun(FindObjectOfType<Ranking>().GetRank());
 
         PlayerStats.totalCoins += _gameManager.coins;
