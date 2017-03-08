@@ -106,6 +106,9 @@ public class GameManager : MonoBehaviour
 		CameraScript camera = Camera.main.GetComponent<CameraScript> ();
 		camera.SetNewState (camera.end);
         
+		AudioManager.GetInstance ().PlaySoundAtPosition ("End", GameObject.Find ("Music").GetComponent<AudioSource> (), true);
+		AudioManager.GetInstance ().PlaySoundAtPosition ("CalmFlow", GameObject.Find ("WaterSound").GetComponent<AudioSource> (), true);
+
 		_endCanvas.enabled = true;
 		_endCanvas.GetComponentInChildren<Score> ().ScoreFinal ();
 		endRun.LaunchEndRunProtocol ();
