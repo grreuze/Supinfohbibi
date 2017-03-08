@@ -8,6 +8,7 @@ public class FishAnimator : MonoBehaviour {
     private bool faceCam;
     private int lastTrickValue;
 
+    public float trickDuration;
 
 	// Use this for initialization
 	void Start () {
@@ -41,6 +42,13 @@ public class FishAnimator : MonoBehaviour {
         lastTrickValue = newTrickValue;
         anim.SetInteger("Trick_Indexer", newTrickValue);
         anim.SetTrigger("Trick_Trigger");
+        StartCoroutine(waitinfEndAnim());
+    }
+
+    private IEnumerator waitinfEndAnim()
+    {
+        yield return new WaitForSeconds(trickDuration);
+        SetEndOfTrick();
     }
 
     public void SetEndOfTrick()

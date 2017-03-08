@@ -13,7 +13,6 @@ public class BestScore : MonoBehaviour {
     }
 
     public void UpdateBestScore(int newBestScore) {
-        print(newBestScore);
         _bestScoreText.text = newBestScore.ToString();
     }
 }

@@ -5,6 +5,7 @@ using System.Collections;
 [RequireComponent(typeof(AudioSource))]
 public class CollectibleScript : MonoBehaviour
 {
+    private FishAnimator _fishAnimator;
     private AudioSource _audioSource;
     private Renderer _renderer;
     private GameManager _gameManager;
@@ -78,9 +79,12 @@ public class CollectibleScript : MonoBehaviour
 			} else { //si le combo est complété
                 
                 collision.GetComponent<FishController>().StartBoost();
-				//StartCoroutine (Boost ());
-				//ResetCombo ();
-			}
+                if (_fishAnimator == null)
+                    _fishAnimator = FindObjectOfType<FishAnimator>();
+                _fishAnimator.SetTrick();
+                //StartCoroutine (Boost ());
+                //ResetCombo ();
+            }
 
 			CollectedEffect.Emit (1);
 			_renderer.enabled = false;
