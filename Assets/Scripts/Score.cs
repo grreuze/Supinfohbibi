@@ -11,7 +11,7 @@ public class Score : MonoBehaviour
 
 	//GameObject time;
 	//GameObject points;
-	GameObject rank;
+
 	Text HUDrank;
 	//public Text timeDisplay;
 	//public Text pointsDisplay;
@@ -36,8 +36,8 @@ public class Score : MonoBehaviour
 		//points = GameObject.Find ("Points");
 		//pointsFinal = points.GetComponent<Points> ().points;
 
-		HUDrank = GameObject.Find("Rank").GetComponent<Text> ();
-		rankFinal = FindObjectOfType<Ranking>().GetRank ();
+		HUDrank = GameObject.Find ("Rank").GetComponent<Text> ();
+		rankFinal = FindObjectOfType<Ranking> ().GetRank ();
 
 		//scoreFinal = (int)((200 * (pointsFinal / timeFinal)) + Mathf.Abs ((((5 - rankFinal) * (pointsFinal - (2 * timeFinal))) / 2)));
 
@@ -46,7 +46,10 @@ public class Score : MonoBehaviour
 		//pointsDisplay.text = "" + pointsFinal;
 		rankDisplay.text = "" + rankFinal;
 		rankDisplay.color = HUDrank.color;
-		coinsDisplay.text = "" + GameManager.GetInstance ().coins;
+		coinsDisplay.text = "" + GameObject.Find ("Coins").GetComponent<CoinsCount> ().runCoins;
+
+		GameManager.GetInstance ().UpdateBestScore ();
+
 		//scoreDisplay.text = "" + scoreFinal;
 
 		/*if (GameManager.instance.IsScoreBetterThanBest (scoreFinal)) {
