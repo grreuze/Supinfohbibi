@@ -4,7 +4,6 @@
 public abstract class Fish : MonoBehaviour {
 
     #region public properties
-    public bool drawRays;
 
     [Header("Speed")]
     public float movementSpeed = 12;
@@ -31,9 +30,10 @@ public abstract class Fish : MonoBehaviour {
 
     #region private properties
     protected GameManager _gameManager;
-    CharacterController controller;
-    ParticleSystem slideParticle;
-    GameObject waterEffect, speedWaterEffect;
+    private CharacterController controller;
+    private ParticleSystem slideParticle;
+    private GameObject waterEffect, speedWaterEffect;
+    private Transform _transform;
 
     Vector3 direction;
     protected float verticalVelocity, horizontalVelocity;
@@ -50,12 +50,13 @@ public abstract class Fish : MonoBehaviour {
     #region Monobehaviour
 
     void Awake() {
+        _transform = GetComponent<Transform>();
         controller = GetComponent<CharacterController>();
         _gameManager = GameManager.GetInstance();
-        targetRotation = transform.rotation;
-        slideParticle = transform.FindChild("P_Slide").GetComponent<ParticleSystem>();
-        waterEffect = transform.FindChild("P_Idle").gameObject;
-        speedWaterEffect = transform.FindChild("P_IdleSpeed").gameObject;
+        targetRotation = _transform.rotation;
+        slideParticle = _transform.FindChild("P_Slide").GetComponent<ParticleSystem>();
+        waterEffect = _transform.FindChild("P_Idle").gameObject;
+        speedWaterEffect = _transform.FindChild("P_IdleSpeed").gameObject;
         isGrounded = true;
         descending = true;
     }
@@ -76,15 +77,6 @@ public abstract class Fish : MonoBehaviour {
 
         MovementSpeed();
         JumpAndGravity();
-
-        if (turning) {
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * turningSpeed * movementSpeed);
-            
-            if (Time.time - lastTimeTurned > 3 || Mathf.Abs(transform.rotation.eulerAngles.y % 360 - targetRotation.eulerAngles.y % 360) < turnStabilisation) {
-                transform.rotation = targetRotation;
-                turning = false;
-            }
-        }
 
         Stabilisation();
 
@@ -119,30 +111,6 @@ public abstract class Fish : MonoBehaviour {
         if (Physics.Raycast(transform.position, Vector3.down, out hit) && hit.collider.gameObject.layer != 8) {
             // There's floor under us
             distanceToFloor = hit.distance;
-            Trigger trigger = hit.collider.GetComponent<Trigger>();
-            if (trigger) {
-                if (trigger.mode == Trigger.TriggerMode.Jump)
-                    return;
-                float angle = trigger.mode == Trigger.TriggerMode.TurnLeft ? -90 : 90;
-                if (lastTrigger != trigger)
-                    Turn(angle);
-                lastTrigger = trigger;
-            }
-
-            //if (hit.collider.GetComponent<EndRunTrigger>() && hit.distance < maxDistanceToEndTrigger) {
-            //    Vector3 endPosition = hit.transform.position;
-            //    endPosition.y = transform.position.y;
-
-            //    transform.position = Vector3.Lerp(transform.position, endPosition, 0.5f * movementSpeed * Time.deltaTime);
-            //}
-        }
-
-        if (drawRays) {
-            Debug.DrawLine(transform.position + transform.right * stabilisationCheckDistance + transform.forward * 1.5f + Vector3.up*10,
-                           transform.position + transform.right * stabilisationCheckDistance + transform.forward * 1.5f - Vector3.up*100, Color.red);
-
-            Debug.DrawLine(transform.position - transform.right * stabilisationCheckDistance + transform.forward * 1.5f + Vector3.up*10,
-                           transform.position - transform.right * stabilisationCheckDistance + transform.forward * 1.5f - Vector3.up*100, Color.blue);
         }
         
         bool hitRight = Physics.Linecast(transform.position + transform.right * stabilisationCheckDistance + transform.forward * 1.5f + Vector3.up*10,
@@ -225,34 +193,5 @@ public abstract class Fish : MonoBehaviour {
 
     public virtual void StartJump() { }
 
-    #endregion
-
-    #region Turning
-    float lastTimeTurned;
-    [HideInInspector]
-    public float lastAngle;
-
-    void Turn(float angle) {
-        if (Time.time - lastTimeTurned < 1) return;
-
-        Vector3 rot = targetRotation.eulerAngles;
-        rot.y += angle;
-
-        Quaternion newRot = Quaternion.Euler(rot);
-
-        turning = true;
-        targetRotation = newRot;
-
-        lastAngle = angle;
-        lastTimeTurned = Time.time;
-    }
-
-    public virtual void TurnCamera(float angle) { }
-
-    public void Turn(Quaternion targetRot) {
-        turning = true;
-        targetRotation = targetRot;
-        lastTimeTurned = Time.time;
-    }
     #endregion
 }
