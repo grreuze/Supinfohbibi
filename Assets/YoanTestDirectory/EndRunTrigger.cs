@@ -11,9 +11,9 @@ public class EndRunTrigger : MonoBehaviour {
             fish.movementSpeed = 0;
             fish.StopMovement();
 
-            Rigidbody rb = fish.GetComponent<Rigidbody>();
-            rb.useGravity = false;
-            rb.velocity = Vector3.zero;
+            //Rigidbody rb = fish.GetComponent<Rigidbody>();
+            //rb.useGravity = false;
+            //rb.velocity = Vector3.zero;
 
             if (trigger) {
                 if (fish.GetComponent<FishController>()) {

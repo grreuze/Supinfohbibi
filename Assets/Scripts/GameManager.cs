@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour {
     public int _nbOpponent;
     public float _maxOpponentSpeed;
     public GameObject _fish;
-    public GameObject aiFish;
+    public AIFish aiFish;
     public Canvas _endCanvas;
     public bool soundPause = false;
     public int coins;
@@ -72,7 +72,9 @@ public class GameManager : MonoBehaviour {
             spawnPosition.x += Random.Range(-2, 2);
             spawnPosition.z += Random.Range(-2, 2);
 
-            Instantiate(aiFish, spawnPosition, transform.rotation);
+            AIFish newFish = Instantiate(aiFish, spawnPosition, transform.rotation);
+            newFish.GetComponentInParent<AIFish>().chanceToAccelerate = Random.Range(0, 1f);
+
             //go.GetComponentInParent<AIFish>().movementSpeed = Random.Range(_minMoveSpeed, _maxMoveSpeed);
         }
         isPlaying = true;

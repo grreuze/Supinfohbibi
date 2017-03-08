@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 
-public class AIFish : Fish
-{
+public class AIFish : Fish {
 
 	[Range (0, 1)]
 	public float chanceToAccelerate = 0.1f;
