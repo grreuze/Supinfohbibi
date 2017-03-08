@@ -5,6 +5,8 @@ using System.IO;
 
 public class EndRun : MonoBehaviour {
 
+    private GameManager _gameManager;
+
     public Stats PlayerStats;
 
     public float remainingTimeInSeconds;
@@ -13,6 +15,11 @@ public class EndRun : MonoBehaviour {
 
     //niveau de skill moyen des parties
     public float newAverageSkillLevel;
+
+    private void Awake()
+    {
+        _gameManager = GameManager.GetInstance();
+    }
 
     //méthode qui va calculer la difficulté de la run
     public void OnRunStart()
@@ -48,11 +55,11 @@ public class EndRun : MonoBehaviour {
         CalculateAverageSkillLevel();
 
         PlayerStats.averageSkillLevel = newAverageSkillLevel;
-        PlayerStats.totalCoins = GameManager.GetInstance().coins;
-        PlayerStats.bestScore = GameManager.GetInstance().GetBestScore();
+        PlayerStats.totalCoins = _gameManager.coins;
+        PlayerStats.bestScore = _gameManager.GetBestScore();
         Metrics.GetInstance().FinishRun(FindObjectOfType<Ranking>().GetRank());
 
-        PlayerStats.totalCoins += GameManager.GetInstance().coins;
+        PlayerStats.totalCoins += _gameManager.coins;
 
         SaveData();
     }
@@ -81,7 +88,7 @@ public class EndRun : MonoBehaviour {
         PlayerStats.totalRunsCount = PlayerPrefs.GetInt("Total Runs Count");
         PlayerStats.AllSkillLevels = PlayerPrefs.GetFloat("All Skill Levels");
         PlayerStats.totalCoins = PlayerPrefs.GetInt("All Coins");
-        GameManager.GetInstance().coins = PlayerStats.totalCoins;
+        _gameManager.coins = PlayerStats.totalCoins;
 
     }
     
