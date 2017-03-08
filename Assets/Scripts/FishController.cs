@@ -18,7 +18,6 @@ public class FishController : Fish {
     private float timeAccelerateRemaining;
     private float timerWaitingBoost;
     
-    //new Renderer renderer;
     float lastY;
     private Vector3 mousePositionForJump;
 
@@ -27,11 +26,9 @@ public class FishController : Fish {
 
     float fov;
     public float accelerateFov = 90;
-    //bool isAccFovOn = false;
 
     void Start() {
         fishAnim = GetComponentInChildren<FishAnimator>();
-        //renderer = GetComponent<Renderer>();
         camera = Camera.main.GetComponent<CameraScript>();
         camera.target = transform;
 
@@ -48,55 +45,34 @@ public class FishController : Fish {
 
         fishAnim.SetGrounded(distanceToFloorToPlayAirAnim > distanceToFloor);
         fishAnim.SetAccelerate(descending && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
-            || Input.GetMouseButton(0)) && !trickSystem.isPlaying);
+            || Input.GetMouseButton(0)));
 
-        if (!boosted) {
-
-            if (!_gameManager.deceleratingLerp_AccelerateToBase) {
-                if (((isGrounded && descending) || !isGrounded)
-                    && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
-                       || Input.GetMouseButton(0)) && !trickSystem.isPlaying)
-                {
-
-                    movementSpeed = accelerateMoveSpeed;
-
-                    accelerating = true;
-                    if (speedParticle.isStopped)
-                        speedParticle.Play();
-                }
-                else {
-                    movementSpeed = baseMoveSpeed;
-
-                    accelerating = false;
-                    if (speedParticle.isPlaying)
-                        speedParticle.Stop();
-                }
+        if (!boosted)
+        {
+            if (((isGrounded && descending) || !isGrounded)
+                && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
+                   || Input.GetMouseButton(0)))
+            {
+                accelerating = true;
+                timeAccelerateRemaining = _gameManager.timeToLosingAcceleration;
             }
             else
             {
-                if (((isGrounded && descending) || !isGrounded)
-                    && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
-                       || Input.GetMouseButton(0)) && !trickSystem.isPlaying)
-                {
-                    accelerating = true;
-                    timeAccelerateRemaining = _gameManager.timeToLosingAcceleration;
-                }
-                else {
-                    accelerating = false;
-                    if (speedParticle.isPlaying)
-                        speedParticle.Stop();
-                    timeAccelerateRemaining -= deltaTime;
-                }
-                if (timeAccelerateRemaining <= 0) {
-                    timeAccelerateRemaining = 0;
-                }
-                else
-                {
-                    if (speedParticle.isStopped)
-                        speedParticle.Play();
-                }
-                movementSpeed = Mathf.Lerp(baseMoveSpeed, accelerateMoveSpeed, timeAccelerateRemaining / _gameManager.timeToLosingAcceleration);
+                accelerating = false;
+                if (speedParticle.isPlaying)
+                    speedParticle.Stop();
+                timeAccelerateRemaining -= deltaTime;
             }
+            if (timeAccelerateRemaining <= 0)
+            {
+                timeAccelerateRemaining = 0;
+            }
+            else
+            {
+                if (speedParticle.isStopped)
+                    speedParticle.Play();
+            }
+            movementSpeed = Mathf.Lerp(baseMoveSpeed, accelerateMoveSpeed, timeAccelerateRemaining / _gameManager.timeToLosingAcceleration);
         }
         else
         {
@@ -119,7 +95,8 @@ public class FishController : Fish {
                     movementSpeed = accelerateMoveSpeed;
                     boosted = false;
                 }
-                else {
+                else
+                {
                     movementSpeed = boostMoveSpeed;
                 }
             }
@@ -182,42 +159,14 @@ public class FishController : Fish {
         timeAccelerateRemaining = _gameManager.timeToLosingBoost;
     }
 
-    bool hasAlreadyDoneTricks;
-    public override void StartTrick() {
-        if (transform.position.y - startJumpY > heightLimitForTricks && !trickSystem.isPlaying && !hasAlreadyDoneTricks) {
-            trickSystem.StartOfTrick();
-            camera.SetNewState(camera.descending); // Camera Descending
-
-            hasAlreadyDoneTricks = true;
-        }
-    }
-
     public override void StartJump() {
         camera.SetNewState(camera.jumping);
     }
 
     public override void Landing() {
-        if (trickSystem.isPlaying) {
-            trickSystem.EndOfTrick();
-        }
-        if (!turning && camera.currentState != camera.idle) {
+
+        if (camera.currentState != camera.idle) {
             camera.SetNewState(camera.idle); // Camera Idle
-        }
-        else if (turning && 
-            ((camera.currentState != camera.turningLeft && lastAngle == -90) || 
-             (camera.currentState != camera.turningRight && lastAngle == 90))) {
-            TurnCamera(lastAngle);
-        }
-        hasAlreadyDoneTricks = false;
-    }
-
-    public override void TurnCamera(float angle) {
-        lastAngle = angle;
-        if (angle == 90 && camera.currentState != camera.turningRight) {
-            camera.SetNewState(camera.turningRight); 
-
-        } else if (angle == -90 && camera.currentState != camera.turningLeft) {
-            camera.SetNewState(camera.turningLeft);
         }
     }
 

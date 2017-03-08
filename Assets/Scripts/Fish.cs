@@ -31,7 +31,6 @@ public abstract class Fish : MonoBehaviour {
 
     #region private properties
     protected GameManager _gameManager;
-    protected Trick_Pattern trickSystem;
     CharacterController controller;
     ParticleSystem slideParticle;
     GameObject waterEffect, speedWaterEffect;
@@ -52,7 +51,6 @@ public abstract class Fish : MonoBehaviour {
 
     void Awake() {
         controller = GetComponent<CharacterController>();
-        trickSystem = FindObjectOfType<Trick_Pattern>();
         _gameManager = GameManager.GetInstance();
         targetRotation = transform.rotation;
         slideParticle = transform.FindChild("P_Slide").GetComponent<ParticleSystem>();
