@@ -15,7 +15,6 @@ public class RestartScript : MonoBehaviour {
 	{
         GameManager.GetInstance().SetEndCanvas(FindObjectOfType<RestartScript>().GetComponent<Canvas>());
 		_buttonMenu.transform.DOScale(new Vector3 (1.05f, 1.05f, 1.05f), 0.4f).SetLoops(-1, LoopType.Yoyo);
-		_buttonRestart.transform.DOScale(new Vector3 (1.05f, 1.05f, 1.05f), 0.4f).SetLoops(-1, LoopType.Yoyo);
 	}
 
 	public void ReloadScene ()
