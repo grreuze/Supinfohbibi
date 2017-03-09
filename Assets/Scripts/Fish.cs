@@ -56,6 +56,7 @@ public abstract class Fish : MonoBehaviour {
         waterEffect = _transform.FindChild("P_Idle").gameObject;
         speedWaterEffect = _transform.FindChild("P_IdleSpeed").gameObject;
         isGrounded = true;
+        verticalVelocity = -maxFallingSpeed;
         descending = true;
     }
 
@@ -144,14 +145,18 @@ public abstract class Fish : MonoBehaviour {
         speedWaterEffect.SetActive(value && accelerating);
     }
 
+    int nombreDeFramesEnSaut;
+    float fallingSpeed;
     void JumpAndGravity() {
         reachedMaxSpeed = verticalVelocity <= -maxFallingSpeed ? reachedMaxSpeed + deltaTime : 0;
 
         if (jumping) {
-            verticalVelocity = _gameManager.JumpForce;
+            verticalVelocity = _gameManager.JumpForce * deltaTime;
+            fallingSpeed = 0;
             startJumpY = _transform.position.y;
             jumping = false;
             SetEffectsActive(false);
+            nombreDeFramesEnSaut = 0;
             StartJump();
             
         } else if (controller.isGrounded) {
@@ -160,19 +165,16 @@ public abstract class Fish : MonoBehaviour {
             Landing();
             SetEffectsActive(true);
 
-        } else if (reachedMaxSpeed == 0) {
-            verticalVelocity -= gravity * deltaTime;
-            RaycastHit hit;
-            if (Physics.Linecast(_transform.position + Vector3.up * 0.7f, _transform.position + Vector3.up*2, out hit) && hit.collider.gameObject.layer != 8) {
-                verticalVelocity = -gravity * deltaTime;
-            }
-
+        } else if (reachedMaxSpeed == 0) { // I haven't reached max falling speed
+            nombreDeFramesEnSaut++;
+            verticalVelocity = (_gameManager.JumpForce - nombreDeFramesEnSaut * gravity) * deltaTime;
+            
         } else if (_transform.position.y < -300) {
             OutOfBounds();
         }
 
         if (accelerating)
-            verticalVelocity = -fallingSpeedWhenAccelerating* deltaTime;
+            verticalVelocity = -fallingSpeedWhenAccelerating * deltaTime;
     }
 
     public abstract void OutOfBounds();
