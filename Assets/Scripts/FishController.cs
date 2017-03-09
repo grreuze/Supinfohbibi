@@ -123,9 +123,8 @@ public class FishController : Fish {
 
         bool inputDown = Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began);
 
-        if (distanceToFloor > 3.5f && !lastJumping) {
+        if (distanceToFloor > 3.5f && !lastJumping)
             canBoost = true;
-        }
 
         if (!waitingBoost && lastJumping) {
 
@@ -137,7 +136,7 @@ public class FishController : Fish {
                 timerWaitingBoost = 0;
             }
         }
-
+        
         lastJumping = distanceToFloor > 3.5f;
 
         if (waitingBoost) {
