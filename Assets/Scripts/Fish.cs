@@ -59,7 +59,7 @@ public abstract class Fish : MonoBehaviour {
         descending = true;
     }
 
-    float deltaTime;
+    protected float deltaTime;
     void Update() {
         deltaTime = Time.deltaTime;
 
@@ -126,9 +126,6 @@ public abstract class Fish : MonoBehaviour {
     #endregion
 
     #region Jump & Gravity
-
-
-
     public void CallJump() {
         if (isGrounded) {
             jumping = true;

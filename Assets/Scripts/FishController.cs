@@ -38,46 +38,43 @@ public class FishController : Fish {
         waitingBoost = false;
         timeAccelerateRemaining = 0;
     }
-
+    
     public override void MovementSpeed() {
         int touchCount = Input.touchCount;
-        float deltaTime = Time.deltaTime;
+        deltaTime = Time.deltaTime;
 
         fishAnim.SetGrounded(distanceToFloorToPlayAirAnim > distanceToFloor);
         fishAnim.SetAccelerate(descending && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
             || Input.GetMouseButton(0)));
 
-        if (!boosted)
-        {
+        if (!boosted) {
+
+            DoJump();
+            DoBoostAtReception();
+
             if (((isGrounded && descending) || !isGrounded)
                 && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
-                   || Input.GetMouseButton(0)))
-            {
+                   || Input.GetMouseButton(0))) {
+
                 accelerating = true;
                 timeAccelerateRemaining = _gameManager.timeToLosingAcceleration;
             }
-            else
-            {
+            else {
                 accelerating = false;
                 if (speedParticle.isPlaying)
                     speedParticle.Stop();
                 timeAccelerateRemaining -= deltaTime;
             }
             if (timeAccelerateRemaining <= 0)
-            {
                 timeAccelerateRemaining = 0;
-            }
-            else
-            {
-                if (speedParticle.isStopped)
-                    speedParticle.Play();
-            }
+
+            else if (speedParticle.isStopped)
+                speedParticle.Play();
+
             movementSpeed = Mathf.Lerp(baseMoveSpeed, accelerateMoveSpeed, timeAccelerateRemaining / _gameManager.timeToLosingAcceleration);
         }
-        else
-        {
-            if (_gameManager.deceleratingLerp_BoostToAccelerate)
-            {
+        else {
+            if (_gameManager.deceleratingLerp_BoostToAccelerate) {
                 timeAccelerateRemaining -= deltaTime;
                 if (timeAccelerateRemaining <= 0)
                 {
@@ -86,49 +83,27 @@ public class FishController : Fish {
                 }
                 movementSpeed = Mathf.Lerp(accelerateMoveSpeed, boostMoveSpeed, timeAccelerateRemaining / _gameManager.timeToLosingBoost);
             }
-            else
-            {
+            else {
                 timeAccelerateRemaining -= deltaTime;
-                if (timeAccelerateRemaining <= 0)
-                {
+                if (timeAccelerateRemaining <= 0) {
                     timeAccelerateRemaining = _gameManager.timeToLosingAcceleration;
                     movementSpeed = accelerateMoveSpeed;
                     boosted = false;
                 }
                 else
-                {
                     movementSpeed = boostMoveSpeed;
-                }
             }
+
             accelerating = false;
             if (speedParticle.isStopped)
                 speedParticle.Play();
-        }
-        if (distanceToFloor > 3.5f && !lastJumping) {
-            lastJumping = true;
+
         }
 
-        if(!waitingBoost && lastJumping && reachedMaxSpeed > 0 && distanceToFloor < 3.5f && verticalVelocity < 0)
-        {
-            waitingBoost = true;
-            timerWaitingBoost = 0;
-            lastJumping = false;
-        }
+        DoCameraFOV();
+    }
 
-        if(waitingBoost)
-        {
-            if (Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))
-            {
-                StartBoost();
-                waitingBoost = false;
-            }
-            timerWaitingBoost += deltaTime;
-            if(timerWaitingBoost > TimeLimitBoostWaiting)
-            {
-                waitingBoost = false;
-            }
-        }
-
+    void DoJump() {
         if ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) || Input.GetMouseButtonDown(0)) {
             mousePositionForJump = Input.mousePosition;
             jumpOK = true;
@@ -141,7 +116,40 @@ public class FishController : Fish {
 
             CallJump();
         }
-        DoCameraFOV();
+    }
+
+    bool canBoost;
+    void DoBoostAtReception() {
+
+        bool inputDown = Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began);
+
+        if (distanceToFloor > 3.5f && !lastJumping) {
+            canBoost = true;
+        }
+
+        if (!waitingBoost && lastJumping) {
+
+            if (inputDown)
+                canBoost = false;
+
+            if (canBoost && reachedMaxSpeed > 0 && distanceToFloor < 3.5f && verticalVelocity < 0) {
+                waitingBoost = true;
+                timerWaitingBoost = 0;
+            }
+        }
+
+        lastJumping = distanceToFloor > 3.5f;
+
+        if (waitingBoost) {
+            if (inputDown) {
+                StartBoost();
+                waitingBoost = false;
+            }
+            timerWaitingBoost += deltaTime;
+            if (timerWaitingBoost > TimeLimitBoostWaiting) {
+                waitingBoost = false;
+            }
+        }
     }
 
     void DoCameraFOV() {
