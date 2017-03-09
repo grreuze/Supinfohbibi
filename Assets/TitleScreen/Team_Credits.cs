@@ -30,9 +30,9 @@ public class Team_Credits : MonoBehaviour
 
 		if (dispCredits == false) {
 			dispCredits = true;
+			Fade.SetActive (true);
 			_fadeAnim.Play ("Fade_In_Credits_Anim");
 			_creditAnim.Play ("Team_Credits_In_Anim");
-			Fade.SetActive (true);
 			Fade.transform.SetAsLastSibling ();
 			Credit.transform.SetAsLastSibling ();
 			this.transform.SetAsLastSibling ();
