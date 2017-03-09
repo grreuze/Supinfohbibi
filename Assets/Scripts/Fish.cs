@@ -80,13 +80,14 @@ public abstract class Fish : MonoBehaviour {
         Stabilisation();
 
         direction.x = horizontalVelocity;
-        direction.y = verticalVelocity;
+        direction.y = verticalVelocity * deltaTime;
         direction.z = movementSpeed * deltaTime;
-
+        
         direction = _transform.TransformDirection(direction);
 
         controller.Move(direction);
     }
+    
     #endregion
 
     #region Movement
@@ -151,7 +152,7 @@ public abstract class Fish : MonoBehaviour {
         reachedMaxSpeed = verticalVelocity <= -maxFallingSpeed ? reachedMaxSpeed + deltaTime : 0;
 
         if (jumping) {
-            verticalVelocity = _gameManager.JumpForce * deltaTime;
+            verticalVelocity = _gameManager.JumpForce;
             fallingSpeed = 0;
             startJumpY = _transform.position.y;
             jumping = false;
@@ -167,14 +168,19 @@ public abstract class Fish : MonoBehaviour {
 
         } else if (reachedMaxSpeed == 0) { // I haven't reached max falling speed
             nombreDeFramesEnSaut++;
-            verticalVelocity = (_gameManager.JumpForce - nombreDeFramesEnSaut * gravity) * deltaTime;
-            
+
+            fallingSpeed -= gravity * deltaTime;
+            verticalVelocity = _gameManager.JumpForce + fallingSpeed; 
+
+            //verticalVelocity = (_gameManager.JumpForce - nombreDeFramesEnSaut * gravity) * deltaTime;
+            //verticalVelocity -= gravity * deltaTime;
+
         } else if (_transform.position.y < -300) {
             OutOfBounds();
         }
 
         if (accelerating)
-            verticalVelocity = -fallingSpeedWhenAccelerating * deltaTime;
+            verticalVelocity = -fallingSpeedWhenAccelerating;
     }
 
     public abstract void OutOfBounds();
